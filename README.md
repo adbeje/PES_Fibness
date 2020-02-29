@@ -1,6 +1,6 @@
 # Fibness
 
-Integrantes:
+Integrantes
 
 1.- Alejandro, Kenny
 
