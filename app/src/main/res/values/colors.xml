@@ -3,4 +3,14 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <!--definicion de colores-->
+    <color name="dark_blue">#3023AE</color>
+    <color name="purple">#c86dd7</color>
+    <color name="app_bkg_color">#1e304b</color>
+
+    <color name="white">#ccffffff</color>
+    <color name="white_light">#1affffff </color>
+    <color name="medium">#66ffffff</color>
+
 </resources>
