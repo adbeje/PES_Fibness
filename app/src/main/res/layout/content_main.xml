@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:orientation="vertical"
     android:background="@drawable/gradient"
     >
 
@@ -35,7 +36,8 @@
         android:layout_marginEnd="16dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_end="24dp" />
+        app:layout_constraintGuide_end="24dp"
+        />
 
 
     <EditText
@@ -51,7 +53,9 @@
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/logo" />
+        app:layout_constraintTop_toBottomOf="@id/logo"
+        android:textColor="@color/white"
+        />
 
     <EditText
         android:id="@+id/password"
@@ -67,7 +71,9 @@
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/username" />
+        app:layout_constraintTop_toBottomOf="@id/username"
+        android:textColor="@color/white"
+        />
 
     <TextView
         android:id="@+id/forgot_password"
@@ -107,9 +113,10 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
+        android:id="@+id/new_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Don't have an account"
+        android:text="Don't have an account? Register Here"
         app:layout_constraintTop_toBottomOf="@id/footer_line"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
