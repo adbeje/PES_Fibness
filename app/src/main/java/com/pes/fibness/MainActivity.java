@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         fbLogin = (TextView) findViewById(R.id.fb_login);
         newAccount = (TextView) findViewById(R.id.new_account);
 
+        //press to register a new account
         newAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,6 +46,28 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
+        //press to login (an example)
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String user = userName.getText().toString();
+                String pwd = password.getText().toString();
+                Boolean check = true; //get password from DB and check
+
+                if(check) {
+                    Intent homePage = new Intent(MainActivity.this, HomeActivity.class);
+                    startActivity(homePage);
+                }
+                else
+                    System.out.println("Error");
+
+
+            }
+        });
+
+
 
     }
 

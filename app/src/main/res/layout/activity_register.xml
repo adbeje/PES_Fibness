@@ -36,16 +36,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_fibness" />
+        app:srcCompat="@drawable/logo_fibness"
+        android:contentDescription="@string/todo" />
 
     <TextView
         android:id="@+id/logo_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
-        android:text="Run free, feel free"
+        android:text="@string/run_free_feel_free"
         android:textColor="@color/white"
-        android:textSize="24dp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -58,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
         android:background="@drawable/edit_text_bg"
-        android:hint="Full name"
+        android:hint="@string/full_name"
         android:inputType="text"
         android:padding="16dp"
         android:textColorHint="@color/white"
@@ -67,7 +68,7 @@
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@id/logo_text"
         android:textColor="@color/white"
-        />
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/email_address"
@@ -75,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="@drawable/edit_text_bg"
-        android:hint="Email address"
+        android:hint="@string/email_address"
         android:inputType="textEmailAddress"
         android:padding="16dp"
         android:textColorHint="@color/white"
@@ -84,7 +85,7 @@
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@id/username"
         android:textColor="@color/white"
-        />
+        android:autofillHints="" />
 
 
     <EditText
@@ -93,8 +94,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="@drawable/edit_text_bg"
-        android:drawableRight="@drawable/ic_eye"
-        android:hint="Password"
+        android:drawableEnd="@drawable/ic_eye"
+        android:hint="@string/password"
         android:inputType="textPassword"
         android:padding="16dp"
         android:textColorHint="@color/white"
@@ -103,7 +104,7 @@
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@id/email_address"
         android:textColor="@color/white"
-        />
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/confirm_password"
@@ -111,8 +112,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="@drawable/edit_text_bg"
-        android:drawableRight="@drawable/ic_eye"
-        android:hint="Confirm password"
+        android:drawableEnd="@drawable/ic_eye"
+        android:hint="@string/confirm_password"
         android:inputType="textPassword"
         android:padding="16dp"
         android:textColorHint="@color/white"
@@ -121,7 +122,7 @@
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@id/password"
         android:textColor="@color/white"
-        />
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/btn_register"
@@ -131,7 +132,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/btn_bg"
-        android:text="Register"
+        android:text="@string/register"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
@@ -145,7 +146,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Already a member? Login Here"
+        android:text="@string/already_a_member_login_here"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

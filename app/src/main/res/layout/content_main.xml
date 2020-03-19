@@ -17,7 +17,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_fibness" />
+        app:srcCompat="@drawable/logo_fibness"
+        android:contentDescription="@string/todo" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_left"
@@ -45,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="84dp"
         android:background="@drawable/edit_text_bg"
-        android:hint="Email address"
+        android:hint="@string/email_address"
         android:inputType="textEmailAddress"
         android:padding="16dp"
         android:textColorHint="@color/white"
@@ -54,7 +55,7 @@
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@id/logo"
         android:textColor="@color/white"
-        />
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/password"
@@ -62,8 +63,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="@drawable/edit_text_bg"
-        android:drawableRight="@drawable/ic_eye"
-        android:hint="Password"
+        android:drawableEnd="@drawable/ic_eye"
+        android:hint="@string/password"
         android:inputType="textPassword"
         android:padding="16dp"
         android:textColorHint="@color/white"
@@ -72,14 +73,14 @@
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@id/username"
         android:textColor="@color/white"
-        />
+        android:autofillHints="" />
 
     <TextView
         android:id="@+id/forgot_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Don't Remember Password?"
+        android:text="@string/don_t_remember_password"
         android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@id/guideline_left"
         app:layout_constraintHorizontal_bias="0.484"
@@ -94,7 +95,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/btn_bg"
-        android:text="Login Now"
+        android:text="@string/login_now"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
@@ -115,7 +116,7 @@
         android:id="@+id/new_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Don't have an account? Register Here"
+        android:text="@string/don_t_have_an_account_register_here"
         app:layout_constraintTop_toBottomOf="@id/footer_line"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -126,7 +127,7 @@
         android:id="@+id/fb_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign in with Facebook"
+        android:text="@string/sign_in_with_facebook"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
@@ -153,7 +154,7 @@
         android:id="@+id/or"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="or"
+        android:text="@string/or"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/line1"
