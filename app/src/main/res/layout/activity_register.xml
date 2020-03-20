@@ -33,11 +33,11 @@
         android:layout_width="121dp"
         android:layout_height="121dp"
         android:layout_marginTop="50dp"
+        android:contentDescription="@string/todo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_fibness"
-        android:contentDescription="@string/todo" />
+        app:srcCompat="@drawable/logoF_blanco" />
 
     <TextView
         android:id="@+id/logo_text"
