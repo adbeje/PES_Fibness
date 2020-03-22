@@ -1,7 +1,6 @@
 package com.pes.fibness;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.HasDefaultViewModelProviderFactory;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -21,9 +19,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -118,16 +115,24 @@ public class RegisterActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //insertUser();
+                insertUser();
             }
         });
 
     }
 
-    /*
+
     private void insertUser() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        final String urlPost = "http://10.4.41.146:3000/users"; //api link
+        final String urlPost = "http://10.4.41.146:3000/user"; //api link
+
+        //JSON data in  string format
+        final String data = "{"+
+                "\"nombre\": " + "\"" + userName.getText().toString() + "\"," +
+                "\"password\": " + "\"" + password.getText().toString() + "\"," +
+                "\"email\": " + "\"" + emailAddress.getText().toString() + "\"" +
+                "}";
+
         StringRequest request = new StringRequest(Request.Method.POST, urlPost, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -136,71 +141,32 @@ public class RegisterActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("Post data: ERROR");
+                System.out.println("Post data: ERROR " + error);
             }
         }) {
+            //post data to server
             @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("nombre",  userName.getText().toString());
-                params.put("password",  password.getText().toString());
-                params.put("email", emailAddress.getText().toString());
-                return params;
-
-            }
-            /*
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return  params;
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
             }
 
-             */
-
-    //};
-        //requestQueue.add(request);
-
-
-        /*
-        //JSON data in  string format
-        String data = "{"+
-                "\"nombre\"" + "\"" + userName.getText().toString() + "\"," +
-                "\"password\"" + "\"" + password.getText().toString() + "\"," +
-                "\"email\"" + "\"" + emailAddress.getText().toString() + "\"" +
-                "}";
-
-
-        StringRequest request = new StringRequest(Request.Method.POST, urlPost, new Response.Listener<String>() {
             @Override
-            public void onResponse(String response) {
-                //get response on JSONObject
+            public byte[] getBody() throws AuthFailureError{
                 try {
-                    JSONObject objRespense = new JSONObject(response);
-                    Toast.makeText(getApplicationContext(), objRespense.toString(), Toast.LENGTH_LONG).show(); //print response
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Server Error!", Toast.LENGTH_LONG).show();
+                    //System.out.println(data);
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    //e.printStackTrace();
+                    return null;
                 }
 
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage() + " ErrorListener", Toast.LENGTH_SHORT).show();
-            }
-        })  {
-            //post data to server
 
 
         };
-
         requestQueue.add(request);
-         */
-
-
-    //}
-    //*/
-
+    }
 
 }
+
+

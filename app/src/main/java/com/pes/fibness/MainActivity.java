@@ -62,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
                 String pwd = password.getText().toString();
                 Boolean check = true; //get password from DB and check
 
-                /* PRUEBA CONEXION CON BD EXISTO
+                /*
+                //PRUEBA CONEXION CON BD EXISTO
                 //send get request
                 RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
                 final String urlApi = "http://10.4.41.146:3000/test";
@@ -77,9 +78,8 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println("INfO: ERROR");
                     }
                 });
-
                 requestQueue.add(stringRequest);
-             */
+                */
 
                 if(check) {
                     Intent homePage = new Intent(MainActivity.this, HomeActivity.class);
