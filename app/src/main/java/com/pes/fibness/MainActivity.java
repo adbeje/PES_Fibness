@@ -26,7 +26,7 @@ import com.facebook.login.widget.LoginButton;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText userName;
+    private EditText emailAddress;
     private EditText password;
     private Button login;
     private LoginButton loginFb;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         loginFb = (LoginButton) findViewById(R.id.login_button);
         loginFb.setReadPermissions("email");
-        userName = (EditText)findViewById(R.id.username);
+        emailAddress = (EditText)findViewById(R.id.username);
         password = (EditText)findViewById(R.id.password);
         login = (Button) findViewById(R.id.btn_login);
         forgotPassword = (TextView) findViewById(R.id.forgot_password);
@@ -63,9 +63,20 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String user = userName.getText().toString();
-                String pwd = password.getText().toString();
+
+                final String compruebaEmail = emailAddress.getEditableText().toString().trim();
                 Boolean check = true; //get password from DB and check
+                final String regex = "(?:[^<>()\\[\\].,;:\\s@\"]+(?:\\.[^<>()\\[\\].,;:\\s@\"]+)*|\"[^\\n\"]+\")@(?:[^<>()\\[\\].,;:\\s@\"]+\\.)+[^<>()\\[\\]\\.,;:\\s@\"]{2,63}";
+
+                if (!compruebaEmail.matches(regex))
+                {
+                    emailAddress.setError("Enter a valid email.");
+                    check = false;
+                }
+
+
+                String user = emailAddress.getText().toString();
+                String pwd = password.getText().toString();
 
                 if(check) {
                     homeActivity();

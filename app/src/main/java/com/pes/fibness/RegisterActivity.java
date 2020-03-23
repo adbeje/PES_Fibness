@@ -43,6 +43,20 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String compruebaEmail = emailAddress.getEditableText().toString().trim();
+
+                final String regex = "(?:[^<>()\\[\\].,;:\\s@\"]+(?:\\.[^<>()\\[\\].,;:\\s@\"]+)*|\"[^\\n\"]+\")@(?:[^<>()\\[\\].,;:\\s@\"]+\\.)+[^<>()\\[\\]\\.,;:\\s@\"]{2,63}";
+
+                if (!compruebaEmail.matches(regex))
+                {
+                    emailAddress.setError("Enter a valid email.");
+                }
+            }
+        });
+
         password.addTextChangedListener(new TextWatcher()  {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
