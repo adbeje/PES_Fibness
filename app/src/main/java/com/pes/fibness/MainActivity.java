@@ -40,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         callbackManager = CallbackManager.Factory.create();
-        loginFb = (LoginButton)findViewById(R.id.login_button);
+        loginFb = (LoginButton) findViewById(R.id.login_button);
+        loginFb.setReadPermissions("email");
         userName = (EditText)findViewById(R.id.username);
         password = (EditText)findViewById(R.id.password);
         login = (Button) findViewById(R.id.btn_login);
@@ -67,8 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 Boolean check = true; //get password from DB and check
 
                 if(check) {
-                    Intent homePage = new Intent(MainActivity.this, HomeActivity.class);
-                    startActivity(homePage);
+                    homeActivity();
                 }
                 else
                     System.out.println("Error");
@@ -77,22 +77,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Callback registration
         loginFb.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                goHomeActivity();
+                // App code
+                homeActivity();
+
             }
 
             @Override
             public void onCancel() {
+                // App code
                 Toast.makeText(getApplicationContext(), R.string.cancel_login, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onError(FacebookException error) {
+            public void onError(FacebookException exception) {
+                // App code
                 Toast.makeText(getApplicationContext(), R.string.error_login, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void homeActivity() {
+        Intent homePage = new Intent(MainActivity.this, HomeActivity.class);
+        startActivity(homePage);
     }
 
 
@@ -102,8 +112,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 
