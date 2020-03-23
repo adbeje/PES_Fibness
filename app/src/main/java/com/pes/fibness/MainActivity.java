@@ -3,6 +3,12 @@ package com.pes.fibness;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -77,6 +83,25 @@ public class MainActivity extends AppCompatActivity {
 
                 String user = emailAddress.getText().toString();
                 String pwd = password.getText().toString();
+
+                /*
+                //PRUEBA CONEXION CON BD EXISTO
+                //send get request
+                RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+                final String urlApi = "http://10.4.41.146:3000/test";
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, urlApi, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println("INfO: "+ response);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("INfO: ERROR");
+                    }
+                });
+                requestQueue.add(stringRequest);
+                */
 
                 if(check) {
                     homeActivity();

@@ -10,6 +10,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -35,6 +48,8 @@ public class RegisterActivity extends AppCompatActivity {
         register = (Button) findViewById(R.id.btn_register);
         backLogin = (TextView) findViewById(R.id.back_login);
 
+
+
         backLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,6 +72,8 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+
+        //PASSWORD
         password.addTextChangedListener(new TextWatcher()  {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -104,8 +121,70 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
+
+        //REGISTER TO USER
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                insertUser();
+            }
+        });
+
+
+
+    private void insertUser() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        final String urlPost = "http://10.4.41.146:3000/user"; //api link
+
+        //hashed password
+        String securePassword = Password.hashPassword(password.getText().toString());
+        System.out.println("hashed password: "+ securePassword);
+        System.out.println("resultado: "+ Password.checkPassword(password.getText().toString(), securePassword));
+
+        //JSON data in  string format
+        final String data = "{"+
+                "\"nombre\": " + "\"" + userName.getText().toString() + "\"," +
+                "\"password\": " + "\"" + securePassword + "\"," +
+                "\"email\": " + "\"" + emailAddress.getText().toString() + "\"" +
+                "}";
+
+        StringRequest request = new StringRequest(Request.Method.POST, urlPost, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Post data: " + response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Post data: ERROR " + error);
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError{
+                try {
+                    //System.out.println(data);
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    //e.printStackTrace();
+                    return null;
+                }
+
+            }
+
+
+        };
+        requestQueue.add(request);
     }
 
-
-
 }
+
+
