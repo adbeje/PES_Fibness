@@ -126,10 +126,15 @@ public class RegisterActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         final String urlPost = "http://10.4.41.146:3000/user"; //api link
 
+        //hashed password
+        String securePassword = Password.hashPassword(password.getText().toString());
+        System.out.println("hashed password: "+ securePassword);
+        System.out.println("resultado: "+ Password.checkPassword(password.getText().toString(), securePassword));
+
         //JSON data in  string format
         final String data = "{"+
                 "\"nombre\": " + "\"" + userName.getText().toString() + "\"," +
-                "\"password\": " + "\"" + password.getText().toString() + "\"," +
+                "\"password\": " + "\"" + securePassword + "\"," +
                 "\"email\": " + "\"" + emailAddress.getText().toString() + "\"" +
                 "}";
 
