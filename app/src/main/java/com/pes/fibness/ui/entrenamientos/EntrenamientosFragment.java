@@ -30,6 +30,7 @@ public class EntrenamientosFragment extends Fragment {
     private ListView listViewT;
     private ArrayList<String> TrainingList = new ArrayList<String>();
     private View view;
+    private boolean firstTime = true;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -40,8 +41,11 @@ public class EntrenamientosFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_entrenamientos, container, false);
 
 
-        for(int i = 0; i < 24; i++){
-            TrainingList.add("Training " + i);
+        if(firstTime){
+            for(int i = 0; i < 24; i++){
+                TrainingList.add("Training " + i);
+            }
+            firstTime = false;
         }
 
         listViewT = (ListView)view.findViewById(R.id.listViewTraining);
