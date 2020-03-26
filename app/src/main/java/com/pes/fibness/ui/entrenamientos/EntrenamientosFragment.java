@@ -1,5 +1,6 @@
 package com.pes.fibness.ui.entrenamientos;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.pes.fibness.CreateTrainingActivity;
+import com.pes.fibness.HomeActivity;
+import com.pes.fibness.MainActivity;
 import com.pes.fibness.R;
 import com.pes.fibness.ui.concreteTraining.ConcreteTrainingFragment;
 import com.pes.fibness.ui.dietas.DietasViewModel;
@@ -60,10 +64,14 @@ public class EntrenamientosFragment extends Fragment {
         listViewT.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                /*FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.training_fragment, entrenamentP);
                 ft.addToBackStack(null);
-                ft.commit();
+                ft.commit();*/
+                Intent TrainingPage = new Intent(getActivity(), CreateTrainingActivity.class);
+                TrainingPage.putExtra("new", false);
+                TrainingPage.putExtra("title", TrainingList.get(position));
+                startActivity(TrainingPage);
             }
         } );
 
@@ -71,11 +79,17 @@ public class EntrenamientosFragment extends Fragment {
 
         button.setOnClickListener( new AdapterView.OnClickListener() {
             public void onClick(View v){
-                System.out.println("Holii");
+
+                Intent TrainingPage = new Intent(getActivity(), CreateTrainingActivity.class);
+                TrainingPage.putExtra("new", true);
+                TrainingPage.putExtra("title", "");
+                startActivity(TrainingPage);
+
                 TrainingList.add("New Training");
                 ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(getActivity(), R.layout.row, TrainingList);
 
                 listViewT.setAdapter(listViewAdapter);
+
             }
         });
 
