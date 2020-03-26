@@ -1,11 +1,12 @@
 package com.pes.fibness;
 
-import android.app.Dialog;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.Nullable;
@@ -41,7 +42,6 @@ public class CreateTrainingActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar)findViewById (R.id.toolbarCT);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
-        System.out.println("HOLAA " + TilteTraining);
     }
 
     private void getExtras(){
@@ -51,9 +51,11 @@ public class CreateTrainingActivity extends AppCompatActivity {
     }
 
     public void showInputBox(){
-        final Dialog dialog = new Dialog(CreateTrainingActivity.this);
-        dialog.setTitle("Training");
-        dialog.setContentView(R.layout.input_title_box);
+        AlertDialog.Builder builder = new AlertDialog.Builder(CreateTrainingActivity.this);
+        builder.setView(R.layout.input_title_box);
+        builder.setTitle("Training");
+        final AlertDialog dialog = builder.create();
+        dialog.show();
         TextView txt = (TextView) dialog.findViewById(R.id.inputboxTitleTraining);
         txt.setText("Add a name");
         final EditText editText = (EditText)dialog.findViewById(R.id.TitleTraininginput);
@@ -64,10 +66,10 @@ public class CreateTrainingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 TilteTraining = editText.getText().toString();
                 title.setText(TilteTraining);
+                User.setNewTraining(TilteTraining);
                 dialog.dismiss();
             }
         });
-        dialog.show();
-        System.out.println("Aqui llega");
     }
 }
+

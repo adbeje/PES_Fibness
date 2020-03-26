@@ -11,30 +11,26 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pes.fibness.CreateTrainingActivity;
-import com.pes.fibness.HomeActivity;
-import com.pes.fibness.MainActivity;
 import com.pes.fibness.R;
+import com.pes.fibness.User;
 import com.pes.fibness.ui.concreteTraining.ConcreteTrainingFragment;
-import com.pes.fibness.ui.dietas.DietasViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class EntrenamientosFragment extends Fragment {
 
     Fragment entrenamentP = new ConcreteTrainingFragment();
     private EntrenamientosViewModel entrenamientosViewModel;
     private ListView listViewT;
-    private ArrayList<String> TrainingList = new ArrayList<String>();
+    private ArrayList<String> TrainingList;
     private View view;
     private boolean firstTime = true;
+    private String Trainin_Name = "";
+    User u = new User();
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -43,31 +39,17 @@ public class EntrenamientosFragment extends Fragment {
         entrenamientosViewModel = ViewModelProviders.of(this).get(EntrenamientosViewModel.class);
 
         View view = inflater.inflate(R.layout.fragment_entrenamientos, container, false);
-
-
-        if(firstTime){
-            for(int i = 0; i < 24; i++){
-                TrainingList.add("Training " + i);
-            }
-            firstTime = false;
-        }
-
+       // TrainingList = new ArrayList<String>();
+        TrainingList = u.getTrainingList();
         listViewT = (ListView)view.findViewById(R.id.listViewTraining);
 
         ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(getActivity(), R.layout.row, TrainingList);
 
         listViewT.setAdapter(listViewAdapter);
-        /*FragmentTransaction ft2 = getActivity().getSupportFragmentManager().beginTransaction();
-        ft2.replace(R.id.frame_training2, llistaEntrenament);
-        ft2.commit();*/
 
         listViewT.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                /*FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.training_fragment, entrenamentP);
-                ft.addToBackStack(null);
-                ft.commit();*/
                 Intent TrainingPage = new Intent(getActivity(), CreateTrainingActivity.class);
                 TrainingPage.putExtra("new", false);
                 TrainingPage.putExtra("title", TrainingList.get(position));
@@ -84,12 +66,6 @@ public class EntrenamientosFragment extends Fragment {
                 TrainingPage.putExtra("new", true);
                 TrainingPage.putExtra("title", "");
                 startActivity(TrainingPage);
-
-                TrainingList.add("New Training");
-                ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(getActivity(), R.layout.row, TrainingList);
-
-                listViewT.setAdapter(listViewAdapter);
-
             }
         });
 
