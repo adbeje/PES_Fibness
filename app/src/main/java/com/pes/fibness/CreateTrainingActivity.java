@@ -3,8 +3,10 @@ package com.pes.fibness;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -22,13 +24,13 @@ public class CreateTrainingActivity extends AppCompatActivity {
     private Boolean IsNew;
     private String TilteTraining = "";
     TextView title;
-
+    private ListView ExerciseList;
+    private String[][] datos = {{"", "", ""}};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_concrete_training);
-
         getExtras();
 
         title = (TextView) findViewById(R.id.title);
@@ -38,10 +40,24 @@ public class CreateTrainingActivity extends AppCompatActivity {
         }
         else{
             title.setText(TilteTraining);
+            datos = new String[][]{{"Crunch", "30", "10"},
+                    {"Crunch", "30", "10"},
+                    {"Crunch", "30", "10"},
+                    {"Crunch", "30", "10"},
+                    {"Crunch", "30", "10"},
+                    {"Crunch", "30", "10"},
+                    {"Crunch", "30", "10"},
+                    {"Crunch", "30", "10"},
+                    {"Crunch", "30", "10"},
+                    {"Crunch", "30", "10"}};
         }
         Toolbar toolbar = (Toolbar)findViewById (R.id.toolbarCT);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
+
+        ExerciseList = (ListView) findViewById(R.id.ExerciseList);
+
+        ExerciseList.setAdapter(new Exercise_Adap(this, datos, IsNew));
     }
 
     private void getExtras(){
