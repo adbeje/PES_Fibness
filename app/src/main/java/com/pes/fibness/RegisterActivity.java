@@ -175,7 +175,8 @@ public class RegisterActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.POST, urlPost, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if(response.equals("OK"))
+                System.out.println("Response: " + response);
+                if(response.equals("Created"))
                     homeActivity();
                 else Toast.makeText(getApplicationContext(), "Response error", Toast.LENGTH_SHORT).show();
             }
