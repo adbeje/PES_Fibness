@@ -92,10 +92,13 @@ public class RegisterActivity extends AppCompatActivity {
                 final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
 
                 if (password.getText().toString().isEmpty()) {
+                    checkPass = false;
                     password.setError("Enter password");
                 } else if (!PASSWORD_PATTERN.matcher(password.getText().toString()).matches()) {
+                    checkPass = false;
                     password.setError("La contraseña ha de tener como mínimo 8 caracteres, una minúscula, una mayúscula, un número y un carácter especial (!,@,#,&,%)");
                 } else {
+                    checkPass = true;
                     password.setError(null);
                 }
             }
@@ -115,10 +118,13 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (confirmPassword.getText().toString().isEmpty()) {
+                    canRegister = false;
                     confirmPassword.setError("Enter confirmation password");
                 } else if (!confirmPassword.getText().toString().equals(password.getText().toString())) {
+                    canRegister = false;
                     confirmPassword.setError("Passwords are different");
                 } else {
+                    if(checkPass) canRegister=true;
                     confirmPassword.setError(null);
                 }
             }
@@ -158,7 +164,6 @@ public class RegisterActivity extends AppCompatActivity {
         //hashed password
         String securePassword = Password.hashPassword(password.getText().toString());
         System.out.println("hashed password: "+ securePassword);
-        System.out.println("resultado: "+ Password.checkPassword(password.getText().toString(), securePassword));
 
         //JSON data in  string format
         final String data = "{"+
