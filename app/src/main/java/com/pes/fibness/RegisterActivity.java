@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -33,13 +34,16 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText confirmPassword;
     private Button register;
     private TextView backLogin;
+    private boolean checkPass = false;
+    private boolean canRegister = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,16}$";;
+        final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,16}$";
+        ;
 
         userName = (EditText) findViewById(R.id.username);
         emailAddress = (EditText) findViewById(R.id.email_address);
@@ -47,7 +51,6 @@ public class RegisterActivity extends AppCompatActivity {
         confirmPassword = (EditText) findViewById(R.id.confirm_password);
         register = (Button) findViewById(R.id.btn_register);
         backLogin = (TextView) findViewById(R.id.back_login);
-
 
 
         backLogin.setOnClickListener(new View.OnClickListener() {
@@ -65,8 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 final String regex = "(?:[^<>()\\[\\].,;:\\s@\"]+(?:\\.[^<>()\\[\\].,;:\\s@\"]+)*|\"[^\\n\"]+\")@(?:[^<>()\\[\\].,;:\\s@\"]+\\.)+[^<>()\\[\\]\\.,;:\\s@\"]{2,63}";
 
-                if (!compruebaEmail.matches(regex))
-                {
+                if (!compruebaEmail.matches(regex)) {
                     emailAddress.setError("Enter a valid email.");
                 }
             }
@@ -74,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         //PASSWORD
-        password.addTextChangedListener(new TextWatcher()  {
+        password.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -86,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable s)  {
+            public void afterTextChanged(Editable s) {
                 final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
 
                 if (password.getText().toString().isEmpty()) {
@@ -99,7 +101,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        confirmPassword.addTextChangedListener(new TextWatcher()  {
+        confirmPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -111,7 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable s)  {
+            public void afterTextChanged(Editable s) {
                 if (confirmPassword.getText().toString().isEmpty()) {
                     confirmPassword.setError("Enter confirmation password");
                 } else if (!confirmPassword.getText().toString().equals(password.getText().toString())) {
@@ -123,17 +125,31 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
-
-
         //REGISTER TO USER
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertUser();
+                if(!userName.getText().toString().isEmpty() && checkEmail(emailAddress.getText().toString()) && checkPass && canRegister){
+                    insertUser();
+                }
+                else Toast.makeText(getApplicationContext(), "Error: Something went wrong. User Registration Failed.", Toast.LENGTH_LONG).show();
             }
         });
 
 
+    }
+
+    private boolean checkEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null)
+            return false;
+        return pat.matcher(email).matches();
+    }
 
     private void insertUser() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -154,7 +170,7 @@ public class RegisterActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.POST, urlPost, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println("Post data: " + response);
+                if(response.equals("OK"))  homeActivity();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -183,6 +199,10 @@ public class RegisterActivity extends AppCompatActivity {
 
         };
         requestQueue.add(request);
+    }
+    private void homeActivity() {
+        Intent homePage = new Intent(RegisterActivity.this, HomeActivity.class);
+        startActivity(homePage);
     }
 
 }

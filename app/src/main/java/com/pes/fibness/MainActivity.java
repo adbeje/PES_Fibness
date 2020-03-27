@@ -12,13 +12,10 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -80,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
                     check = false;
                 }
 
-
                 String user = emailAddress.getText().toString();
                 String pwd = password.getText().toString();
 
@@ -115,9 +111,22 @@ public class MainActivity extends AppCompatActivity {
 
         // Callback registration
         loginFb.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code
+                Toast.makeText(getApplicationContext(),
+                        "User ID: "
+                                + loginResult.getAccessToken().getUserId()
+                                + "\n" +
+                                "Auth Token: "
+                                + loginResult.getAccessToken().getToken(),
+                        Toast.LENGTH_SHORT).show();
+                System.out.println ("User ID: "
+                        + loginResult.getAccessToken().getUserId()
+                        + "\n" +
+                        "Auth Token: "
+                        + loginResult.getAccessToken().getToken());
                 homeActivity();
 
             }
@@ -125,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancel() {
                 // App code
+
                 Toast.makeText(getApplicationContext(), R.string.cancel_login, Toast.LENGTH_SHORT).show();
             }
 
