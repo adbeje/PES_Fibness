@@ -3,6 +3,7 @@ package com.pes.fibness;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,6 +27,8 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+
+import java.io.UnsupportedEncodingException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -72,39 +75,8 @@ public class MainActivity extends AppCompatActivity {
                 final String regex = "(?:[^<>()\\[\\].,;:\\s@\"]+(?:\\.[^<>()\\[\\].,;:\\s@\"]+)*|\"[^\\n\"]+\")@(?:[^<>()\\[\\].,;:\\s@\"]+\\.)+[^<>()\\[\\]\\.,;:\\s@\"]{2,63}";
 
                 if (!compruebaEmail.matches(regex))
-                {
                     emailAddress.setError("Enter a valid email.");
-                    check = false;
-                }
-
-                String user = emailAddress.getText().toString();
-                String pwd = password.getText().toString();
-
-                /*
-                //PRUEBA CONEXION CON BD EXISTO
-                //send get request
-                RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
-                final String urlApi = "http://10.4.41.146:3000/test";
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, urlApi, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        System.out.println("INfO: "+ response);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        System.out.println("INfO: ERROR");
-                    }
-                });
-                requestQueue.add(stringRequest);
-                */
-
-                if(check) {
-                    homeActivity();
-                }
-                else
-                    System.out.println("Error");
-
+                else checkUser();
 
             }
         });
@@ -144,6 +116,62 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), R.string.error_login, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void checkUser() {
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        final String urlPost = "http://10.4.41.146:3000/user/validate"; //api link
+
+        String user = emailAddress.getText().toString();
+
+        //hashed password
+        String securePassword = Password.hashPassword(password.getText().toString());
+        System.out.println("hashed password: "+ securePassword);
+
+        //JSON data in  string format
+        final String data = "{"+
+                "\"email\": " + "\"" + user + "\"," +
+                "\"password\": " + "\"" + securePassword + "\"" +
+                "}";
+
+        StringRequest request = new StringRequest(Request.Method.POST, urlPost, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(response.equals("true"))
+                    homeActivity();
+                else Toast.makeText(getApplicationContext(), "Response error", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error: Something went wrong. User Registration Failed.", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    //System.out.println(data);
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    //e.printStackTrace();
+                    return null;
+                }
+
+            }
+
+
+        };
+        requestQueue.add(request);
+
+
+
     }
 
     private void homeActivity() {

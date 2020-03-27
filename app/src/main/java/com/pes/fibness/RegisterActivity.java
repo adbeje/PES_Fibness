@@ -175,12 +175,14 @@ public class RegisterActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.POST, urlPost, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if(response.equals("OK"))  homeActivity();
+                if(response.equals("OK"))
+                    homeActivity();
+                else Toast.makeText(getApplicationContext(), "Response error", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("Post data: ERROR " + error);
+                Toast.makeText(getApplicationContext(), "Error: Something went wrong. User Registration Failed.", Toast.LENGTH_LONG).show();
             }
         }) {
             //post data to server
