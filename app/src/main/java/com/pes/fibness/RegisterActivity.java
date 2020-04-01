@@ -34,8 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText confirmPassword;
     private Button register;
     private TextView backLogin;
-    private boolean checkPass = false;
-    private boolean canRegister = false;
+    private boolean checkEmail = false, checkPass = false, canRegister = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +42,6 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,16}$";
-        ;
 
         userName = (EditText) findViewById(R.id.username);
         emailAddress = (EditText) findViewById(R.id.email_address);
@@ -61,31 +59,34 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        register.setOnClickListener(new View.OnClickListener() {
+        //Listener for email
+        emailAddress.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View view) {
-                final String compruebaEmail = emailAddress.getEditableText().toString().trim();
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                final String email = emailAddress.getEditableText().toString().trim();
 
                 final String regex = "(?:[^<>()\\[\\].,;:\\s@\"]+(?:\\.[^<>()\\[\\].,;:\\s@\"]+)*|\"[^\\n\"]+\")@(?:[^<>()\\[\\].,;:\\s@\"]+\\.)+[^<>()\\[\\]\\.,;:\\s@\"]{2,63}";
 
-                if (!compruebaEmail.matches(regex)) {
+                if (!email.matches(regex)) {
+                    checkEmail = false;
                     emailAddress.setError("Enter a valid email.");
                 }
+                else checkEmail = true;
             }
         });
 
 
-        //PASSWORD
+        //listener for password
         password.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -96,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
                     password.setError("Enter password");
                 } else if (!PASSWORD_PATTERN.matcher(password.getText().toString()).matches()) {
                     checkPass = false;
-                    password.setError("La contraseña ha de tener como mínimo 8 caracteres, una minúscula, una mayúscula, un número y un carácter especial (!,@,#,&,%)");
+                    password.setError("The password must have at least 8 characters, a lowercase, an uppercase, a number and a special character (!,@,#,&,%)");
                 } else {
                     checkPass = true;
                     password.setError(null);
@@ -104,16 +105,12 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        //Listener for confirm password
         confirmPassword.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -124,38 +121,29 @@ public class RegisterActivity extends AppCompatActivity {
                     canRegister = false;
                     confirmPassword.setError("Passwords are different");
                 } else {
-                    if(checkPass) canRegister=true;
+                    if(checkEmail && checkPass) canRegister=true;
                     confirmPassword.setError(null);
                 }
             }
         });
 
 
-        //REGISTER TO USER
+
+
+        //press register button: verification check
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!userName.getText().toString().isEmpty() && checkEmail(emailAddress.getText().toString()) && checkPass && canRegister){
-                    insertUser();
-                }
-                else Toast.makeText(getApplicationContext(), "Error: Something went wrong. User Registration Failed.", Toast.LENGTH_LONG).show();
+                if(userName.getText().toString().isEmpty())
+                    Toast.makeText(getApplicationContext(), "User name can't be empty.", Toast.LENGTH_LONG).show();
+                else if (canRegister)   insertUser();
+                else Toast.makeText(getApplicationContext(), "Error: Something went wrong. Registration Failed.", Toast.LENGTH_LONG).show();
             }
         });
 
 
     }
 
-    private boolean checkEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
-                "[a-zA-Z0-9_+&*-]+)*@" +
-                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
-                "A-Z]{2,7}$";
-
-        Pattern pat = Pattern.compile(emailRegex);
-        if (email == null)
-            return false;
-        return pat.matcher(email).matches();
-    }
 
     private void insertUser() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -183,7 +171,7 @@ public class RegisterActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error: Something went wrong. User Registration Failed.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Response error", Toast.LENGTH_LONG).show();
             }
         }) {
             //post data to server
@@ -193,7 +181,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             @Override
-            public byte[] getBody() throws AuthFailureError{
+            public byte[] getBody()throws AuthFailureError{
                 try {
                     //System.out.println(data);
                     return data == null ? null: data.getBytes("utf-8");

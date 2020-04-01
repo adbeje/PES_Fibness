@@ -3,7 +3,6 @@ package com.pes.fibness;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -86,6 +85,9 @@ public class CreateTrainingActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+    }
+
+    public static class ConnetionAPI {
     }
 }
 

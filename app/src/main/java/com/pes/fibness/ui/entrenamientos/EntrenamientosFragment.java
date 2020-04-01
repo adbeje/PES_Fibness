@@ -30,7 +30,7 @@ public class EntrenamientosFragment extends Fragment {
     private View view;
     private boolean firstTime = true;
     private String Trainin_Name = "";
-    User u = new User();
+    User u = User.getInstances();
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
