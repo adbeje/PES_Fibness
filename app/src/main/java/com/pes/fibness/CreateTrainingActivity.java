@@ -87,7 +87,5 @@ public class CreateTrainingActivity extends AppCompatActivity {
         });
     }
 
-    public static class ConnetionAPI {
-    }
 }
 
