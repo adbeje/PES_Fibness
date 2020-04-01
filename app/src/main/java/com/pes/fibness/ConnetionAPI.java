@@ -112,12 +112,12 @@ public class ConnetionAPI {
             public void onResponse(String response) {
                 if(response.equals("true"))
                     homeActivity();
-                else Toast.makeText(getApplicationContext(), "Response error", Toast.LENGTH_SHORT).show();
+                else Toast.makeText(getApplicationContext(), "Invalid Login Credentials", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error: Something went wrong. User Registration Failed.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Response error", Toast.LENGTH_LONG).show();
             }
         }) {
             //post data to server

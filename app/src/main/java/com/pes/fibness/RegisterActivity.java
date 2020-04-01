@@ -152,6 +152,16 @@ public class RegisterActivity extends AppCompatActivity {
         connetion.postUser(userName.getText().toString(), password.getText().toString(), emailAddress.getText().toString());
     }
 
+    //press back to back mainpage
+    @Override
+    public void onBackPressed() {
+        Intent homePage = new Intent(RegisterActivity.this, MainActivity.class);
+        startActivity(homePage);
+    }
+
+
+
+
 }
 
 

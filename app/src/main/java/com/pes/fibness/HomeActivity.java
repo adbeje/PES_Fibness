@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.pes.fibness.ui.dietas.DietasFragment;
 import com.pes.fibness.ui.entrenamientos.EntrenamientosFragment;
@@ -22,6 +24,7 @@ public class HomeActivity extends AppCompatActivity {
     Fragment rutas = new RutasFragment();
     Fragment dietas = new DietasFragment();
     Fragment eventos = new EventosFragment();
+    private long backPressedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,4 +57,19 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+
+    //press back to back mainpage
+    @Override
+    public void onBackPressed() {
+        if(backPressedTime+2000 > System.currentTimeMillis()){ //compare first click time with second
+            Intent homePage = new Intent(HomeActivity.this, MainActivity.class);
+            startActivity(homePage);;
+        }
+        else Toast.makeText( getBaseContext(), "Press back again", Toast.LENGTH_SHORT).show();
+
+        backPressedTime = System.currentTimeMillis();
+
+    }
+
+
 }

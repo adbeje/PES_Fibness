@@ -13,4 +13,20 @@
     <color name="white_light">#1affffff </color>
     <color name="medium">#66ffffff</color>
 
+    <!--values for profile screen-->
+    <color name="colorPr">#49beff</color>
+    <color name="colorPrDark">#65fce5</color>
+    <color name="accent">#0d5d98</color>
+    <color name="address">#2d7092</color>
+    <color name="followers">#0d5d98</color>
+    <color name="headings">#3797cf</color>
+    <color name="solidCircle">#80ffff</color>
+    <color name="circleBorder">#30ffff</color>
+    <color name="gradEnd">#67efc8</color>
+    <color name="gradStart">#63c9ff</color>
+    <color name="folloersBg">#65dce5</color>
+    <color name="followingBg">#498efff</color>
+    <color name="grey">#e5e5e5</color>
+
+
 </resources>
