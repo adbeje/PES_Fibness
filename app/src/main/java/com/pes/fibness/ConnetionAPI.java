@@ -2,8 +2,11 @@ package com.pes.fibness;
 
 import android.app.Activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -11,22 +14,26 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.io.UnsupportedEncodingException;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 public class ConnetionAPI {
 
     private RequestQueue requestQueue;
     private String urlAPI;
     private StringRequest request;
-    private Activity activity;
+    private Context context;
 
 
-    public ConnetionAPI(Activity activity, String url){
-        this.activity = activity;
-        this.requestQueue = Volley.newRequestQueue(activity);
+    public ConnetionAPI(Context context, String url){
+        this.context = context;
+        this.requestQueue = Volley.newRequestQueue(context);
         this.urlAPI = url;
     }
 
+    /*test to sure that database work*/
     public void getTest(){
-
         request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -38,60 +45,116 @@ public class ConnetionAPI {
                 System.out.println("INFO: ERROR");
             }
         });
-
         enqueue();
     }
 
+    /*to register an user in database*/
     public void postUser(String userName, String password, String emailAddress){
-        /*
-        String securePassword = Password.hashPassword(password);
-        System.out.println("hashed password: " + securePassword);
-        System.out.println("resultado: " + Password.checkPassword(password, securePassword));
+
+        String securePassword = Password.hashPassword(password); //hashed password
+        System.out.println("hashed password: "+ securePassword);
         //JSON data in  string format
-        final String data = "{" +
+        final String data = "{"+
                 "\"nombre\": " + "\"" + userName + "\"," +
                 "\"password\": " + "\"" + securePassword + "\"," +
-                "\"email\": " + "\"" + emailAddress + "\"" +
+                "\"email\": " + "\"" + emailAddress+ "\"" +
                 "}";
+
         request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if(response.equals("OK")) {
-                    //we have to load the meni with user information, in this case we have to set the info that we have
-                    homeActivity(); //if all has gone good, go homePage
-                }
+                System.out.println("Response: " + response);
+                if(response.equals("Created"))
+                    homeActivity();
+                else Toast.makeText(context, "Response error", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error+"", Toast.LENGTH_SHORT).show();
-                //System.out.println("Post data: ERROR " + error);
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
             }
         }) {
             //post data to server
             @Override
-            public String getBodyContentType() {
+            public String getBodyContentType(){
                 return "application/json; charset=utf-8";
             }
+
             @Override
-            public byte[] getBody() throws AuthFailureError {
+            public byte[] getBody(){
                 try {
-                    //System.out.println(data);
-                    return data == null ? null : data.getBytes("utf-8");
+                    return data == null ? null: data.getBytes("utf-8");
                 } catch (UnsupportedEncodingException e) {
-                    //e.printStackTrace();
                     return null;
                 }
             }
+
+
         };
+
         enqueue();
-       */
 
     }
 
+
+    //validate user entry
+    public void validateUser(String emailAddress, String password) {
+
+        String securePassword = Password.hashPassword(password);
+        //JSON data in  string format
+        final String data = "{"+
+                "\"email\": " + "\"" + emailAddress + "\"," +
+                "\"password\": " + "\"" + securePassword + "\"" +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(response.equals("true"))
+                    homeActivity();
+                else Toast.makeText(getApplicationContext(), "Response error", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error: Something went wrong. User Registration Failed.", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+
+            }
+
+        };
+        enqueue();
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //to go HomePage
     private void homeActivity() {
-        Intent homePage = new Intent(activity, HomeActivity.class);
-        activity.startActivity(homePage);
+        Intent homePage = new Intent(context, HomeActivity.class);
+        context.startActivity(homePage);
     }
 
 

@@ -2,6 +2,7 @@ package com.pes.fibness;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -144,61 +145,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-
+    //register an user in database
     private void insertUser() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        final String urlPost = "http://10.4.41.146:3000/user"; //api link
-
-        //hashed password
-        String securePassword = Password.hashPassword(password.getText().toString());
-        System.out.println("hashed password: "+ securePassword);
-
-        //JSON data in  string format
-        final String data = "{"+
-                "\"nombre\": " + "\"" + userName.getText().toString() + "\"," +
-                "\"password\": " + "\"" + securePassword + "\"," +
-                "\"email\": " + "\"" + emailAddress.getText().toString() + "\"" +
-                "}";
-
-        StringRequest request = new StringRequest(Request.Method.POST, urlPost, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                System.out.println("Response: " + response);
-                if(response.equals("Created"))
-                    homeActivity();
-                else Toast.makeText(getApplicationContext(), "Response error", Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Response error", Toast.LENGTH_LONG).show();
-            }
-        }) {
-            //post data to server
-            @Override
-            public String getBodyContentType(){
-                return "application/json; charset=utf-8";
-            }
-
-            @Override
-            public byte[] getBody()throws AuthFailureError{
-                try {
-                    //System.out.println(data);
-                    return data == null ? null: data.getBytes("utf-8");
-                } catch (UnsupportedEncodingException e) {
-                    //e.printStackTrace();
-                    return null;
-                }
-
-            }
-
-
-        };
-        requestQueue.add(request);
-    }
-    private void homeActivity() {
-        Intent homePage = new Intent(RegisterActivity.this, HomeActivity.class);
-        startActivity(homePage);
+        ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3000/user");
+        System.out.println("Hola");
+        connetion.postUser(userName.getText().toString(), password.getText().toString(), emailAddress.getText().toString());
     }
 
 }

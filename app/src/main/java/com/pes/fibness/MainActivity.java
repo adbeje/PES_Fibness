@@ -118,72 +118,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    //validate user
     private void checkUser() {
-
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        final String urlPost = "http://10.4.41.146:3000/user/validate"; //api link
-
-        String user = emailAddress.getText().toString();
-
-        //hashed password
-        String securePassword = Password.hashPassword(password.getText().toString());
-        System.out.println("hashed password: "+ securePassword);
-
-        //JSON data in  string format
-        final String data = "{"+
-                "\"email\": " + "\"" + user + "\"," +
-                "\"password\": " + "\"" + securePassword + "\"" +
-                "}";
-
-        StringRequest request = new StringRequest(Request.Method.POST, urlPost, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                if(response.equals("true"))
-                    homeActivity();
-                else Toast.makeText(getApplicationContext(), "Response error", Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error: Something went wrong. User Registration Failed.", Toast.LENGTH_LONG).show();
-            }
-        }) {
-            //post data to server
-            @Override
-            public String getBodyContentType(){
-                return "application/json; charset=utf-8";
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    //System.out.println(data);
-                    return data == null ? null: data.getBytes("utf-8");
-                } catch (UnsupportedEncodingException e) {
-                    //e.printStackTrace();
-                    return null;
-                }
-
-            }
-
-
-        };
-        requestQueue.add(request);
-
-
-
+        ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3000/user/validate");
+        connetion.validateUser(emailAddress.getText().toString(), password.getText().toString());
     }
 
     private void homeActivity() {
         Intent homePage = new Intent(MainActivity.this, HomeActivity.class);
         startActivity(homePage);
-    }
-
-
-    private void goHomeActivity() {
-        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
     }
 
 
