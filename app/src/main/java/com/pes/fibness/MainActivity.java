@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     emailAddress.setError("Enter a valid email.");
                 else checkUser();
 
-                //homeActivity();
+                ///homeActivity();
             }
         });
 
