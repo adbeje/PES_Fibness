@@ -24,7 +24,8 @@
     <string name="register">Register</string>
     <string name="already_a_member_login_here">Already a member? Login Here</string>
 
-    <string name="facebook_app_id">140550577384866</string> <string name="fb_login_protocol_scheme">fb140550577384866</string>
+    <string name="facebook_app_id">140550577384866</string>
+    <string name="fb_login_protocol_scheme">fb140550577384866</string>
     <string name="cancel_login">The operation was canceled</string>
     <string name="error_login">An error occurred on entering</string>
 
