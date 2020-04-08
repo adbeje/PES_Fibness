@@ -1,21 +1,15 @@
 package com.pes.fibness;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.pes.fibness.ui.perfil.PerfilFragment;
+import com.pes.fibness.ui.perfil.EditProfileActivity;
 
 import static android.view.View.*;
 
@@ -32,8 +26,8 @@ public class SettingsActivity extends AppCompatActivity {
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
+                finish();
                 startActivity(intent);
 
             }
@@ -46,6 +40,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                finish();
                 startActivity(intent);
             }
         });

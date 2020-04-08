@@ -12,14 +12,14 @@ import android.widget.Toast;
 import com.pes.fibness.ui.dietas.DietasFragment;
 import com.pes.fibness.ui.entrenamientos.EntrenamientosFragment;
 import com.pes.fibness.ui.eventos.EventosFragment;
-import com.pes.fibness.ui.perfil.PerfilFragment;
+import com.pes.fibness.ui.perfil.ProfileFragment;
 import com.pes.fibness.ui.rutas.RutasFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
 public class HomeActivity extends AppCompatActivity {
 
-    Fragment perfil = new PerfilFragment();
+    Fragment perfil = new ProfileFragment();
     Fragment entrenamientos = new EntrenamientosFragment();
     Fragment rutas = new RutasFragment();
     Fragment dietas = new DietasFragment();

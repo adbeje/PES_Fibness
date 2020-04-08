@@ -28,5 +28,24 @@
     <string name="fb_login_protocol_scheme">fb140550577384866</string>
     <string name="cancel_login">The operation was canceled</string>
     <string name="error_login">An error occurred on entering</string>
+    <string name="nombre_apellidos">Nombre y apellidos</string>
+    <string name="male">male</string>
+    <string name="female">female</string>
+    <string name="im_user">imagen del usuario</string>
+    <string name="guardar">guardar</string>
+    <string name="descripcion_user">Descripción</string>
+    <string name="fecha_nacimiento">Selecciona fecha de nacimiento</string>
+    <string name="gender">Gender</string>
+    <string name="back_button">Back button</string>
+
+    <!-- Strings used para obtener hora / fecha -->
+    <string name="formato_fecha">dd/mm/yyyy</string>
+    <string name="formato_hora">hh:mm</string>
+
+    <string name="birth_date">Birth date</string>
+    <string name="country">Country</string>
+    <string name="description">Description</string>
+    <string name="user_name">User name</string>
+    <string name="profile_picture">Profile picture</string>
 
 </resources>

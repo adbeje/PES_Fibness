@@ -6,10 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".SettingsActivity">
 
+
+    <!--PROFILE PART -->
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="wrap_content"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023">
 
         <ImageView
             android:id="@+id/backImgButton"
@@ -28,7 +36,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:text="Settings"
-            android:textColor="@color/app_bkg_color"
+            android:textColor="@color/c_let_light_bkg"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -41,13 +49,11 @@
             android:clickable="true"
             android:paddingRight="10dp"
             android:text="Done"
-            android:textColor="#dd2f75"
+            android:textColor="@color/c_icon_bkg_unsel"
             android:textSize="20sp"
             android:textStyle="bold" />
     </RelativeLayout>
 
-
-    <!--PROFILE PART -->
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
@@ -55,16 +61,16 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="10dp"
         android:text="Profile"
-        android:textColor="@color/app_bkg_color"
+        android:textColor="@color/c_let_light_bkg"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView1"
         android:layout_width="375dp"
         android:layout_height="80dp"
-        android:id="@+id/cardView1"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
@@ -76,6 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <Switch
                 android:id="@+id/switchAge"
                 android:layout_width="355dp"
@@ -83,6 +90,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 android:text="Don't show my age" />
+
             <Switch
                 android:id="@+id/switchDistance"
                 android:layout_width="355dp"
@@ -95,7 +103,6 @@
     </androidx.cardview.widget.CardView>
 
 
-
     <!--EMAIL PART -->
     <TextView
         android:id="@+id/textView7"
@@ -104,16 +111,16 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="10dp"
         android:text="Email"
-        android:textColor="@color/app_bkg_color"
+        android:textColor="@color/c_let_light_bkg"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView1" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
         android:layout_width="375dp"
         android:layout_height="40dp"
-        android:id="@+id/cardView2"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
@@ -125,6 +132,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <Switch
                 android:id="@+id/switchInvitation"
                 android:layout_width="355dp"
@@ -136,7 +144,6 @@
     </androidx.cardview.widget.CardView>
 
 
-
     <!--NOTIFICATION PART -->
     <TextView
         android:id="@+id/textView8"
@@ -145,26 +152,28 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="10dp"
         android:text="Notifications"
-        android:textColor="@color/app_bkg_color"
+        android:textColor="@color/c_let_light_bkg"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView3"
         android:layout_width="375dp"
         android:layout_height="105dp"
-        android:id="@+id/cardView3"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <Switch
                 android:id="@+id/switchLike"
                 android:layout_width="355dp"
@@ -172,6 +181,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 android:text="New Like" />
+
             <Switch
                 android:id="@+id/switchFollower"
                 android:layout_width="355dp"
@@ -180,6 +190,7 @@
                 android:layout_marginTop="5dp"
                 android:text="New Follower"
                 app:layout_constraintTop_toBottomOf="@+id/switchLike" />
+
             <Switch
                 android:id="@+id/switchMessage"
                 android:layout_width="355dp"
@@ -199,26 +210,28 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="10dp"
         android:text="Contact"
-        android:textColor="@color/app_bkg_color"
+        android:textColor="@color/c_let_light_bkg"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView3" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView4"
         android:layout_width="375dp"
         android:layout_height="35dp"
-        android:id="@+id/cardView4"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/textContact"
                 android:layout_width="355dp"
@@ -237,12 +250,12 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="Log Out"
-        android:textColor="#dd2f75"
+        android:textColor="@color/c_icon_bkg_unsel"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/deleteAccount"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/deleteAccount"
+        app:layout_constraintStart_toStartOf="@+id/deleteAccount" />
 
     <TextView
         android:id="@+id/deleteAccount"
@@ -250,7 +263,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="60dp"
         android:text="Delete Account"
-        android:textColor="#dd2f75"
+        android:textColor="@color/c_icon_bkg_unsel"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

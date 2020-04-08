@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorAccent">#FF0000</color>
 
     <!--definicion de colores-->
     <color name="dark_blue">#3023AE</color>
@@ -27,6 +27,13 @@
     <color name="folloersBg">#65dce5</color>
     <color name="followingBg">#498eff</color>
     <color name="grey">#e5e5e5</color>
+
+    <!--colores para la app-->
+    <color name="c_bkg">#163947</color>
+    <color name="c_icon_bkg_sel">#4ABFED</color>
+    <color name="c_icon_bkg_unsel">#0B89BA</color>
+    <color name="c_let_dark_bkg">#E6EDF0</color>
+    <color name="c_let_light_bkg">#44626E</color>
 
 
 </resources>

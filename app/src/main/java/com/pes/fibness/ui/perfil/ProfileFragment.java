@@ -1,5 +1,6 @@
 package com.pes.fibness.ui.perfil;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,7 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.pes.fibness.R;
 import com.pes.fibness.SettingsActivity;
 
-public class PerfilFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
     private PerfilViewModel perfilViewModel;
 
@@ -30,6 +31,16 @@ public class PerfilFragment extends Fragment {
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), SettingsActivity.class);
                 startActivity(i);
+
+            }
+        });
+
+        ImageView editButton = (ImageView) root.findViewById(R.id.editProfile);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                startActivity(intent);
 
             }
         });
