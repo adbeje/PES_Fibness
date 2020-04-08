@@ -117,6 +117,7 @@ public class ConnetionAPI {
                 System.out.println("Respuesta: "+ response);
                 try {
                     JSONObject obj = new JSONObject(response);
+                    System.out.println("-----------------------------------");
                     System.out.println("result: " + obj.get("result"));
                     Boolean b = (Boolean) obj.get("result");
                     if(b){

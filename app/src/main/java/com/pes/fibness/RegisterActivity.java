@@ -147,7 +147,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     //register an user in database
     private void insertUser() {
-        ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3000/user");
+        ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user");
         System.out.println("Hola");
         connetion.postUser(userName.getText().toString(), password.getText().toString(), emailAddress.getText().toString());
     }

@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 
+
                 final String compruebaEmail = emailAddress.getEditableText().toString().trim();
                 Boolean check = true; //get password from DB and check
                 final String regex = "(?:[^<>()\\[\\].,;:\\s@\"]+(?:\\.[^<>()\\[\\].,;:\\s@\"]+)*|\"[^\\n\"]+\")@(?:[^<>()\\[\\].,;:\\s@\"]+\\.)+[^<>()\\[\\]\\.,;:\\s@\"]{2,63}";
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                     emailAddress.setError("Enter a valid email.");
                 else checkUser();
 
-                ///homeActivity();
+                //homeActivity();
             }
         });
 
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
     //validate user
     private void checkUser() {
-        ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3000/user/validate");
+        ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/validate");
         connetion.validateUser(emailAddress.getText().toString(), password.getText().toString());
     }
 

@@ -73,7 +73,7 @@ public class SettingsActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         System.out.println("entro para borrar");
                         User u = User.getInstances();
-                        ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3000/user/"+u.getId());
+                        ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/"+u.getId());
                         connetion.deleteUser();
                     }
                 })

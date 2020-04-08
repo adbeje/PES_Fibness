@@ -45,4 +45,6 @@ public class User {
     public Integer getId() { return  this.user_id; }
     public void setId(Integer id) { this.user_id = id; }
 
+
+
 }
