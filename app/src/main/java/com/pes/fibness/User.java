@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class User {
 
+    private Integer user_id;
     private String email;
     private String name;
     private Date registerDate;
@@ -20,7 +21,7 @@ public class User {
     /*we are applying singleton because we will have an instance for each aplication user*/
     private static User instance = null;
     private User(){
-        email = ""; name = ""; registerDate = new Date(); province = ""; profileType = ""; address = "";
+        email = ""; name = ""; province = ""; profileType = ""; address = "";
         for(int i = 0; i < 24; i++){
             TrainingList.add("Training " + (i+1));
         }
@@ -41,8 +42,7 @@ public class User {
         return TrainingList;
     }
 
-    /*we will need setter and getter*/
-
-
+    public Integer getId() { return  this.user_id; }
+    public void setId(Integer id) { this.user_id = id; }
 
 }

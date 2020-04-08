@@ -14,6 +14,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -63,7 +66,7 @@ public class ConnetionAPI {
         request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println("Response: " + response);
+                System.out.println("Resgister response: " + response);
                 if(response.equals("Created"))
                     homeActivity();
                 else Toast.makeText(context, "Response error", Toast.LENGTH_SHORT).show();
@@ -110,14 +113,30 @@ public class ConnetionAPI {
         request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if(response.equals("true"))
-                    homeActivity();
-                else Toast.makeText(getApplicationContext(), "Invalid Login Credentials", Toast.LENGTH_SHORT).show();
+                //hay que ver como me llega los datos o si tengo que cambiar en JSONRequest
+                System.out.println("Respuesta: "+ response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    System.out.println("result: " + obj.get("result"));
+                    Boolean b = (Boolean) obj.get("result");
+                    if(b){
+                        User u = User.getInstances();
+                        Integer id = (Integer) obj.get("id");
+                        u.setId(id);
+                        System.out.println("user_id: "+ u.getId());
+                        homeActivity();
+                    }
+                    else Toast.makeText(getApplicationContext(), "Invalid Login Credentials", Toast.LENGTH_SHORT).show();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Response error", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
             }
         }) {
             //post data to server
@@ -140,6 +159,36 @@ public class ConnetionAPI {
         enqueue();
 
     }
+
+    public void deleteUser(){
+
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Respuesta: "+ response);
+                if(response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your account has been deleted", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(context, MainActivity.class);
+                    context.startActivity(i);
+                }
+                else Toast.makeText(getApplicationContext(), "Your account has not been deleted", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+
+
+
+
+    }
+
+
 
 
 
