@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 
@@ -20,27 +21,64 @@ import static android.view.View.*;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private Switch switchAge, switchDistance, switchInvitation, switchLike, switchFollower,switchMessage;
+    private TextView textContact, logOut, done, changeLanguage, delete;
+    private ImageView backButton;
+    private boolean switchOn1, switchOn2, switchOn3, switchOn4, switchOn5, switchOn6;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
         /*press back button to back Fragment_perfil*/
-        ImageView backButton = (ImageView) findViewById(R.id.backImgButton);
+        backButton = (ImageView) findViewById(R.id.backImgButton);
+        switchAge = findViewById(R.id.switchAge);
+        switchDistance = findViewById(R.id.switchDistance);
+        switchInvitation = findViewById(R.id.switchInvitation);
+        switchLike = findViewById(R.id.switchLike);
+        switchFollower = findViewById(R.id.switchFollower);
+        switchMessage = findViewById(R.id.switchMessage);
+        textContact = findViewById(R.id.textContact);
+        done = findViewById(R.id.done);
+        logOut = findViewById(R.id.logOut);
+        changeLanguage = findViewById(R.id.changeLanguage);
+        delete = findViewById(R.id.deleteAccount);
+
+        /*to go back*/
         backButton.setOnClickListener(new OnClickListener() {
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
                 startActivity(intent);
 
             }
         });
 
+        /*save settings data*/
+        done.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveData();
+                Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        /*change language*/
+        changeLanguage.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //showChangeLanguageDialog();
+            }
+        });
+
 
         /*press log out to close session*/
-        TextView logOut = findViewById(R.id.logOut);
         logOut.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,7 +88,6 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         /*press to delete account*/
-        TextView delete = findViewById(R.id.deleteAccount);
         delete.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,8 +96,9 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
 
+    }
 
-
+    private void saveData() {
     }
 
     private void showWarningMessage() {
