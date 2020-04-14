@@ -205,6 +205,16 @@ public class ConnetionAPI {
     }
 
 
+    /*para settings*/
+    public void getUserSettings(){
+        //cuando este la ruta de api definida se añadira el codigo
+    }
+    public void postUserSettings(boolean[] settings){
+        //cuando este la ruta de api definida se añadira el codigo
+
+    }
+
+
 
 
 

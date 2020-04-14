@@ -28,7 +28,7 @@ import static android.view.View.*;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private Switch switchAge, switchDistance, switchInvitation, switchLike, switchFollower,switchMessage;
+    private Switch switchAge, switchDistance, switchInvitation, switchFollower,switchMessage;
     private TextView textContact, logOut, done, changeLanguage, delete;
     private ImageView backButton;
     private boolean switchOn1, switchOn2, switchOn3, switchOn4, switchOn5, switchOn6;
@@ -38,7 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadLocale();
+        //loadLocale();
         setContentView(R.layout.activity_settings);
 
 
@@ -47,7 +47,6 @@ public class SettingsActivity extends AppCompatActivity {
         switchAge = findViewById(R.id.switchAge);
         switchDistance = findViewById(R.id.switchDistance);
         switchInvitation = findViewById(R.id.switchInvitation);
-        switchLike = findViewById(R.id.switchLike);
         switchFollower = findViewById(R.id.switchFollower);
         switchMessage = findViewById(R.id.switchMessage);
         textContact = findViewById(R.id.textContact);
@@ -113,10 +112,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        loadData();
-        updateView();
-        */
+        loadSetting();
 
 
     }
@@ -132,9 +128,10 @@ public class SettingsActivity extends AppCompatActivity {
         i.putExtra(Intent.EXTRA_TEXT, "");
 
         i.setType("message/rfc822");
-        startActivity(Intent.createChooser(i, "Choose an email"));
+        startActivity(Intent.createChooser(i, "Send us an email"));
 
     }
+
 
     /*NO FUNCIONA CAMBIAR IDIOMA*/
     private void showChangeLanguageDialog() {
@@ -185,47 +182,26 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     private void saveSettingsData() {
-        //falta por ver
+        boolean[] s = {switchAge.isChecked(), switchDistance.isChecked(), switchInvitation.isChecked(), switchFollower.isChecked(),switchMessage.isChecked()};
+        User u = User.getInstances();
+        u.setSettings(s);
+        String route = "";
+        ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), route);
+        connetion.postUserSettings(s);
     }
 
-    /*code to test setting save
-    method that store settings preferences
-    private void saveData() {
-        this class save the preferences
-        SharedPreferences preferences = getSharedPreferences("settings", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
 
-        editor.putBoolean("switchAge", switchAge.isChecked());
-        editor.putBoolean("switchDistance", switchDistance.isChecked());
-        editor.putBoolean("switchInvitation", switchInvitation.isChecked());
-        editor.putBoolean("switchLike", switchLike.isChecked());
-        editor.putBoolean("switchFollower", switchFollower.isChecked());
-        editor.putBoolean("switchMessage", switchMessage.isChecked());
 
-        editor.apply();
-        Toast.makeText(this, "Data saved", Toast.LENGTH_SHORT).show();
+    private void loadSetting(){
+        boolean[] s = User.getInstances().getSettings();
+        switchAge.setChecked(s[0]);
+        switchDistance.setChecked(s[1]);
+        switchInvitation.setChecked(s[2]);
+        switchFollower.setChecked(s[3]);
+        switchMessage.setChecked(s[4]);
     }
 
-    Load settings data that we have saved in preferences
-    private void loadData(){
-        SharedPreferences preferences = getSharedPreferences("settings", MODE_PRIVATE);
-        switchOn1 = preferences.getBoolean("switchAge", false);
-        switchOn2 = preferences.getBoolean("switchDistance", false);
-        switchOn3 = preferences.getBoolean("switchInvitation", false);
-        switchOn4 = preferences.getBoolean("switchLike", false);
-        switchOn5 = preferences.getBoolean("switchFollower", false);
-        switchOn6 = preferences.getBoolean("switchMessage", false);
-    }
 
-    private void updateView(){
-        switchAge.setChecked(switchOn1);
-        switchDistance.setChecked(switchOn2);
-        switchInvitation.setChecked(switchOn3);
-        switchLike.setChecked(switchOn4);
-        switchFollower.setChecked(switchOn5);
-        switchMessage.setChecked(switchOn6);
-    }
-    */
 
     private void showWarningMessage() {
         AlertDialog.Builder message = new AlertDialog.Builder(this);

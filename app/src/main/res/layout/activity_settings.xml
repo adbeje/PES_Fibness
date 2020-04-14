@@ -171,7 +171,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView3"
             android:layout_width="375dp"
-            android:layout_height="105dp"
+            android:layout_height="70dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
@@ -183,14 +183,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
-                <Switch
-                    android:id="@+id/switchLike"
-                    android:layout_width="355dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:text="New Like" />
 
                 <Switch
                     android:id="@+id/switchFollower"
