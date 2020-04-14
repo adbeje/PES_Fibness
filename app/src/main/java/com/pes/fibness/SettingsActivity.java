@@ -1,5 +1,6 @@
 package com.pes.fibness;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -8,14 +9,20 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+
+import java.util.Locale;
 
 import static android.view.View.*;
 
@@ -31,7 +38,9 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadLocale();
         setContentView(R.layout.activity_settings);
+
 
         /*press back button to back Fragment_perfil*/
         backButton = (ImageView) findViewById(R.id.backImgButton);
@@ -62,18 +71,27 @@ public class SettingsActivity extends AppCompatActivity {
         done.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveData();
+                saveSettingsData();
                 Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
                 startActivity(intent);
             }
         });
 
 
+        textContact.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendMail();
+            }
+        });
+
+
+
         /*change language*/
         changeLanguage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                //showChangeLanguageDialog();
+                showChangeLanguageDialog();
             }
         });
 
@@ -95,11 +113,119 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        /*
+        loadData();
+        updateView();
+        */
+
 
     }
 
+
+
+    /*send email to fibness*/
+    private void sendMail() {
+        String fibnessEmail = "fibnessinc@gmail.com";
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.putExtra(Intent.EXTRA_EMAIL, fibnessEmail);
+        i.putExtra(Intent.EXTRA_SUBJECT, "");
+        i.putExtra(Intent.EXTRA_TEXT, "");
+
+        i.setType("message/rfc822");
+        startActivity(Intent.createChooser(i, "Choose an email"));
+
+    }
+
+    /*NO FUNCIONA CAMBIAR IDIOMA*/
+    private void showChangeLanguageDialog() {
+        final String[] listLanguages = {"English", "Spanish"};
+        AlertDialog.Builder message = new AlertDialog.Builder(this);
+        message.setTitle("Choose Language");
+        message.setSingleChoiceItems(listLanguages, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(i == 0){
+                    setLocale("en");
+                    recreate();
+                }
+                else if(i == 1){
+                    setLocale("es");
+                    recreate();
+                }
+
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = message.create();
+        alertDialog.show();
+    }
+
+
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());;
+
+        SharedPreferences.Editor editor = getSharedPreferences("Settings", MODE_PRIVATE).edit();
+        editor.putString("myLang", lang);
+        editor.apply();
+
+    }
+
+    private void loadLocale(){
+        SharedPreferences preferences = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        String lang = preferences.getString("myLang", "");
+        setLocale(lang);
+    }
+
+
+
+
+    private void saveSettingsData() {
+        //falta por ver
+    }
+
+    /*code to test setting save
+    method that store settings preferences
     private void saveData() {
+        this class save the preferences
+        SharedPreferences preferences = getSharedPreferences("settings", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.putBoolean("switchAge", switchAge.isChecked());
+        editor.putBoolean("switchDistance", switchDistance.isChecked());
+        editor.putBoolean("switchInvitation", switchInvitation.isChecked());
+        editor.putBoolean("switchLike", switchLike.isChecked());
+        editor.putBoolean("switchFollower", switchFollower.isChecked());
+        editor.putBoolean("switchMessage", switchMessage.isChecked());
+
+        editor.apply();
+        Toast.makeText(this, "Data saved", Toast.LENGTH_SHORT).show();
     }
+
+    Load settings data that we have saved in preferences
+    private void loadData(){
+        SharedPreferences preferences = getSharedPreferences("settings", MODE_PRIVATE);
+        switchOn1 = preferences.getBoolean("switchAge", false);
+        switchOn2 = preferences.getBoolean("switchDistance", false);
+        switchOn3 = preferences.getBoolean("switchInvitation", false);
+        switchOn4 = preferences.getBoolean("switchLike", false);
+        switchOn5 = preferences.getBoolean("switchFollower", false);
+        switchOn6 = preferences.getBoolean("switchMessage", false);
+    }
+
+    private void updateView(){
+        switchAge.setChecked(switchOn1);
+        switchDistance.setChecked(switchOn2);
+        switchInvitation.setChecked(switchOn3);
+        switchLike.setChecked(switchOn4);
+        switchFollower.setChecked(switchOn5);
+        switchMessage.setChecked(switchOn6);
+    }
+    */
 
     private void showWarningMessage() {
         AlertDialog.Builder message = new AlertDialog.Builder(this);
