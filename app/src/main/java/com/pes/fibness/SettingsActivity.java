@@ -1,5 +1,6 @@
 package com.pes.fibness;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -8,39 +9,93 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+
+import java.util.Locale;
 
 import static android.view.View.*;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private Switch switchAge, switchDistance, switchInvitation, switchFollower,switchMessage;
+    private TextView textContact, logOut, done, changeLanguage, delete;
+    private ImageView backButton;
+    private boolean switchOn1, switchOn2, switchOn3, switchOn4, switchOn5, switchOn6;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //loadLocale();
         setContentView(R.layout.activity_settings);
 
+
         /*press back button to back Fragment_perfil*/
-        ImageView backButton = (ImageView) findViewById(R.id.backImgButton);
+        backButton = (ImageView) findViewById(R.id.backImgButton);
+        switchAge = findViewById(R.id.switchAge);
+        switchDistance = findViewById(R.id.switchDistance);
+        switchInvitation = findViewById(R.id.switchInvitation);
+        switchFollower = findViewById(R.id.switchFollower);
+        switchMessage = findViewById(R.id.switchMessage);
+        textContact = findViewById(R.id.textContact);
+        done = findViewById(R.id.done);
+        logOut = findViewById(R.id.logOut);
+        changeLanguage = findViewById(R.id.changeLanguage);
+        delete = findViewById(R.id.deleteAccount);
+
+        /*to go back*/
         backButton.setOnClickListener(new OnClickListener() {
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
                 startActivity(intent);
 
             }
         });
 
+        /*save settings data*/
+        done.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveSettingsData();
+                Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        textContact.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendMail();
+            }
+        });
+
+
+
+        /*change language*/
+        changeLanguage.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showChangeLanguageDialog();
+            }
+        });
+
 
         /*press log out to close session*/
-        TextView logOut = findViewById(R.id.logOut);
         logOut.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,7 +105,6 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         /*press to delete account*/
-        TextView delete = findViewById(R.id.deleteAccount);
         delete.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,10 +112,96 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-
+        loadSetting();
 
 
     }
+
+
+
+    /*send email to fibness*/
+    private void sendMail() {
+        String fibnessEmail = "fibnessinc@gmail.com";
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.putExtra(Intent.EXTRA_EMAIL, fibnessEmail);
+        i.putExtra(Intent.EXTRA_SUBJECT, "");
+        i.putExtra(Intent.EXTRA_TEXT, "");
+
+        i.setType("message/rfc822");
+        startActivity(Intent.createChooser(i, "Send us an email"));
+
+    }
+
+
+    /*NO FUNCIONA CAMBIAR IDIOMA*/
+    private void showChangeLanguageDialog() {
+        final String[] listLanguages = {"English", "Spanish"};
+        AlertDialog.Builder message = new AlertDialog.Builder(this);
+        message.setTitle("Choose Language");
+        message.setSingleChoiceItems(listLanguages, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(i == 0){
+                    setLocale("en");
+                    recreate();
+                }
+                else if(i == 1){
+                    setLocale("es");
+                    recreate();
+                }
+
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = message.create();
+        alertDialog.show();
+    }
+
+
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());;
+
+        SharedPreferences.Editor editor = getSharedPreferences("Settings", MODE_PRIVATE).edit();
+        editor.putString("myLang", lang);
+        editor.apply();
+
+    }
+
+    private void loadLocale(){
+        SharedPreferences preferences = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        String lang = preferences.getString("myLang", "");
+        setLocale(lang);
+    }
+
+
+
+
+    private void saveSettingsData() {
+        boolean[] s = {switchAge.isChecked(), switchDistance.isChecked(), switchInvitation.isChecked(), switchFollower.isChecked(),switchMessage.isChecked()};
+        User u = User.getInstances();
+        u.setSettings(s);
+        String route = "";
+        ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), route);
+        connetion.postUserSettings(s);
+    }
+
+
+
+    private void loadSetting(){
+        boolean[] s = User.getInstances().getSettings();
+        switchAge.setChecked(s[0]);
+        switchDistance.setChecked(s[1]);
+        switchInvitation.setChecked(s[2]);
+        switchFollower.setChecked(s[3]);
+        switchMessage.setChecked(s[4]);
+    }
+
+
 
     private void showWarningMessage() {
         AlertDialog.Builder message = new AlertDialog.Builder(this);

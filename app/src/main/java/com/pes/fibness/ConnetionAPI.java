@@ -66,10 +66,25 @@ public class ConnetionAPI {
         request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println("Resgister response: " + response);
-                if(response.equals("Created"))
-                    homeActivity();
-                else Toast.makeText(context, "Response error", Toast.LENGTH_SHORT).show();
+                System.out.println("Resgister user response: " + response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    System.out.println("-----------------------------------");
+                    System.out.println("result: " + obj.get("created"));
+                    Boolean b = (Boolean) obj.get("created");
+                    if(b){
+                        User u = User.getInstances();
+                        Integer id = (Integer) obj.get("id");
+                        u.setId(id);
+                        System.out.println("user_id: "+ u.getId());
+                        homeActivity();
+                    }
+                    else Toast.makeText(getApplicationContext(), "Register response error", Toast.LENGTH_SHORT).show();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -186,6 +201,16 @@ public class ConnetionAPI {
 
 
 
+
+    }
+
+
+    /*para settings*/
+    public void getUserSettings(){
+        //cuando este la ruta de api definida se añadira el codigo
+    }
+    public void postUserSettings(boolean[] settings){
+        //cuando este la ruta de api definida se añadira el codigo
 
     }
 

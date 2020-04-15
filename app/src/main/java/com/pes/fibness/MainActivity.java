@@ -78,12 +78,12 @@ public class MainActivity extends AppCompatActivity {
                 final String compruebaEmail = emailAddress.getEditableText().toString().trim();
                 Boolean check = true; //get password from DB and check
                 final String regex = "(?:[^<>()\\[\\].,;:\\s@\"]+(?:\\.[^<>()\\[\\].,;:\\s@\"]+)*|\"[^\\n\"]+\")@(?:[^<>()\\[\\].,;:\\s@\"]+\\.)+[^<>()\\[\\]\\.,;:\\s@\"]{2,63}";
-
+                /*
                 if (!compruebaEmail.matches(regex))
                     emailAddress.setError("Enter a valid email.");
                 else checkUser();
-
-                //homeActivity();
+                */
+                homeActivity();
             }
         });
 
