@@ -40,4 +40,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    /*for use passay*/
+    implementation 'com.github.MarcinOrlowski:passay-android:1.2.0'
+    /*libraries added for send email*/
+    compile files('libs/activation.jar')
+    compile files('libs/additional.jar')
+    compile files('libs/mail.jar')
+
+
 }
