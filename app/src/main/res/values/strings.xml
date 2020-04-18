@@ -47,5 +47,8 @@
     <string name="description">Description</string>
     <string name="user_name">User name</string>
     <string name="profile_picture">Profile picture</string>
+    <string name="Resetpassword">Reset Password</string>
+    <string name="newPassword">New Password</string>
+    <string name="reset">Reset</string>
 
 </resources>

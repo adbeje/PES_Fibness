@@ -1,36 +1,26 @@
 package com.pes.fibness;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-
-import java.io.UnsupportedEncodingException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private long backPressedTime; //time will be in ms of the click
     private Toast backToast;
+    private boolean forgetEntry = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,18 +65,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 
-
-                final String compruebaEmail = emailAddress.getEditableText().toString().trim();
-                Boolean check = true; //get password from DB and check
-                final String regex = "(?:[^<>()\\[\\].,;:\\s@\"]+(?:\\.[^<>()\\[\\].,;:\\s@\"]+)*|\"[^\\n\"]+\")@(?:[^<>()\\[\\].,;:\\s@\"]+\\.)+[^<>()\\[\\]\\.,;:\\s@\"]{2,63}";
-
-                if (!compruebaEmail.matches(regex))
+                boolean b = verifyEmail(emailAddress.getEditableText().toString().trim());
+                /*
+                if (!b)
                     emailAddress.setError("Enter a valid email.");
                 else checkUser();
-
-                //homeActivity();
+                */
+                homeActivity();
             }
         });
+
+
+        /*send an email to user with random code and verify the code to change password*/
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //coger email del usuario, api comprobar si el usuario existe en la base de datos, si existe se envia email con la nueva contrasena y decir a la db que hage update de la contrasena
+                //se envia el codigo de verificacion NO NUEVO CONTRASENA
+                /*Pre: email has to be gmail*/
+                showRecoverPasswordDialog();
+
+            }
+        });
+
+
+
 
         // Callback registration
         loginFb.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -123,6 +127,119 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void showRecoverPasswordDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Get a verification code");
+
+        LinearLayout linearLayout = new LinearLayout(this);
+        final EditText emailEd = new EditText(this);
+        emailEd.setHint("Email address");
+        emailEd.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        linearLayout.addView(emailEd);
+        linearLayout.setPadding(10,10,10,10);
+        builder.setView(linearLayout);
+
+        builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String email = emailEd.getText().toString().trim();
+                boolean b = verifyEmail(email);
+                if (!b)
+                    Toast.makeText(getApplicationContext(), "Enter a valid gmail.", Toast.LENGTH_LONG).show();
+                else
+                    sendEmail(email);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.cancel();
+            }
+        });
+
+        builder.create().show();
+
+    }
+
+
+    private boolean verifyEmail(String checkEmail) {
+        final String regex = "(?:[^<>()\\[\\].,;:\\s@\"]+(?:\\.[^<>()\\[\\].,;:\\s@\"]+)*|\"[^\\n\"]+\")@(?:[^<>()\\[\\].,;:\\s@\"]+\\.)+[^<>()\\[\\]\\.,;:\\s@\"]{2,63}";
+        return checkEmail.matches(regex);
+    }
+
+
+    private void sendEmail(final String email) {
+
+        final String verifactionCode = Password.generateCode();
+        User.getInstances().setRecoveryCode(verifactionCode);
+
+        final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
+        dialog.setTitle("Sending Email");
+        dialog.setMessage("Please wait");
+        dialog.show();
+        Thread sender = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    GmailSender sender = new GmailSender("fibnessinc@gmail.com", "");
+                    sender.sendMail("Reset your password",
+                            "Verification code is: " + verifactionCode,
+                            "fibnessinc@gmail.com",
+                            email);
+                    System.out.println("Email enviado"); //activar email  https://www.google.com/settings/security/lesssecureapps
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    Log.e("mylog", "Error: " + e.getMessage());
+                }
+            }
+        });
+        sender.start();
+
+        //verify code
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter the code");
+
+        LinearLayout linearLayout = new LinearLayout(this);
+        final EditText code = new EditText(this);
+        code.setHint("Verification code");
+        code.setInputType(InputType.TYPE_CLASS_TEXT);
+        linearLayout.addView(code);
+        linearLayout.setPadding(10,10,10,10);
+        builder.setView(linearLayout);
+
+        builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String s = code.getText().toString().trim();
+                System.out.println("codigo introducido: "+ s);
+                System.out.println("codigo guardado: " + User.getInstances().getRecoveryCode());
+
+                if (s.equals(User.getInstances().getRecoveryCode())) {
+                    Intent resetPasswordPage = new Intent(MainActivity.this, ResetPasswordActivity.class);
+                    resetPasswordPage.putExtra("email", email);
+                    startActivity(resetPasswordPage);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "The code is incorrect.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.cancel();
+            }
+        });
+
+        builder.create().show();
+
+
+    }
+
 
 
     //validate user
