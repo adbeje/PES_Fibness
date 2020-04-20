@@ -50,5 +50,10 @@
     <string name="Resetpassword">Reset Password</string>
     <string name="newPassword">New Password</string>
     <string name="reset">Reset</string>
+    <string name="aboutMe">About me</string>
+    <string name="weeklyProgress">Weekly progress</string>
+    <string name="viewProfile">View Profile</string>
+    <string name="achievements">Achievements</string>
+    <string name="editProfile">Edit Profile</string>
 
 </resources>
