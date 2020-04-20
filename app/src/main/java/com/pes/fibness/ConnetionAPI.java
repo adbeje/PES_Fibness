@@ -1,7 +1,5 @@
 package com.pes.fibness;
 
-import android.app.Activity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
@@ -186,6 +184,7 @@ public class ConnetionAPI {
                 if(response.equals("OK")){
                     Toast.makeText(getApplicationContext(), "Your account has been deleted", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(context, MainActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
                 }
                 else Toast.makeText(getApplicationContext(), "Your account has not been deleted", Toast.LENGTH_SHORT).show();
@@ -229,6 +228,7 @@ public class ConnetionAPI {
     //to go HomePage
     private void homeActivity() {
         Intent homePage = new Intent(context, HomeActivity.class);
+        homePage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(homePage);
     }
 

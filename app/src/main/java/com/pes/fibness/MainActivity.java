@@ -66,12 +66,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 
                 boolean b = verifyEmail(emailAddress.getEditableText().toString().trim());
-                /*
+
                 if (!b)
                     emailAddress.setError("Enter a valid email.");
                 else checkUser();
-                */
-                homeActivity();
+
+                //homeActivity();
             }
         });
 
@@ -80,11 +80,8 @@ public class MainActivity extends AppCompatActivity {
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //coger email del usuario, api comprobar si el usuario existe en la base de datos, si existe se envia email con la nueva contrasena y decir a la db que hage update de la contrasena
-                //se envia el codigo de verificacion NO NUEVO CONTRASENA
-                /*Pre: email has to be gmail*/
+                /*Pre: email has to be belong google proveider*/
                 showRecoverPasswordDialog();
-
             }
         });
 
@@ -184,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    GmailSender sender = new GmailSender("fibnessinc@gmail.com", "");
+                    GmailSender sender = new GmailSender("fibnessinc@gmail.com", "Pes_asw_20");
                     sender.sendMail("Reset your password",
                             "Verification code is: " + verifactionCode,
                             "fibnessinc@gmail.com",
