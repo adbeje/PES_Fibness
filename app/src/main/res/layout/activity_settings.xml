@@ -6,12 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".SettingsActivity">
 
-
-    <!--PROFILE PART -->
-
-
-    <!--CLOSE SESSION PART -->
-
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="wrap_content"
