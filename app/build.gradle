@@ -47,6 +47,5 @@ dependencies {
     compile files('libs/additional.jar')
     compile files('libs/mail.jar')
 
-    /*data visualization char --> mpandroidchart*/
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
 }

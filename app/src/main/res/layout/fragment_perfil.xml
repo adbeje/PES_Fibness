@@ -144,8 +144,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="50dp"
-            android:text="@string/editProfile"
-            android:textAlignment="center"
+            android:text="Edit Profile"
             android:textColor="#ffffff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editProfile" />
@@ -168,8 +167,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="43dp"
-            android:text="@string/achievements"
-            android:textAlignment="center"
+            android:text="Edit Activities"
             android:textColor="#ffffff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editActivities" />
@@ -196,7 +194,7 @@
             app:layout_constraintTop_toBottomOf="@+id/setting" />
 
         <ImageView
-            android:id="@+id/viewProfile"
+            android:id="@+id/imageView5"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="60dp"
@@ -213,10 +211,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
             android:layout_marginTop="15dp"
-            android:text="@string/viewProfile"
+            android:text="View Profile"
             android:textColor="#ffffff"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/viewProfile" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
