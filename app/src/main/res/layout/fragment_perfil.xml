@@ -151,7 +151,7 @@
             app:layout_constraintTop_toBottomOf="@+id/editProfile" />
 
         <ImageView
-            android:id="@+id/editActivities"
+            android:id="@+id/achievements"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="40dp"
@@ -172,7 +172,7 @@
             android:textAlignment="center"
             android:textColor="#ffffff"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editActivities" />
+            app:layout_constraintTop_toBottomOf="@+id/achievements" />
 
         <ImageView
             android:id="@+id/setting"

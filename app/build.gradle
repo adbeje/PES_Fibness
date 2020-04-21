@@ -49,4 +49,9 @@ dependencies {
 
     /*data visualization char --> mpandroidchart*/
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
+    /*for cercle/round imageview*/
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+
 }

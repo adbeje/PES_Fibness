@@ -35,5 +35,12 @@
     <color name="c_let_dark_bkg">#E6EDF0</color>
     <color name="c_let_light_bkg">#44626E</color>
 
+    <!-- colors for achievement page-->
+    <color name="color1">#424549</color>
+    <color name="color2">#7e455e</color>
+    <color name="color3">#796e25</color>
+    <color name="color4">#59717c</color>
+
+
 
 </resources>

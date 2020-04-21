@@ -55,5 +55,9 @@
     <string name="viewProfile">View Profile</string>
     <string name="achievements">Achievements</string>
     <string name="editProfile">Edit Profile</string>
+    <string name="titleAch">"Start the adventure "</string>
+    <string name="descriptionAch">For each completed workout is added a certain amount of meters to your progression. How many peaks can you crown?</string>
+    <string name="letGo">Here we go!</string>
+    <string name="share">Share</string>
 
 </resources>
