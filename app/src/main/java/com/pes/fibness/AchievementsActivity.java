@@ -1,6 +1,7 @@
 package com.pes.fibness;
 
 import android.animation.ArgbEvaluator;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +26,7 @@ public class AchievementsActivity extends AppCompatActivity {
     private Dialog dialog;
     private Button btnLetGo, btShare;
     private ImageView btnBack, closePopup;
+    private SeekBar seekBar;
 
     private ViewPager viewPager;
     private AdapterViewPager adapterViewPager;
@@ -42,6 +45,9 @@ public class AchievementsActivity extends AppCompatActivity {
         textNum = findViewById(R.id.textNum);
         btnBack = findViewById(R.id.backImgButton);
         btShare = findViewById(R.id.btn_share);
+        seekBar = (SeekBar) findViewById(R.id.seekBar);
+
+        //System.out.println("seekBar x value: " + seekBar.getX());
 
         achievements.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,22 +85,47 @@ public class AchievementsActivity extends AppCompatActivity {
         colors = colors_temp;
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @SuppressLint("WrongConstant")
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 System.out.println("slide number: " + position);
                 if(position < (adapterViewPager.getCount()-1) && position < (colors.length -1)){
                     viewPager.setBackgroundColor((Integer) argbEvaluator.evaluate(positionOffset, colors[position], colors[position+1]));
 
-                    if(position == 0) textNum.setText("01");
-                    else if(position == 1) textNum.setText("02");
-                    else if(position == 2) textNum.setText("03");
-                    else if(position == 3) textNum.setText("04");
+                    if(position == 0) {
+                        textNum.setText("01");
+                        btShare.setVisibility(View.VISIBLE);
+                    }
+                    else if(position == 1) {
+                        textNum.setText("02");
+                        btShare.setVisibility(View.VISIBLE);
+                        //seekBar.setVisibility(View.INVISIBLE); no se porque el seekbar es nulo
+                    }
+                    else if(position == 2){
+                        textNum.setText("03");
+                        //falta comprobar, esto es un ejemplo
+                        if (true)
+                            btShare.setVisibility(View.VISIBLE);
+                        else
+                            btShare.setVisibility(View.INVISIBLE);
+                    }
+                    else if(position == 3) {
+                        textNum.setText("04");
+                        if (true)
+                            btShare.setVisibility(View.VISIBLE);
+                        else
+                            btShare.setVisibility(View.INVISIBLE);
+                    }
                     System.out.println("text num: " + textNum.getText());
 
                 }
                 else {
                     viewPager.setBackgroundColor(colors[colors.length-1]);
                     textNum.setText("05"); //the last one
+                    if (true)
+                        btShare.setVisibility(View.VISIBLE);
+                    else
+                        btShare.setVisibility(View.INVISIBLE);
                 }
 
 
