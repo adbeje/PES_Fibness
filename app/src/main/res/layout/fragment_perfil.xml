@@ -26,11 +26,12 @@
                 android:src="@drawable/ic_account_frame" />
 
             <TextView
+                android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:text="Username"
+                android:text=""
                 android:textColor="@color/c_let_light_bkg"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -59,14 +60,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Followers"
+                        android:text="@string/followers"
                         android:textSize="20sp" />
 
                     <TextView
+                        android:id="@+id/nFollowers"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
-                        android:text="0"
+                        android:text=""
                         android:textColor="@color/app_bkg_color"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -82,14 +84,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Following"
+                        android:text="@string/following"
                         android:textSize="20sp" />
 
                     <TextView
+                        android:id="@+id/nFollowing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
-                        android:text="0"
+                        android:text=""
                         android:textColor="@color/app_bkg_color"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -105,14 +108,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Post"
+                        android:text="@string/post"
                         android:textSize="20sp" />
 
                     <TextView
+                        android:id="@+id/nPost"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
-                        android:text="0"
+                        android:text=""
                         android:textColor="@color/app_bkg_color"
                         android:textSize="20sp"
                         android:textStyle="bold" />

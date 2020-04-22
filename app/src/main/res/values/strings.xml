@@ -72,5 +72,8 @@
     <string name="changeLang">Change Language</string>
     <string name="logOut">Log Out</string>
     <string name="deleteAccount">Delete Account</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="post">Post</string>
 
 </resources>

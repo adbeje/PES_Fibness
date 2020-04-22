@@ -14,7 +14,7 @@
         <item name="windowNoTitle">true</item>
         <!--use in achievement-->
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@color/app_bkg_color</item>
         <item name="android:windowTranslucentStatus">false</item>
 
     </style>

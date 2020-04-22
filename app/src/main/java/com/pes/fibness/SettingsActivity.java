@@ -181,7 +181,7 @@ public class SettingsActivity extends AppCompatActivity {
         boolean[] s = {switchAge.isChecked(), switchDistance.isChecked(), switchInvitation.isChecked(), switchFollower.isChecked(),switchMessage.isChecked()};
         User u = User.getInstances();
         u.setSettings(s);
-        String route = "http://10.4.41.146:3001/user/"+u.getId()+"/userSettings";
+        String route = "http://10.4.41.146:3001/user/"+u.getId()+"/settings";
         ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), route);
         connetion.postUserSettings(s);
     }

@@ -75,6 +75,9 @@ public class ConnetionAPI {
                         Integer id = (Integer) obj.get("id");
                         u.setId(id);
                         System.out.println("user_id: "+ u.getId());
+                        /*nedd to load user information & setting*/
+                        getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
+                        getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
                         homeActivity();
                     }
                     else Toast.makeText(getApplicationContext(), "Register response error", Toast.LENGTH_SHORT).show();
@@ -139,8 +142,8 @@ public class ConnetionAPI {
                         u.setId(id);
                         System.out.println("user_id: "+ u.getId());
                         /*nedd to load user information & setting*/
-                        //getUserInfo("http://10.4.41.146:3001/user/+id+/userInfo");
-                        getUserSettings("http://10.4.41.146:3001/user/"+id+"/userSettings");
+                        getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
+                        getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
 
                         homeActivity();
                     }
@@ -275,12 +278,8 @@ public class ConnetionAPI {
                     System.out.println("-----------------------------------");
                     /*
                     Boolean b1 = (Boolean) obj.get("sedad");
-                    System.out.println("b1: " + obj.get("sedad"));
-                    System.out.println("b2: " + obj.get("sdistancia"));
-                    System.out.println("b3: " + obj.get("sinvitacion"));
-                    System.out.println("b4: " + obj.get("sseguidor"));
-                    System.out.println("b5: " + obj.get("nmensaje"));
-                     */
+                    System.out.println("b1: " + obj.get("sedad") + " b2: " + obj.get("sdistancia") + " b3: " + obj.get("sinvitacion") + " b4: " + obj.get("sseguidor") + " b5: " + obj.get("nmensaje"));
+                    */
                     boolean[] s = {(boolean) obj.get("sedad"), (boolean) obj.get("sdistancia"), (boolean) obj.get("sinvitacion"), (boolean) obj.get("sseguidor"), (boolean) obj.get("nmensaje")};
                     User.getInstances().setSettings(s);
                     System.out.println("my setting: " + User.getInstances().getSettings());
@@ -357,6 +356,47 @@ public class ConnetionAPI {
     }
 
     private void getUserInfo(String route) {
+
+        System.out.println("Dentro de User information");
+
+        request = new StringRequest(Request.Method.GET, route, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Respuesta: "+ response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    System.out.println("-----------------------------------");
+
+                    User.getInstances().setName((String) obj.get("nombre"));
+                    /*if(obj.get("rutaimagen") != null) load image*/
+                    User.getInstances().setnFollower((Integer) obj.get("nseguidores"));
+                    User.getInstances().setnFollowing((Integer) obj.get("nseguidos"));
+                    User.getInstances().setnPost((Integer) obj.get("npost"));
+
+                    System.out.println("1: " + User.getInstances().getName());
+                    System.out.println("2: " +  User.getInstances().getImage());
+                    System.out.println("3: " + User.getInstances().getnFollower());
+                    System.out.println("4: " + User.getInstances().getnFollowing());
+                    System.out.println("5: " + User.getInstances().getnPost());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+
+
+
+
     }
 
 

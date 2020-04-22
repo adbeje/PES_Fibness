@@ -9,22 +9,23 @@ import java.util.ArrayList;
 public class User {
 
     private Integer user_id;
-    private String email;
     private String name;
-    private Date registerDate;
-    private String province;
     private Image image;
+    private int nFollower;
+    private int nFollowing;
+    private int nPost;
+    private Date registerDate;
+    private String country;
     private String profileType;
-    private String address;
-    private String recoveryCode;
     private static ArrayList<String> TrainingList = new ArrayList<>();
     private boolean[] settings = new boolean[5]; /*0 = Age, 1 = Distance, 2 = Invitation , 3 = Follower, 4 = Message*/
-    /**we wil have event, activities, achievments, etc, all these information we have to save here to reduce BD connection**/
+    private String recoveryCode;
+
 
     /*we are applying singleton because we will have an instance for each aplication user*/
     private static User instance = null;
     private User(){
-        email = ""; name = ""; province = ""; profileType = ""; address = ""; recoveryCode = "";
+        image = null; recoveryCode = "";
         for(int i = 0; i < 24; i++){
             TrainingList.add("Training " + (i+1));
         }
@@ -57,6 +58,24 @@ public class User {
 
     public String getRecoveryCode(){return this.recoveryCode;}
     public void setRecoveryCode(String s) {this.recoveryCode = s;}
+
+
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public Image getImage() { return image; }
+    public void setImage(Image image) { this.image = image; }
+
+    public int getnFollower() { return nFollower; }
+    public void setnFollower(int nFollower) { this.nFollower = nFollower; }
+
+    public int getnFollowing() { return nFollowing; }
+    public void setnFollowing(int nFollowing) { this.nFollowing = nFollowing; }
+
+    public int getnPost() { return nPost; }
+    public void setnPost(int nPost) { this.nPost = nPost; }
+
 
 
 }
