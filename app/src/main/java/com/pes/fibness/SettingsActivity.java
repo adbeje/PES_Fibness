@@ -31,7 +31,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadLocale();
+        loadLocale(); //load language
         setContentView(R.layout.activity_settings);
 
 
@@ -114,10 +114,9 @@ public class SettingsActivity extends AppCompatActivity {
 
     /*send email to fibness*/
     private void sendMail() {
-        String fibnessEmail = "fibnessinc@gmail.com";
         Intent i = new Intent(Intent.ACTION_SEND);
-        i.putExtra(Intent.EXTRA_EMAIL, fibnessEmail);
-        i.putExtra(Intent.EXTRA_SUBJECT, "");
+        i.putExtra(Intent.EXTRA_EMAIL, "fibnessinc@gmail.com");
+        i.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
         i.putExtra(Intent.EXTRA_TEXT, "");
 
         i.setType("message/rfc822");
@@ -126,8 +125,9 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
 
-    /*NO FUNCIONA CAMBIAR IDIOMA*/
+    /*before We have to create a new string.xml*/
     private void showChangeLanguageDialog() {
+        /*array of languages to display in alert dialog*/
         final String[] listLanguages = {"English", "Spanish"};
         AlertDialog.Builder message = new AlertDialog.Builder(this);
         message.setTitle("Choose Language");
@@ -135,14 +135,16 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if(i == 0){
+                    System.out.println("opcion elegida: " + "english");
                     setLocale("en");
                     recreate();
                 }
                 else if(i == 1){
+                    System.out.println("opcion elegida: " + "spanish");
                     setLocale("es");
                     recreate();
                 }
-
+                /*dismiis alert dialog when language selected*/
                 dialogInterface.dismiss();
             }
         });
@@ -151,23 +153,24 @@ public class SettingsActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-
     private void setLocale(String lang) {
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
-        config.locale = locale;
+        config.setLocale(locale);
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());;
 
-        SharedPreferences.Editor editor = getSharedPreferences("Settings", MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getSharedPreferences("SettingLanguage", MODE_PRIVATE).edit();
         editor.putString("myLang", lang);
         editor.apply();
 
     }
 
     private void loadLocale(){
-        SharedPreferences preferences = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("SettingLanguage", Activity.MODE_PRIVATE);
+        System.out.println("my prefs value :" + preferences.getAll());
         String lang = preferences.getString("myLang", "");
+        System.out.println("my prefs lang :" + lang);
         setLocale(lang);
     }
 

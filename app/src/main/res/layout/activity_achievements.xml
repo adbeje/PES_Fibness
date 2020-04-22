@@ -108,7 +108,7 @@
                 android:id="@+id/textNum2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" of 5"
+                android:text=" of 05"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 tools:layout_editor_absoluteX="214dp"

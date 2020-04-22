@@ -59,5 +59,18 @@
     <string name="descriptionAch">For each completed workout is added a certain amount of meters to your progression. How many peaks can you crown?</string>
     <string name="letGo">Here we go!</string>
     <string name="share">Share</string>
+    <string name="done">Done</string>
+    <string name="profile">Profile</string>
+    <string name="noAge">Don\'t show my age</string>
+    <string name="noDistance">Hide my distance</string>
+    <string name="eventInv">Event invitations</string>
+    <string name="notifications">Notifications</string>
+    <string name="newFollower">New Follower</string>
+    <string name="newMsg">New Message</string>
+    <string name="contact">Contact</string>
+    <string name="sendEmail">Send us an email</string>
+    <string name="changeLang">Change Language</string>
+    <string name="logOut">Log Out</string>
+    <string name="deleteAccount">Delete Account</string>
 
 </resources>

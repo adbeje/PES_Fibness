@@ -2,4 +2,76 @@
 <resources>
     <string name="app_name">Fibness_</string>
     <string name="action_settings">Ajustes</string>
+
+    <string name="first_fragment_label">Primer Fragmento</string>
+    <string name="second_fragment_label">Segundo Fragmento</string>
+    <string name="next">Siguiente</string>
+    <string name="previous">Anterior</string>
+
+    <string name="hello_first_fragment">Hola primer fragmento</string>
+    <string name="hello_second_fragment">Hola segundo fragmento. Arg: %1$s</string>
+    <string name="email_address">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="don_t_remember_password">¿No recuerdas tu contraseña?</string>
+    <string name="login_now">Inicia Sesión</string>
+    <string name="don_t_have_an_account_register_here">¿No tienes una cuenta? Registra aquí</string>
+    <string name="sign_in_with_facebook">Iniciar sesión con Facebook</string>
+    <string name="or">o</string>
+    <string name="todo">TODO</string>
+    <string name="run_free_feel_free">Run free, feel free</string>
+    <string name="full_name">Nombre completo</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="register">Registrar</string>
+    <string name="already_a_member_login_here">¿Ya eres usuario? Entre aquí</string>
+
+    <string name="facebook_app_id">140550577384866</string>
+    <string name="fb_login_protocol_scheme">fb140550577384866</string>
+    <string name="cancel_login">La operación fue cancelada</string>
+    <string name="error_login">Se produjo un error al entrar</string>
+    <string name="nombre_apellidos">Nombre y apellidos</string>
+    <string name="male">hombre</string>
+    <string name="female">mujer</string>
+    <string name="im_user">imagen del usuario</string>
+    <string name="guardar">guardar</string>
+    <string name="descripcion_user">Descripción</string>
+    <string name="fecha_nacimiento">Selecciona fecha de nacimiento</string>
+    <string name="gender">Genero</string>
+    <string name="back_button">Botón de retroceso</string>
+
+    <!-- Strings used para obtener hora / fecha -->
+    <string name="formato_fecha">dd/mm/yyyy</string>
+    <string name="formato_hora">hh:mm</string>
+
+    <string name="birth_date">Fecha de nacimiento</string>
+    <string name="country">País</string>
+    <string name="description">Descripción</string>
+    <string name="user_name">Nombre de usuario</string>
+    <string name="profile_picture">Foto de perfil</string>
+    <string name="Resetpassword">Restablecer Contraseña</string>
+    <string name="newPassword">Nueva Contraseña</string>
+    <string name="reset">Restablecer</string>
+    <string name="aboutMe">Sobre mí</string>
+    <string name="weeklyProgress">Progreso semanal</string>
+    <string name="viewProfile">Ver perfil</string>
+    <string name="achievements">Logros</string>
+    <string name="editProfile">Editar perfil</string>
+    <string name="titleAch">"Empieza la aventura "</string>
+    <string name="descriptionAch">Por cada entrenamiento completado se añade una cierta cantidad de metros a tu progresión. ¿Cuántos cimas puedes coronar?</string>
+    <string name="letGo">¡Allá vamos!</string>
+    <string name="share">Compartir</string>
+    <string name="done">Hecho</string>
+    <string name="profile">Perfil</string>
+    <string name="noAge">No mostrar mi edad</string>
+    <string name="noDistance">Ocultar mi distancia</string>
+    <string name="eventInv">Invitaciones a eventos</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="newFollower">Nuevo Seguidor</string>
+    <string name="newMsg">Nuevo Mensaje</string>
+    <string name="contact">Contacto</string>
+    <string name="sendEmail">Envianos un Email</string>
+    <string name="changeLang">Cambiar Idioma</string>
+    <string name="logOut">Cerrar Sesión</string>
+    <string name="deleteAccount">Eliminar Cuenta</string>
+
+
 </resources>

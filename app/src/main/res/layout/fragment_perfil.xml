@@ -143,11 +143,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_marginEnd="50dp"
             android:text="@string/editProfile"
             android:textAlignment="center"
             android:textColor="#ffffff"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/editProfile"
+            app:layout_constraintStart_toStartOf="@+id/editProfile"
             app:layout_constraintTop_toBottomOf="@+id/editProfile" />
 
         <ImageView
@@ -167,18 +167,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_marginEnd="43dp"
             android:text="@string/achievements"
             android:textAlignment="center"
+
             android:textColor="#ffffff"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/achievements"
+            app:layout_constraintStart_toStartOf="@+id/achievements"
             app:layout_constraintTop_toBottomOf="@+id/achievements" />
 
         <ImageView
             android:id="@+id/setting"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginStart="60dp"
+            android:layout_marginStart="56dp"
             android:layout_marginTop="40dp"
             android:src="@drawable/ic_settings_black_24dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -188,11 +189,11 @@
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="59dp"
             android:layout_marginTop="15dp"
             android:text="@string/action_settings"
             android:textColor="#ffffff"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/setting"
+            app:layout_constraintStart_toStartOf="@+id/setting"
             app:layout_constraintTop_toBottomOf="@+id/setting" />
 
         <ImageView
@@ -211,11 +212,11 @@
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="12dp"
             android:text="@string/viewProfile"
             android:textColor="#ffffff"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/viewProfile"
+            app:layout_constraintStart_toStartOf="@+id/viewProfile"
             app:layout_constraintTop_toBottomOf="@+id/viewProfile" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
