@@ -126,7 +126,7 @@ public class ConnetionAPI {
         request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //hay que ver como me llega los datos o si tengo que cambiar en JSONRequest
+
                 System.out.println("Respuesta: "+ response);
                 try {
                     JSONObject obj = new JSONObject(response);
@@ -138,6 +138,10 @@ public class ConnetionAPI {
                         Integer id = (Integer) obj.get("id");
                         u.setId(id);
                         System.out.println("user_id: "+ u.getId());
+                        /*nedd to load user information & setting*/
+                        //getUserInfo("http://10.4.41.146:3001/user/+id+/userInfo");
+                        getUserSettings("http://10.4.41.146:3001/user/"+id+"/userSettings");
+
                         homeActivity();
                     }
                     else Toast.makeText(getApplicationContext(), "Invalid Login Credentials", Toast.LENGTH_SHORT).show();
@@ -174,6 +178,7 @@ public class ConnetionAPI {
 
     }
 
+
     public void deleteUser(){
 
         request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
@@ -201,7 +206,6 @@ public class ConnetionAPI {
 
 
     }
-
 
 
 
@@ -257,15 +261,108 @@ public class ConnetionAPI {
 
 
 
-
     /*para settings*/
-    public void getUserSettings(){
-        //cuando este la ruta de api definida se añadira el codigo
-    }
-    public void postUserSettings(boolean[] settings){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void getUserSettings(String route){
+        System.out.println("Dentro de User settings");
+
+        request = new StringRequest(Request.Method.GET, route, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Respuesta: "+ response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    System.out.println("-----------------------------------");
+                    /*
+                    Boolean b1 = (Boolean) obj.get("sedad");
+                    System.out.println("b1: " + obj.get("sedad"));
+                    System.out.println("b2: " + obj.get("sdistancia"));
+                    System.out.println("b3: " + obj.get("sinvitacion"));
+                    System.out.println("b4: " + obj.get("sseguidor"));
+                    System.out.println("b5: " + obj.get("nmensaje"));
+                     */
+                    boolean[] s = {(boolean) obj.get("sedad"), (boolean) obj.get("sdistancia"), (boolean) obj.get("sinvitacion"), (boolean) obj.get("sseguidor"), (boolean) obj.get("nmensaje")};
+                    User.getInstances().setSettings(s);
+                    System.out.println("my setting: " + User.getInstances().getSettings());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
 
     }
+
+
+    public void postUserSettings(boolean[] settings){
+
+        System.out.println("Dentro de la post settings");
+
+        final String data = "{"+
+                "\"sEdad\": " + "\"" + settings[0] + "\"," +
+                "\"sDistancia\": " + "\"" + settings[1] + "\"" +
+                "\"sInvitacion\": " + "\"" + settings[2] + "\"," +
+                "\"sSeguidor\": " + "\"" + settings[3] + "\"," +
+                "\"nMensaje\": " + "\"" + settings[4] + "\"," +
+                "}";
+
+        request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Respuesta post user: "+ response);
+                if(response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Changes made", Toast.LENGTH_SHORT).show();
+                }
+                else Toast.makeText(getApplicationContext(), "Changes did not make", Toast.LENGTH_SHORT).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+
+            }
+
+        };
+        enqueue();
+
+
+
+
+
+    }
+
+    private void getUserInfo(String route) {
+    }
+
+
+
+
+
 
 
 
