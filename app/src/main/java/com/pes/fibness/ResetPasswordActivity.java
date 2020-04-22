@@ -91,13 +91,14 @@ public class ResetPasswordActivity extends AppCompatActivity {
     }
 
     private void resetUserPassword() {
-        //FALTA
+
         Intent i = getIntent();
         String email = i.getStringExtra("email");
         System.out.println("email introducido: " + email);
+        System.out.println("nueva contra: " + confirmPassword.getText().toString());
         //tengo que pasar email y la contrasena haseada, al final se avisa que se ha cambiado la contra (Toast)
-        //ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), "");
-        //connetion.resetPassword(email); cuando termine tiene que llevar a la pagina principal
+        ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/resetPassword");
+        connetion.resetPassword(email, confirmPassword.getText().toString()); //cuando termine tiene que llevar a la pagina principal
     }
 
     //press back to back mainpage

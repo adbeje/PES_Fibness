@@ -200,8 +200,62 @@ public class ConnetionAPI {
 
 
 
+    }
+
+
+
+
+    public void resetPassword(String emailAddress, String newPassword) {
+        System.out.println("Dentro de la resetear contraseña");
+        String securePassword = Password.hashPassword(newPassword);
+
+        final String data = "{"+
+                "\"email\": " + "\"" + emailAddress + "\"," +
+                "\"password\": " + "\"" + securePassword + "\"" +
+                "}";
+
+        request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Respuesta: "+ response);
+                if(response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your password has been reset successfully", Toast.LENGTH_SHORT).show();
+                    homeActivity();
+                }
+                else Toast.makeText(getApplicationContext(), "Your password has not been reset successfully", Toast.LENGTH_SHORT).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+
+            }
+
+        };
+        enqueue();
+
+
 
     }
+
+
 
 
     /*para settings*/
@@ -236,6 +290,7 @@ public class ConnetionAPI {
     private void enqueue(){
         requestQueue.add(request);
     }
+
 
 
 }
