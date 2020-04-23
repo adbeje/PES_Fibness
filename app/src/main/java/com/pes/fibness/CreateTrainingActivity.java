@@ -113,10 +113,8 @@ public class CreateTrainingActivity extends AppCompatActivity {
         btndelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                exercise.remove(position);
-
                 User.getInstance().deleteExercise(position);
-
+                //exercise.remove(position);
                 int idTraining = User.getInstance().getTrainingID(titleTraining);
                 ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/training/" + idTraining + "/exercises");
                 c.deleteTrainingExercises();
