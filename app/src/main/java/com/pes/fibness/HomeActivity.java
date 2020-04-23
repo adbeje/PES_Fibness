@@ -9,11 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.pes.fibness.ui.dietas.DietasFragment;
-import com.pes.fibness.ui.entrenamientos.EntrenamientosFragment;
-import com.pes.fibness.ui.eventos.EventosFragment;
-import com.pes.fibness.ui.perfil.ProfileFragment;
-import com.pes.fibness.ui.rutas.RutasFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -30,6 +25,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/trainings");
+        c.getUserTrainings();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_layout, perfil);
         ft.commit();

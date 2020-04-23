@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.pes.fibness">
     <!-- requirement to send a request to server (http): need internet connection -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,7 +18,9 @@
         <activity android:name=".ViewProfileActivity" />
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".ui.perfil.EditProfileActivity" />
+        <activity android:name=".EditProfileActivity" />
+        <activity android:name=".CreateTrainingActivity" />
+        <activity android:name=".CreateDietActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -36,12 +39,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="@string/fb_login_protocol_scheme" />
+                <data android:scheme="@string/fb_login_protocol_scheme"
+                    tools:ignore="ManifestResource" />
             </intent-filter>
         </activity>
         <activity android:name=".HomeActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".CreateTrainingActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

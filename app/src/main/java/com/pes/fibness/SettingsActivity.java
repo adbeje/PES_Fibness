@@ -179,7 +179,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void saveSettingsData() {
         boolean[] s = {switchAge.isChecked(), switchDistance.isChecked(), switchInvitation.isChecked(), switchFollower.isChecked(),switchMessage.isChecked()};
-        User u = User.getInstances();
+        User u = User.getInstance();
         u.setSettings(s);
         String route = "http://10.4.41.146:3001/user/"+u.getId()+"/settings";
         ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), route);
@@ -189,7 +189,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     private void loadSetting(){
-        boolean[] s = User.getInstances().getSettings();
+        boolean[] s = User.getInstance().getSettings();
         switchAge.setChecked(s[0]);
         switchDistance.setChecked(s[1]);
         switchInvitation.setChecked(s[2]);
@@ -208,7 +208,7 @@ public class SettingsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         System.out.println("entro para borrar");
-                        User u = User.getInstances();
+                        User u = User.getInstance();
                         ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/"+u.getId());
                         connetion.deleteUser();
                     }

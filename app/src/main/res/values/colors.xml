@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#FF0000</color>
+    <color name="colorPrimary">#15202B</color>
+    <color name="colorPrimaryDark">#15202B</color>
+    <color name="colorAccent">#4ABFED</color>
 
     <!--definicion de colores-->
     <color name="dark_blue">#3023AE</color>
@@ -35,12 +35,20 @@
     <color name="c_let_dark_bkg">#E6EDF0</color>
     <color name="c_let_light_bkg">#44626E</color>
 
+    <!--colores entrenamientos, dietas y barra inferior-->
+    <color name="oscuro">#15202B</color>
+    <color name="claro">#D8E9F0</color>
+    <color name="seleccion">#1DA1F2</color>
+    <color name="seleccion_oscuro">#3A96BA</color>
+    <color name="alternativo">#43626E</color>
+    <color name="deseleccion">#1affffff </color>
+    <color name="deseleccion_alt">#66ffffff</color>
+
     <!-- colors for achievement page-->
     <color name="color1">#424549</color>
     <color name="color2">#7e455e</color>
     <color name="color3">#796e25</color>
     <color name="color4">#59717c</color>
-
 
 
 </resources>

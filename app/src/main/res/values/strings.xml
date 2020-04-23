@@ -9,7 +9,6 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="welcome_your_dashboard">Welcome your dashboard!</string>
     <string name="email_address">Email address</string>
     <string name="password" tools:ignore="DuplicateDefinition">Password</string>
     <string name="don_t_remember_password">Don\'t Remember Password?</string>

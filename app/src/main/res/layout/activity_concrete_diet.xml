@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     android:background="@color/oscuro"
     android:orientation="vertical"
-    tools:context=".CreateTrainingActivity">
+    tools:context=".CreateDietActivity">
 
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarCT"
+        android:id="@+id/toolbarCD"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="?attr/colorPrimary"
@@ -23,23 +23,23 @@
         app:titleTextColor="#FFFFFF" />
 
     <Button
-        android:id="@+id/AddExer"
+        android:id="@+id/AddFood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="14dp"
-        android:text="Add an Exercise"
+        android:text="Add a Food"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
-        android:id="@+id/ExerciseList"
+        android:id="@+id/FoodList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarCT">
+        app:layout_constraintTop_toBottomOf="@+id/toolbarCD">
 
     </ListView>
 

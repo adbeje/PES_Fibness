@@ -3,32 +3,27 @@
 <tabs>
     <tab
         id="@+id/tab_perfil"
-        icon="@drawable/logolila"
+        icon="@drawable/perfil_icon"
         title="Profile"
-        activeColor="@color/dark_blue"
-        inActiveColor="@color/white_light"/>
+        activeColor="@color/seleccion"/>
     <tab
         id="@+id/tab_entrenamientos"
-        icon="@drawable/logolila"
+        icon="@drawable/entrenamientos_icon"
         title="Trainings"
-        activeColor="@color/dark_blue"
-        inActiveColor="@color/white_light"/>
+        activeColor="@color/seleccion"/>
     <tab
         id="@+id/tab_rutas"
-        icon="@drawable/logolila"
+        icon="@drawable/rutas_icon"
         title="Routes"
-        activeColor="@color/dark_blue"
-        inActiveColor="@color/white_light"/>
+        activeColor="@color/seleccion"/>
     <tab
         id="@+id/tab_dietas"
-        icon="@drawable/logolila"
+        icon="@drawable/dietas_icon"
         title="Diets"
-        activeColor="@color/dark_blue"
-        inActiveColor="@color/white_light"/>
+        activeColor="@color/seleccion"/>
     <tab
         id="@+id/tab_eventos"
-        icon="@drawable/logolila"
+        icon="@drawable/eventos_icon"
         title="Events"
-        activeColor="@color/dark_blue"
-        inActiveColor="@color/white_light"/>
+        activeColor="@color/seleccion"/>
 </tabs>

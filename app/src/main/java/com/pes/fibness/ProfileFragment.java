@@ -1,4 +1,4 @@
-package com.pes.fibness.ui.perfil;
+package com.pes.fibness;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -12,17 +12,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-
-import com.pes.fibness.AchievementsActivity;
-import com.pes.fibness.R;
-import com.pes.fibness.SettingsActivity;
-import com.pes.fibness.User;
-import com.pes.fibness.ViewProfileActivity;
 
 public class ProfileFragment extends Fragment {
 
-    private PerfilViewModel perfilViewModel;
     private ImageView imgSettings, editButton, imgViewProfile, imgAchievements;
     private TextView username, nFollowers, nFollowing, nPost;
 
@@ -31,8 +23,7 @@ public class ProfileFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        perfilViewModel =
-                ViewModelProviders.of(this).get(PerfilViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_perfil, container, false);
         thiscontext = container.getContext();
 
@@ -92,7 +83,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void showUserInfo() {
-        username.setText(User.getInstances().getName());
+        username.setText(User.getInstance().getName());
         //String s1 = User.getInstances().getnFollower();
         nFollowers.setText("1");
         nFollowing.setText("0");//User.getInstances().getnFollowing());

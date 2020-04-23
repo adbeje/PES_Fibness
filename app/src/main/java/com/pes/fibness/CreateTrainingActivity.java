@@ -3,28 +3,26 @@ package com.pes.fibness;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
-import com.pes.fibness.ui.concreteTraining.ConcreteTrainingFragment;
+
+import java.util.ArrayList;
 
 
 public class CreateTrainingActivity extends AppCompatActivity {
 
-    Fragment ctf = new ConcreteTrainingFragment();
-    private Boolean IsNew;
-    private String TilteTraining = "";
-    TextView title;
-    private ListView ExerciseList;
-    private String[][] datos = {{"", "", ""}};
+    private Boolean isNew;
+    private String titleTraining = "";
+    private ListView exerciseList;
+    private ArrayList<Exercise> exercise = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,60 +30,158 @@ public class CreateTrainingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_concrete_training);
         getExtras();
 
-        title = (TextView) findViewById(R.id.title);
+        exercise = User.getInstance().getExerciseList();
 
-        if(IsNew){
-            showInputBox();
-        }
-        else{
-            title.setText(TilteTraining);
-            datos = new String[][]{{"Crunch", "30", "10"},
-                    {"Crunch", "30", "10"},
-                    {"Crunch", "30", "10"},
-                    {"Crunch", "30", "10"},
-                    {"Crunch", "30", "10"},
-                    {"Crunch", "30", "10"},
-                    {"Crunch", "30", "10"},
-                    {"Crunch", "30", "10"},
-                    {"Crunch", "30", "10"},
-                    {"Crunch", "30", "10"}};
-        }
-        Toolbar toolbar = (Toolbar)findViewById (R.id.toolbarCT);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarCT);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setTitle(titleTraining);
+        getSupportActionBar().setSubtitle(User.getInstance().getTrainingDesc(titleTraining));
 
-        ExerciseList = (ListView) findViewById(R.id.ExerciseList);
+        exerciseList = (ListView) findViewById(R.id.ExerciseList);
 
-        ExerciseList.setAdapter(new Exercise_Adap(this, datos, IsNew));
+        refreshList();
+
+        Button add_ex = (Button) findViewById(R.id.AddExer);
+        add_ex.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                showNewExercise();
+                isNew = false;
+                refreshList();
+            }
+        });
+
+        exerciseList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                showEditExBox(position);
+                return true;
+            }
+        });
+
     }
 
-    private void getExtras(){
-        Bundle extras = getIntent().getExtras();
-        IsNew = extras.getBoolean("new");
-        TilteTraining = extras.getString("title");
-    }
-
-    public void showInputBox(){
+    private void showEditExBox(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(CreateTrainingActivity.this);
-        builder.setView(R.layout.input_title_box);
-        builder.setTitle("Training");
+        builder.setView(R.layout.input_edit_exercise);
+        builder.setTitle("Exercise");
         final AlertDialog dialog = builder.create();
         dialog.show();
-        TextView txt = (TextView) dialog.findViewById(R.id.inputboxTitleTraining);
-        txt.setText("Add a name");
-        final EditText editText = (EditText)dialog.findViewById(R.id.TitleTraininginput);
-        editText.setText("Name");
-        Button bt = (Button)dialog.findViewById(R.id.btdone);
+        final EditText txtName = (EditText) dialog.findViewById(R.id.ExerciseTitle_edit);
+        txtName.setText(exercise.get(position).TitleEx);
+        final EditText numRest = (EditText) dialog.findViewById(R.id.num_Rest_edit);
+        numRest.setText(exercise.get(position).NumRest);
+        final EditText numSeries = (EditText) dialog.findViewById(R.id.num_Series_edit);
+        numSeries.setText(exercise.get(position).NumSerie);
+        Button btndone = (Button) dialog.findViewById(R.id.btn_done_edit);
+        Button btndelete = (Button) dialog.findViewById(R.id.btn_delete_edit);
+        btndone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean correct = true;
+                if (txtName.getText().toString().trim().length() == 0) {
+                    txtName.setError("Please, add a name");
+                    correct = false;
+                }
+                if (numRest.getText().toString().trim().length() == 0) {
+                    numRest.setError("Please, add a number");
+                    correct = false;
+                }
+                if (numSeries.getText().toString().trim().length() == 0) {
+                    numSeries.setError("Please, add a number");
+                    correct = false;
+                }
+                if (correct) {
+                    Exercise t2 = new Exercise();
+                    t2.TitleEx = txtName.getText().toString();
+                    t2.NumSerie = numSeries.getText().toString();
+                    t2.NumRest = numRest.getText().toString();
+                    exercise.set(position, t2);
+
+                    User.getInstance().updateExercise(position, t2);
+
+                    int idTraining = User.getInstance().getTrainingID(titleTraining);
+                    ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/training/" + idTraining + "/exercises");
+                    c.updateTrainingExercises();
+
+                    refreshList();
+                    dialog.dismiss();
+                }
+            }
+        });
+        btndelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exercise.remove(position);
+
+                User.getInstance().deleteExercise(position);
+
+                int idTraining = User.getInstance().getTrainingID(titleTraining);
+                ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/training/" + idTraining + "/exercises");
+                c.deleteTrainingExercises();
+
+                refreshList();
+                dialog.dismiss();
+            }
+        });
+
+    }
+
+    private void refreshList() {
+        exerciseList.setAdapter(new Exercise_Adap(this, exercise, isNew));
+    }
+
+    private void showNewExercise() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(CreateTrainingActivity.this);
+        builder.setView(R.layout.input_new_exercise);
+        builder.setTitle("Exercise");
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+        final EditText txtName = (EditText) dialog.findViewById(R.id.ExerciseTitle);
+        final EditText numRest = (EditText) dialog.findViewById(R.id.num_Rest);
+        final EditText numSeries = (EditText) dialog.findViewById(R.id.num_Series);
+        Button bt = (Button) dialog.findViewById(R.id.btn_done);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TilteTraining = editText.getText().toString();
-                title.setText(TilteTraining);
-                User.setNewTraining(TilteTraining);
-                dialog.dismiss();
+                boolean correct = true;
+                if (txtName.getText().toString().trim().length() == 0) {
+                    txtName.setError("Please, add a name");
+                    correct = false;
+                }
+                if (numRest.getText().toString().trim().length() == 0) {
+                    numRest.setError("Please, add a number");
+                    correct = false;
+                }
+                if (numSeries.getText().toString().trim().length() == 0) {
+                    numSeries.setError("Please, add a number");
+                    correct = false;
+                }
+                if (correct) {
+                    Exercise t2 = new Exercise();
+                    t2.TitleEx = txtName.getText().toString();
+                    t2.NumSerie = numSeries.getText().toString();
+                    t2.NumRest = numRest.getText().toString();
+                    t2.id = -1;
+
+                    User.getInstance().addExercise(t2);
+
+                    int idTraining = User.getInstance().getTrainingID(titleTraining);
+                    ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/training/" + idTraining + "/exercises");
+                    c.postTrainingExercises();
+
+                    refreshList();
+                    dialog.dismiss();
+                }
             }
         });
     }
 
-}
+    private void getExtras() {
+        Bundle extras = getIntent().getExtras();
+        isNew = extras.getBoolean("new");
+        titleTraining = extras.getString("title");
+    }
 
+}

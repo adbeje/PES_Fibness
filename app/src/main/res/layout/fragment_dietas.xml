@@ -4,17 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient"
-    tools:context=".ui.dietas.DietasFragment" >
+    android:background="@color/oscuro"
+    tools:context="DietasFragment" >
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Working in progress!"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <FrameLayout
+        android:id="@+id/diet_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="60dp"
+        app:layout_constraintBottom_toTopOf="parent">
+
+        <Button
+            android:id="@+id/FakeFloatingButton2"
+            android:layout_width="43dp"
+            android:layout_height="41dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/boton_redondo"
+            android:text="+"
+            android:textColor="#FFFFFF"
+            android:textSize="30dp" />
+
+        <ListView
+            android:id="@+id/listViewDiet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:headerDividersEnabled="false">
+
+        </ListView>
+
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

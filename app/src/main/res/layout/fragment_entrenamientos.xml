@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient"
-    tools:context=".ui.entrenamientos.EntrenamientosFragment" >
+    android:background="@color/oscuro"
+    tools:context="EntrenamientosFragment" >
 
     <FrameLayout
         android:id="@+id/training_fragment"
@@ -27,8 +27,8 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/boton_redondo"
             android:text="+"
-            android:textSize="30dp"
-            android:textColor="#FF0000"/>
+            android:textColor="#FFFFFF"
+            android:textSize="30dp" />
 
         <ListView
             android:id="@+id/listViewTraining"

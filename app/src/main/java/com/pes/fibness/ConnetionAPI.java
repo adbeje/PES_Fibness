@@ -12,10 +12,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -71,7 +74,7 @@ public class ConnetionAPI {
                     System.out.println("result: " + obj.get("created"));
                     Boolean b = (Boolean) obj.get("created");
                     if(b){
-                        User u = User.getInstances();
+                        User u = User.getInstance();
                         Integer id = (Integer) obj.get("id");
                         u.setId(id);
                         System.out.println("user_id: "+ u.getId());
@@ -137,7 +140,7 @@ public class ConnetionAPI {
                     System.out.println("result: " + obj.get("result"));
                     Boolean b = (Boolean) obj.get("result");
                     if(b){
-                        User u = User.getInstances();
+                        User u = User.getInstance();
                         Integer id = (Integer) obj.get("id");
                         u.setId(id);
                         System.out.println("user_id: "+ u.getId());
@@ -281,8 +284,8 @@ public class ConnetionAPI {
                     System.out.println("b1: " + obj.get("sedad") + " b2: " + obj.get("sdistancia") + " b3: " + obj.get("sinvitacion") + " b4: " + obj.get("sseguidor") + " b5: " + obj.get("nmensaje"));
                     */
                     boolean[] s = {(boolean) obj.get("sedad"), (boolean) obj.get("sdistancia"), (boolean) obj.get("sinvitacion"), (boolean) obj.get("sseguidor"), (boolean) obj.get("nmensaje")};
-                    User.getInstances().setSettings(s);
-                    System.out.println("my setting: " + User.getInstances().getSettings());
+                    User.getInstance().setSettings(s);
+                    System.out.println("my setting: " + User.getInstance().getSettings());
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -368,17 +371,17 @@ public class ConnetionAPI {
                     JSONObject obj = new JSONObject(response);
                     System.out.println("-----------------------------------");
 
-                    User.getInstances().setName((String) obj.get("nombre"));
+                    User.getInstance().setName((String) obj.get("nombre"));
                     /*if(obj.get("rutaimagen") != null) load image*/
-                    User.getInstances().setnFollower((Integer) obj.get("nseguidores"));
-                    User.getInstances().setnFollowing((Integer) obj.get("nseguidos"));
-                    User.getInstances().setnPost((Integer) obj.get("npost"));
+                    User.getInstance().setnFollower((Integer) obj.get("nseguidores"));
+                    User.getInstance().setnFollowing((Integer) obj.get("nseguidos"));
+                    User.getInstance().setnPost((Integer) obj.get("npost"));
 
-                    System.out.println("1: " + User.getInstances().getName());
-                    System.out.println("2: " +  User.getInstances().getImage());
-                    System.out.println("3: " + User.getInstances().getnFollower());
-                    System.out.println("4: " + User.getInstances().getnFollowing());
-                    System.out.println("5: " + User.getInstances().getnPost());
+                    System.out.println("1: " + User.getInstance().getName());
+                    System.out.println("2: " +  User.getInstance().getImage());
+                    System.out.println("3: " + User.getInstance().getnFollower());
+                    System.out.println("4: " + User.getInstance().getnFollowing());
+                    System.out.println("5: " + User.getInstance().getnPost());
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -400,19 +403,207 @@ public class ConnetionAPI {
     }
 
 
+    /*para trainings*/
+    public void getTrainingExercises(){
+        //cuando este la ruta de api definida se añadira el codigo
+    }
+
+    public void postTrainingExercises(){
+        //cuando este la ruta de api definida se añadira el codigo
+
+    }
+
+    public void updateTrainingExercises(){
+        //cuando este la ruta de api definida se añadira el codigo
+
+    }
+
+    public void deleteTrainingExercises(){
+        //cuando este la ruta de api definida se añadira el codigo
+
+    }
+
+    public void getUserTrainings(){
+
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray trainings = new JSONArray(response);
+                    ArrayList<Training> trainingList = new ArrayList<>();
+                    for(int i = 0; i < trainings.length(); i++){
+                        JSONObject training = trainings.getJSONObject(i);
+                        Training t = new Training();
+                        t.name = (String) training.getString("nombre");
+                        t.desc = (String) training.getString("descripcion");
+                        t.id = (Integer) training.getInt("idelemento");
+                        trainingList.add(t);
+                    }
+                    User.getInstance().setTrainingList(trainingList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HOLA" + error);
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
+    }
+
+    public void postUserTraining(int userID, String name, String desc){
+        final String nombre = name;
+        final String data = "{"+
+                "\"nombre\": " + "\"" + name + "\"," +
+                "\"descripcion\": " + "\"" + desc + "\"," +
+                "\"idUser\": " + userID +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.has("idElemento")) {
+                        int id = (Integer) obj.get("idElemento");
+                        User.getInstance().setTrainingID(nombre, id);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+        };
+        enqueue();
+    }
+
+    public void updateUserTraining(String name, String desc){
+        final String data = "{"+
+                "\"nombre\": " + "\"" + name + "\"," +
+                "\"descripcion\": " + "\"" + desc + "\"" +
+                "}";
+        System.out.println("HOLA " + name + " " + desc);
+        request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your training has not been modified. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+
+
+        };
+
+        enqueue();
+
+    }
+
+    public void deleteUserTraining(){
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your training has not been deleted. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
+    }
 
 
 
+    /*para dietas*/
+    public void getUserDiets(){
+        //cuando este la ruta de api definida se añadira el codigo
+    }
+    public void postUserDiets(){
+        //cuando este la ruta de api definida se añadira el codigo
 
+    }
+    public void updateUserDiets(){
+        //cuando este la ruta de api definida se añadira el codigo
+    }
+    public void deleteUserDiets(){
+        //cuando este la ruta de api definida se añadira el codigo
 
+    }
+    public void getDietMeal(){
+        //cuando este la ruta de api definida se añadira el codigo
+    }
 
+    public void postDietMeal(){
+        //cuando este la ruta de api definida se añadira el codigo
 
+    }
 
+    public void updateDietMeal(){
+        //cuando este la ruta de api definida se añadira el codigo
 
+    }
 
+    public void deleteDietMeal(){
+        //cuando este la ruta de api definida se añadira el codigo
 
+    }
+    public void getMealAliment(){
+        //cuando este la ruta de api definida se añadira el codigo
+    }
 
+    public void postMealAliment(){
+        //cuando este la ruta de api definida se añadira el codigo
 
+    }
+
+    public void updateMealAliment(){
+        //cuando este la ruta de api definida se añadira el codigo
+
+    }
+
+    public void deleteMealAliment(){
+        //cuando este la ruta de api definida se añadira el codigo
+
+    }
 
 
 

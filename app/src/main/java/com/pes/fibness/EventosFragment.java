@@ -1,4 +1,4 @@
-package com.pes.fibness.ui.dietas;
+package com.pes.fibness;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,15 +11,11 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.pes.fibness.R;
 
-public class DietasFragment extends Fragment {
-
-    private DietasViewModel dietasViewModel;
+public class EventosFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dietasViewModel =
-                ViewModelProviders.of(this).get(DietasViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_dietas, container, false);
+        View root = inflater.inflate(R.layout.fragment_eventos, container, false);
         return root;
     }
 }

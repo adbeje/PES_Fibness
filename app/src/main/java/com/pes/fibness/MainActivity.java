@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
     private void sendEmail(final String email) {
 
         final String verifactionCode = Password.generateCode();
-        User.getInstances().setRecoveryCode(verifactionCode);
+        User.getInstance().setRecoveryCode(verifactionCode);
 
         final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
         dialog.setTitle("Sending Email");
@@ -212,9 +212,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 String s = code.getText().toString().trim();
                 System.out.println("codigo introducido: "+ s);
-                System.out.println("codigo guardado: " + User.getInstances().getRecoveryCode());
+                System.out.println("codigo guardado: " + User.getInstance().getRecoveryCode());
 
-                if (s.equals(User.getInstances().getRecoveryCode())) {
+                if (s.equals(User.getInstance().getRecoveryCode())) {
                     Intent resetPasswordPage = new Intent(MainActivity.this, ResetPasswordActivity.class);
                     resetPasswordPage.putExtra("email", email);
                     startActivity(resetPasswordPage);

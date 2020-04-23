@@ -1,4 +1,4 @@
-package com.pes.fibness.ui.perfil;
+package com.pes.fibness;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -14,9 +14,6 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.pes.fibness.HomeActivity;
-import com.pes.fibness.R;
 
 import java.util.Calendar;
 

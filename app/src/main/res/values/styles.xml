@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <!--cambio para la superior (es muy fina) <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-        <item name="colorPrimaryDark">@color/app_bkg_color</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
@@ -14,7 +14,7 @@
         <item name="windowNoTitle">true</item>
         <!--use in achievement-->
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@color/app_bkg_color</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="android:windowTranslucentStatus">false</item>
 
     </style>
