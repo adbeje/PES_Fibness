@@ -308,13 +308,16 @@ public class ConnetionAPI {
 
         System.out.println("Dentro de la post settings");
 
+
         final String data = "{"+
-                "\"sEdad\": " + "\"" + settings[0] + "\"," +
-                "\"sDistancia\": " + "\"" + settings[1] + "\"" +
-                "\"sInvitacion\": " + "\"" + settings[2] + "\"," +
-                "\"sSeguidor\": " + "\"" + settings[3] + "\"," +
-                "\"nMensaje\": " + "\"" + settings[4] + "\"," +
+                "\"sEdad\": " + settings[0] +"," +
+                "\"sDistancia\": "  + settings[1] + "," +
+                "\"sInvitacion\": "  + settings[2] + "," +
+                "\"sSeguidor\": " + settings[3] +"," +
+                "\"nMensaje\": " + settings[4] +
                 "}";
+
+        System.out.println("resultados: " + data );
 
         request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
             @Override
