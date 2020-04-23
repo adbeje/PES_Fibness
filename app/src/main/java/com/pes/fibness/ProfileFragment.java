@@ -84,10 +84,9 @@ public class ProfileFragment extends Fragment {
 
     private void showUserInfo() {
         username.setText(User.getInstance().getName());
-        //String s1 = User.getInstances().getnFollower();
-        nFollowers.setText("1");
-        nFollowing.setText("0");//User.getInstances().getnFollowing());
-        nPost.setText("2");//User.getInstances().getnPost());
+        nFollowers.setText(String.valueOf(User.getInstance().getnFollower()));
+        nFollowing.setText(String.valueOf(User.getInstance().getnFollowing()));
+        nPost.setText(String.valueOf(User.getInstance().getnPost()));
     }
 
 }
