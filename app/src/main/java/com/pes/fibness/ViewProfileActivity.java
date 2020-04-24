@@ -2,11 +2,15 @@ package com.pes.fibness;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -15,21 +19,92 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ViewProfileActivity extends AppCompatActivity {
 
-    private ImageView backButton;
+    private ImageView image, backButton;
+    private TextView username, age, country, description;
+    BarChart barChart;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
 
+        image = findViewById(R.id.image);
         backButton = (ImageView) findViewById(R.id.backImgButton);
+        username = findViewById(R.id.username);
+        age = findViewById(R.id.age);
+        country = findViewById(R.id.country);
+        description = findViewById(R.id.description);
+        barChart = (BarChart) findViewById(R.id.chart);
 
-        BarChart barChart = (BarChart) findViewById(R.id.chart);
+        showUserInfo();
+        showChart();
+
+
+        /*to go back*/
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceType")
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ViewProfileActivity.this, HomeActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+    }
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void showUserInfo() {
+        Resources res = getResources();
+        String[] planets = res.getStringArray(R.array.countries);
+
+        //falta image
+        User u = User.getInstance();
+        username.setText(u.getName());
+
+        System.out.println("Primero");
+        System.out.println("user brth: "+ u.getBirthDate()) ;
+        if(u.getBirthDate().equals("null"))
+            age.setText("-");
+        else age.setText(u.getBirthDate());
+
+        System.out.println("segundo");
+        if(u.getCountry().equals("null"))
+            country.setText("-");
+        else country.setText(planets[Integer.valueOf(u.getCountry())]);
+
+
+        System.out.println("segundo");
+        if(u.getDescription().equals("null"))
+            description.setText("");
+        else description.setText(u.getDescription());
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String calculateAge(String birth){
+
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate Datebirth = LocalDate.parse(birth, fmt);
+        LocalDate now = LocalDate.now();
+
+        return String.valueOf(Period.between(Datebirth, now).getYears());
+    }
+
+
+
+    private void showChart() {
         /*
         Description d = new Description();
         d.setEnabled(true);
@@ -79,30 +154,11 @@ public class ViewProfileActivity extends AppCompatActivity {
         barChart.invalidate(); //refresh
 
 
-
-
-
-        /*to go back*/
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("ResourceType")
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ViewProfileActivity.this, HomeActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
-
-
-
-
-
-
-
-
-
     }
+
+
+
+
 
 
 

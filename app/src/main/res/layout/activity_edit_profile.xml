@@ -181,12 +181,12 @@
                     android:orientation="vertical">
 
                     <EditText
-                        android:id="@+id/editText"
+                        android:id="@+id/et_Name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
+                        android:hint="@string/user_name"
                         android:inputType="textPersonName"
-                        android:text="Name"
                         android:textColor="@color/c_let_light_bkg" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -222,12 +222,12 @@
                     android:orientation="vertical">
 
                     <EditText
-                        android:id="@+id/editText2"
+                        android:id="@+id/et_Description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
+                        android:hint="@string/description"
                         android:inputType="textMultiLine"
-                        android:text="Description"
                         android:textColor="@color/c_let_light_bkg" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -262,10 +262,11 @@
                     android:orientation="vertical">
 
                     <Spinner
-                        android:id="@+id/spinner"
+                        android:id="@+id/s_Country"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:entries="@array/countries"
+                        android:spinnerMode="dropdown"
                         android:textColor="@color/c_let_light_bkg" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

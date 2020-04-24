@@ -16,11 +16,17 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+
                 boolean b = verifyEmail(emailAddress.getEditableText().toString().trim());
 
                 if (!b)
@@ -93,20 +99,32 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(LoginResult loginResult) {
-                // App code
-                Toast.makeText(getApplicationContext(),
-                        "User ID: "
-                                + loginResult.getAccessToken().getUserId()
-                                + "\n" +
-                                "Auth Token: "
-                                + loginResult.getAccessToken().getToken(),
-                        Toast.LENGTH_SHORT).show();
-                System.out.println ("User ID: "
-                        + loginResult.getAccessToken().getUserId()
-                        + "\n" +
-                        "Auth Token: "
-                        + loginResult.getAccessToken().getToken());
-                homeActivity();
+                GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        System.out.println("FB1");
+                        JSONObject json = response.getJSONObject();
+                        try {
+                            System.out.println("FB2");
+                            if(json != null){
+                                String email = json.getString("email");
+                                Toast.makeText(getApplicationContext(), "User email: " + email, Toast.LENGTH_SHORT).show();
+                                String name = json.getString("name");
+                                String id = json.getString("id");
+                                Log.d("email",email);
+                                ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/fb");
+                                connection.fbUser(name, email, id);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,link,email,picture");
+                request.setParameters(parameters);
+                request.executeAsync();
 
             }
 

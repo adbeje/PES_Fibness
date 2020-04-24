@@ -16,7 +16,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +45,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="35dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView">
+                app:layout_constraintTop_toBottomOf="@+id/image">
 
                 <TextView
                     android:id="@+id/username"
@@ -142,7 +142,8 @@
                     android:layout_marginTop="5dp"
                     android:text="@string/descripcion_user"
                     app:layout_constraintTop_toBottomOf="@+id/aboutMe"
-                    tools:layout_editor_absoluteX="36dp" />
+                    tools:layout_editor_absoluteX="36dp"
+                    tools:ignore="MissingConstraints" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 

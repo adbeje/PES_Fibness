@@ -119,7 +119,70 @@ public class ConnetionAPI {
     }
 
 
-    //validate user entry
+    /*Facebook user*/
+    public void fbUser(String name, String email, String id) {
+
+        final String data = "{"+
+                "\"nombre\": " + "\"" + name + "\"," +
+                "\"email\": " + "\"" + email + "\"," +
+                "\"password\": " + "\"" + id + "\"" +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Respuesta: "+ response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    System.out.println("-----------------------------------");
+                    System.out.println("result: " + obj.get("id"));
+
+                    User u = User.getInstance();
+                    Integer id = (Integer) obj.get("id");
+                    u.setId(id);
+
+                    getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
+                    getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
+                    homeActivity();
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+
+            }
+
+        };
+        enqueue();
+
+
+    }
+
+
+
+    /*validate user entry*/
     public void validateUser(String emailAddress, String password) {
 
         String securePassword = Password.hashPassword(password);
@@ -372,19 +435,25 @@ public class ConnetionAPI {
                 System.out.println("Respuesta: "+ response);
                 try {
                     JSONObject obj = new JSONObject(response);
-                    System.out.println("-----------------------------------");
+                    System.out.println("Estoy dentro de User info para recoger datos de json");
+                    System.out.println("Resultado: " + obj);
 
-                    User.getInstance().setName((String) obj.get("nombre"));
-                    /*if(obj.get("rutaimagen") != null) load image*/
-                    User.getInstance().setnFollower((Integer) obj.get("nseguidores"));
-                    User.getInstance().setnFollowing((Integer) obj.get("nseguidos"));
-                    User.getInstance().setnPost((Integer) obj.get("npost"));
+                    User u = User.getInstance();
 
-                    System.out.println("1: " + User.getInstance().getName());
-                    System.out.println("2: " +  User.getInstance().getImage());
-                    System.out.println("3: " + User.getInstance().getnFollower());
-                    System.out.println("4: " + User.getInstance().getnFollowing());
-                    System.out.println("5: " + User.getInstance().getnPost());
+                    u.setName(obj.get("nombre").toString());
+                    u.setEmail(obj.get("email").toString());
+                    u.setImageRoute(obj.get("rutaimagen").toString());
+                    u.setDescription(obj.get("descripcion").toString());
+                    u.setBirthDate(obj.get("fechadenacimiento").toString());
+                    u.setRegisterDate(obj.get("fechaderegistro").toString());
+                    u.setUserType(obj.get("tipousuario").toString());
+                    u.setProfileType(obj.get("tipoperfil").toString());
+                    u.setCountry(obj.get("pais").toString());
+                    u.setGender(obj.get("genero").toString());
+                    u.setnFollower((Integer) obj.get("nseguidores"));
+                    u.setnFollowing((Integer) obj.get("nseguidos"));
+                    u.setnPost((Integer) obj.get("npost"));
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -553,6 +622,52 @@ public class ConnetionAPI {
         });
         enqueue();
     }
+
+
+    public void postUserInfo() {
+
+        User u = User.getInstance();
+        final String data = "{"+
+                "\"nombre\": " + "\"" + u.getName() + "\"," +
+                "\"genero\": " + "\"" + u.getGender() + "\"," +
+                "\"descripcion\": " + "\"" + u.getDescription() + "\"," +
+                "\"fechadenacimiento\": " + "\"" + u.getBirthDate() + "\"," +
+                "\"pais\": " + "\"" + u.getCountry() + "\"" +
+                "}";
+        request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("post response: " + response);
+                Toast.makeText(getApplicationContext(), "Your information has been modified", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Server Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+
+
+        };
+
+        enqueue();
+
+
+    }
+
+
+
 
 
 

@@ -9,21 +9,33 @@ import java.util.ArrayList;
 public class User {
 
     private Integer user_id;
-    private String name;
+    /*obj.get("nombre").toString(),
+                            obj.get("email").toString(),
+                            obj.get("rutaimagen").toString(),
+                            obj.get("descripcion").toString(),
+                            obj.get("fechadenacimiento").toString(),
+                            obj.get("fechaderegistro").toString(),
+                            obj.get("tipousuario").toString(),
+                            obj.get("tipoperfil").toString(),
+                            obj.get("nseguidores").toString(),
+                            obj.get("nseguidos").toString(),
+                            obj.get("npost").toString(),
+                            obj.get("pais").toString(),
+                            obj.get("genero").toString()};*/
+
+    /*User profile*/
+    private String name, email, userType, profileType, gender, description, birthDate, registerDate, country, imageRoute;
+    private int nFollower, nFollowing,  nPost;
     private Image image;
-    private int nFollower;
-    private int nFollowing;
-    private int nPost;
-    private Date registerDate;
-    private String country;
-    private String profileType;
+    private boolean[] settings = new boolean[5]; /*0 = Age, 1 = Distance, 2 = Invitation , 3 = Follower, 4 = Message*/
+    private String recoveryCode;
+
+    /*User fitness*/
     private static ArrayList<Training> trainingList = new ArrayList<>();
     private static ArrayList<Exercise> exerciseList = new ArrayList<>();
     private static ArrayList<Diet> dietList = new ArrayList<>();
     private static ArrayList<Meal> mealList = new ArrayList<>();
     private static ArrayList<Aliment> alimentList = new ArrayList<>();
-    private boolean[] settings = new boolean[5]; /*0 = Age, 1 = Distance, 2 = Invitation , 3 = Follower, 4 = Message*/
-    private String recoveryCode;
 
 
     /*we are applying singleton because we will have an instance for each aplication user*/
@@ -43,16 +55,12 @@ public class User {
     public Integer getId() { return  this.user_id; }
     public void setId(Integer id) { this.user_id = id; }
 
-    public boolean[] getSettings(){
-        return settings;
-    }
+    /*PROFILE*/
+    public boolean[] getSettings(){ return settings; }
     public void setSettings(boolean[] s){this.settings = s;}
-
 
     public String getRecoveryCode(){return this.recoveryCode;}
     public void setRecoveryCode(String s) {this.recoveryCode = s;}
-
-
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -69,7 +77,36 @@ public class User {
     public int getnPost() { return nPost; }
     public void setnPost(int nPost) { this.nPost = nPost; }
 
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
+    public String getUserType() { return userType; }
+    public void setUserType(String userType) { this.userType = userType; }
+
+    public String getProfileType() { return profileType; }
+    public void setProfileType(String profileType) { this.profileType = profileType; }
+
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
+
+    public String getDescription() { return description; }
+
+    public void setDescription(String description) { this.description = description; }
+
+    public String getBirthDate() { return birthDate; }
+    public void setBirthDate(String birthDate) { this.birthDate = birthDate; }
+
+    public String getRegisterDate() { return registerDate; }
+    public void setRegisterDate(String registerDate) { this.registerDate = registerDate; }
+
+    public String getCountry() { return country; }
+    public void setCountry(String country) { this.country = country; }
+
+    public String getImageRoute() { return imageRoute; }
+    public void setImageRoute(String imageRoute) { this.imageRoute = imageRoute; }
+
+
+    /***************************************************************************/
     /** Trainings **/
     public void setTrainingList(ArrayList<Training> t){
         trainingList = t;
