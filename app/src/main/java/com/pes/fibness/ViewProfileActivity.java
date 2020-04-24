@@ -73,19 +73,15 @@ public class ViewProfileActivity extends AppCompatActivity {
         User u = User.getInstance();
         username.setText(u.getName());
 
-        System.out.println("Primero");
-        System.out.println("user brth: "+ u.getBirthDate()) ;
         if(u.getBirthDate().equals("null"))
             age.setText("-");
-        else age.setText(u.getBirthDate());
+        else age.setText(howManyYears(u.getBirthDate()));
 
-        System.out.println("segundo");
         if(u.getCountry().equals("null"))
             country.setText("-");
-        else country.setText(planets[Integer.valueOf(u.getCountry())]);
+        else country.setText(planets[Integer.parseInt(u.getCountry())]);
 
-
-        System.out.println("segundo");
+        
         if(u.getDescription().equals("null"))
             description.setText("");
         else description.setText(u.getDescription());
@@ -93,13 +89,15 @@ public class ViewProfileActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private String calculateAge(String birth){
-
+    private String howManyYears(String birthDate){
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate Datebirth = LocalDate.parse(birth, fmt);
-        LocalDate now = LocalDate.now();
+        LocalDate fechaNac = LocalDate.parse(birthDate, fmt);
+        LocalDate ahora = LocalDate.now();
 
-        return String.valueOf(Period.between(Datebirth, now).getYears());
+        Period periodo = Period.between(fechaNac, ahora);
+        System.out.printf("Tu edad es: %s años, %s meses y %s días",
+                periodo.getYears(), periodo.getMonths(), periodo.getDays());
+        return String.valueOf(periodo.getYears());
     }
 
 

@@ -68,10 +68,10 @@
 
                 <TextView
                     android:id="@+id/age"
-                    android:layout_width="123dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="41dp"
                     android:layout_marginStart="5dp"
-                    android:text="User age"
+                    android:text=""
                     android:textSize="30sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/coma"
