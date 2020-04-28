@@ -97,10 +97,11 @@ public class CreateTrainingActivity extends AppCompatActivity {
                     t2.TitleEx = txtName.getText().toString();
                     t2.NumSerie = numSeries.getText().toString();
                     t2.NumRest = numRest.getText().toString();
+                    int idExercise = User.getInstance().getExerciseID(position);
+                    t2.id = idExercise;
 
                     User.getInstance().updateExercise(position, t2);
 
-                    int idExercise = User.getInstance().getExerciseID(position);
                     ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/exercise/" + idExercise );
                     c.updateTrainingExercises(t2.TitleEx, Integer.parseInt(t2.NumRest), Integer.parseInt(t2.NumSerie));
 
@@ -112,7 +113,6 @@ public class CreateTrainingActivity extends AppCompatActivity {
         btndelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("POS " + position);
 
                 int idExercise = User.getInstance().getExerciseID(position);
                 ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/exercise/" + idExercise );
