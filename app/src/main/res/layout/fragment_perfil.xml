@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ProfileFragment">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="350dp">
@@ -17,12 +16,14 @@
             android:background="#fff"
             android:orientation="vertical">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_user"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="40dp"
-                android:src="@drawable/ic_account_frame" />
+                android:src="@mipmap/iv_profile"
+                android:layout_gravity="center"
+                app:civ_border_width="1dp"
+                app:civ_border_color="@color/c_let_light_bkg"/>
 
             <TextView
                 android:id="@+id/username"

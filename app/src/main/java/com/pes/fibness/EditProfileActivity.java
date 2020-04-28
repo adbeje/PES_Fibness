@@ -1,8 +1,10 @@
 package com.pes.fibness;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -14,34 +16,63 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
+import java.io.File;
 import java.util.Calendar;
+import java.util.List;
 
-import static com.pes.fibness.R.id.*;
+import pl.aprilapps.easyphotopicker.DefaultCallback;
+import pl.aprilapps.easyphotopicker.EasyImage;
+
+import static com.pes.fibness.R.id.backImgButton;
+import static com.pes.fibness.R.id.confirm;
 import static com.pes.fibness.R.id.et_Description;
 import static com.pes.fibness.R.id.et_Name;
+import static com.pes.fibness.R.id.et_mostrar_fecha_picker;
+import static com.pes.fibness.R.id.ib_obtener_fecha;
+import static com.pes.fibness.R.id.iv_user;
 import static com.pes.fibness.R.id.s_Country;
+import static com.pes.fibness.R.id.tB_fem;
+import static com.pes.fibness.R.id.tb_male;
 
 public class EditProfileActivity extends AppCompatActivity {
+    User u = User.getInstance();
+
+    /* Calendar */
     private static final String zero = "0";
     private static final String slash = "/";
 
-    //Calendario para obtener fecha & hora
     public final Calendar c = Calendar.getInstance();
 
-    //Variables para obtener la fecha
     final int month = c.get(Calendar.MONTH);
     final int day = c.get(Calendar.DAY_OF_MONTH);
     final int year = c.get(Calendar.YEAR);
 
-    //Widgets
+    /* Profile picture */
+    public static final int REQUEST_CODE_CAMERA = 0012;
+    public static final int REQUEST_CODE_GALLERY = 0013;
+    ImageView ivUser;
+    private String [] items = {"Camera","Gallery"};
+
+
+    /* Widgets */
     Spinner sCountry;
     EditText etDate, etName, etDescription;
     ImageButton ibDateGetter;
-    ToggleButton tb_fem;
-    ToggleButton tb_mal;
+    ToggleButton tbFem;
+    ToggleButton tbMale;
+    private EasyImage easyImage;
+
+    //Object to take pictures
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,20 +83,38 @@ public class EditProfileActivity extends AppCompatActivity {
         sCountry = findViewById(s_Country);
         etDate = findViewById(et_mostrar_fecha_picker);
         ibDateGetter = findViewById(ib_obtener_fecha);
-        tb_fem = findViewById(tB_fem);
-        tb_mal = findViewById(tb_male);
+        tbFem = findViewById(tB_fem);
+        tbMale = findViewById(tb_male);
+        ivUser = findViewById(iv_user);
 
 
         showUserInfo();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
+            ActivityCompat.requestPermissions(EditProfileActivity.this, new String[] {Manifest.permission.CAMERA}, 0);
 
 
-        ImageView backButton = (ImageView) findViewById(backImgButton);
+        ImageView backButton = findViewById(backImgButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EditProfileActivity.this, HomeActivity.class);
                 startActivity(intent);
+            }
+        });
+
+
+        EasyImage.configuration(this)
+                .setImagesFolderName("EasyImage sample")
+                .setCopyTakenPhotosToPublicGalleryAppFolder(true)
+                .setCopyPickedImagesToPublicGalleryAppFolder(true)
+                .setAllowMultiplePickInGallery(false);
+
+        ivUser.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceType")
+            @Override
+            public void onClick(View v) {
+                EasyImage.openChooserWithGallery(EditProfileActivity.this, "Select", 0);
             }
         });
 
@@ -90,27 +139,43 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        tb_fem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        tbFem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    tb_mal.setChecked(false);
+                    tbMale.setChecked(false);
                 } else {
-                    tb_mal.setChecked(true);
+                    tbMale.setChecked(true);
                 }
             }
         });
 
-        tb_mal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        tbMale.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    tb_fem.setChecked(false);
+                    tbFem.setChecked(false);
                 } else {
-                    tb_fem.setChecked(true);
+                    tbFem.setChecked(true);
                 }
             }
 
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        EasyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
+            @Override
+            public void onImagesPicked(@NonNull List<File> imageFiles, EasyImage.ImageSource source, int type) {
+                u.setImage(imageFiles.get(0));
+                Glide.with(EditProfileActivity.this)
+                        .load(imageFiles.get(0))
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(ivUser);
+            }
+        });
     }
 
     private void getDate(){
@@ -129,27 +194,34 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void showUserInfo() {
-
-        /*etName.setText("Jose Luis");
-        etDescription.setText("Me gusta cagarme encima");
-        int i = 30;
-        sCountry.setSelection(i);*/
-        User u = User.getInstance();
         etName.setText(u.getName());
+        boolean validImage = false;
+        File userImage = null;
+        if (u.getImage() != null) {
+            validImage = true;
+            userImage = u.getImage();
+        }
         if(!u.getDescription().equals("null")) etDescription.setText(u.getDescription());
         if(!u.getBirthDate().equals("null")) etDate.setText(u.getBirthDate());
         if (!u.getGender().equals("null")) {
-            if (u.getGender().equals("1")) tb_fem.setChecked(true);
-            else tb_mal.setChecked(true);
+            if (u.getGender().equals("1")) tbFem.setChecked(true);
+            else tbMale.setChecked(true);
         }
         if(!u.getCountry().equals("null")) sCountry.setSelection(Integer.parseInt(u.getCountry()));
+        if (validImage) {
+            Glide.with(EditProfileActivity.this)
+                    .load(userImage)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(ivUser);
+        }
 
     }
 
     private void saveEditData() {
-        User u = User.getInstance();
+
         u.setName(etName.getText().toString());
-        if(tb_fem.isChecked())
+        if(tbFem.isChecked())
             u.setGender("1");
         else u.setGender("0");
         u.setDescription(etDescription.getText().toString());
@@ -159,8 +231,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
         String route = "http://10.4.41.146:3001/user/"+u.getId()+"/info";
-        ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), route);
-        connetion.postUserInfo();
+        ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), route);
+        connection.postUserInfo();
     }
 
 

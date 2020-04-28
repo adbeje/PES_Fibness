@@ -1,9 +1,7 @@
 package com.pes.fibness;
 
 
-import android.media.Image;
-
-import java.util.Date;
+import java.io.File;
 import java.util.ArrayList;
 
 public class User {
@@ -26,7 +24,7 @@ public class User {
     /*User profile*/
     private String name, email, userType, profileType, gender, description, birthDate, registerDate, country, imageRoute;
     private int nFollower, nFollowing,  nPost;
-    private Image image;
+    private File image;
     private boolean[] settings = new boolean[5]; /*0 = Age, 1 = Distance, 2 = Invitation , 3 = Follower, 4 = Message*/
     private String recoveryCode;
 
@@ -65,8 +63,8 @@ public class User {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public Image getImage() { return image; }
-    public void setImage(Image image) { this.image = image; }
+    public File getImage() { return image; }
+    public void setImage(File image) { this.image = image; }
 
     public int getnFollower() { return nFollower; }
     public void setnFollower(int nFollower) { this.nFollower = nFollower; }

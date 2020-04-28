@@ -13,12 +13,15 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -27,9 +30,10 @@ import java.util.List;
 
 public class ViewProfileActivity extends AppCompatActivity {
 
-    private ImageView image, backButton;
+    private ImageView ivUser, backButton;
     private TextView username, age, country, description;
     BarChart barChart;
+    User u = User.getInstance();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -37,7 +41,7 @@ public class ViewProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
 
-        image = findViewById(R.id.image);
+        ivUser = findViewById(R.id.iv_user);
         backButton = (ImageView) findViewById(R.id.backImgButton);
         username = findViewById(R.id.username);
         age = findViewById(R.id.age);
@@ -69,8 +73,13 @@ public class ViewProfileActivity extends AppCompatActivity {
         Resources res = getResources();
         String[] planets = res.getStringArray(R.array.countries);
 
-        //falta image
-        User u = User.getInstance();
+        boolean validImage = false;
+        File userImage = null;
+        if (u.getImage() != null) {
+            validImage = true;
+            userImage = u.getImage();
+        }
+
         username.setText(u.getName());
 
         if(u.getBirthDate().equals("null"))
@@ -81,10 +90,18 @@ public class ViewProfileActivity extends AppCompatActivity {
             country.setText("-");
         else country.setText(planets[Integer.parseInt(u.getCountry())]);
 
-        
+        System.out.println("segundo");
         if(u.getDescription().equals("null"))
             description.setText("");
         else description.setText(u.getDescription());
+
+        if (validImage) {
+            Glide.with(ViewProfileActivity.this)
+                    .load(userImage)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(ivUser);
+        }
 
     }
 
@@ -98,6 +115,16 @@ public class ViewProfileActivity extends AppCompatActivity {
         System.out.printf("Tu edad es: %s años, %s meses y %s días",
                 periodo.getYears(), periodo.getMonths(), periodo.getDays());
         return String.valueOf(periodo.getYears());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String calculateAge(String birth){
+
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate Datebirth = LocalDate.parse(birth, fmt);
+        LocalDate now = LocalDate.now();
+
+        return String.valueOf(Period.between(Datebirth, now).getYears());
     }
 
 

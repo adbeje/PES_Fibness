@@ -33,7 +33,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.2.2'
     implementation 'androidx.navigation:navigation-ui:2.2.2'
     //import volley library to use methods get, posts, etc
-    implementation 'com.android.volley:volley:1.1.0'
+    implementation 'com.android.volley:volley:1.1.1'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'com.roughike:bottom-bar:2.3.1'
     testImplementation 'junit:junit:4.13'
@@ -53,5 +53,10 @@ dependencies {
     /*for cercle/round imageview*/
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    /* for taking profile pics */
+    implementation 'com.github.jkwiecien:EasyImage:2.1.1'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
 }

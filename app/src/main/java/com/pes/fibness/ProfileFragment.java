@@ -13,30 +13,36 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
+import java.io.File;
+
+import static com.pes.fibness.R.id.iv_user;
+
 public class ProfileFragment extends Fragment {
 
-    private ImageView imgSettings, editButton, imgViewProfile, imgAchievements;
     private TextView username, nFollowers, nFollowing, nPost;
-
-    private Dialog dialog;
-    Context thiscontext;
+    private User u = User.getInstance();
+    ImageView ivUser;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_perfil, container, false);
-        thiscontext = container.getContext();
+        Context thiscontext = container.getContext();
 
         username = root.findViewById(R.id.username);
         nFollowers = root.findViewById(R.id.nFollowers);
         nFollowing = root.findViewById(R.id.nFollowing);
         nPost = root.findViewById(R.id.nPost);
+        ivUser = root.findViewById(iv_user);
 
 
         showUserInfo();
 
 
-        imgSettings = (ImageView) root.findViewById(R.id.setting);
+        ImageView imgSettings = (ImageView) root.findViewById(R.id.setting);
         imgSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,7 +52,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        editButton = (ImageView) root.findViewById(R.id.editProfile);
+        ImageView editButton = (ImageView) root.findViewById(R.id.editProfile);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +62,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        imgViewProfile = (ImageView) root.findViewById(R.id.viewProfile);
+        ImageView imgViewProfile = (ImageView) root.findViewById(R.id.viewProfile);
         imgViewProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,8 +73,8 @@ public class ProfileFragment extends Fragment {
         });
 
 
-        dialog = new Dialog(thiscontext);
-        imgAchievements = (ImageView) root.findViewById(R.id.achievements);
+        Dialog dialog = new Dialog(thiscontext);
+        ImageView imgAchievements = (ImageView) root.findViewById(R.id.achievements);
         imgAchievements.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,11 +89,23 @@ public class ProfileFragment extends Fragment {
     }
 
     private void showUserInfo() {
-        User u = User.getInstance();
-        username.setText(u.getInstance().getName());
+        boolean validImage = false;
+        File userImage = null;
+        if (u.getImage() != null) {
+            validImage = true;
+            userImage = u.getImage();
+        }
+        username.setText(u.getName());
         nFollowers.setText(String.valueOf(User.getInstance().getnFollower()));
         nFollowing.setText(String.valueOf(User.getInstance().getnFollowing()));
         nPost.setText(String.valueOf(User.getInstance().getnPost()));
+        if (validImage) {
+            Glide.with(ProfileFragment.this)
+                    .load(userImage)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(ivUser);
+        }
     }
 
 }
