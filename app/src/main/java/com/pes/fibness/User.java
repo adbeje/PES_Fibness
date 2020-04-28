@@ -199,6 +199,10 @@ public class User {
         exerciseList.set(pos, e);
     }
 
+    public int sizeExerciseList(){return exerciseList.size();}
+
+    public int getExerciseID(int position){ return exerciseList.get(position).id;  }
+
     /** Diets **/
     public void setDietList(ArrayList<Diet> d){
         dietList = d;

@@ -97,13 +97,12 @@ public class CreateTrainingActivity extends AppCompatActivity {
                     t2.TitleEx = txtName.getText().toString();
                     t2.NumSerie = numSeries.getText().toString();
                     t2.NumRest = numRest.getText().toString();
-                    exercise.set(position, t2);
 
                     User.getInstance().updateExercise(position, t2);
 
-                    int idTraining = User.getInstance().getTrainingID(titleTraining);
-                    ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/training/" + idTraining + "/exercises");
-                    c.updateTrainingExercises();
+                    int idExercise = User.getInstance().getExerciseID(position);
+                    ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/exercise/" + idExercise );
+                    c.updateTrainingExercises(t2.TitleEx, Integer.parseInt(t2.NumRest), Integer.parseInt(t2.NumSerie));
 
                     refreshList();
                     dialog.dismiss();
@@ -113,12 +112,13 @@ public class CreateTrainingActivity extends AppCompatActivity {
         btndelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("POS " + position);
+
+                int idExercise = User.getInstance().getExerciseID(position);
+                ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/exercise/" + idExercise );
+                c.deleteTrainingExercises();
 
                 User.getInstance().deleteExercise(position);
-
-                int idTraining = User.getInstance().getTrainingID(titleTraining);
-                ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/training/" + idTraining + "/exercises");
-                c.deleteTrainingExercises();
 
                 refreshList();
                 dialog.dismiss();
@@ -166,9 +166,11 @@ public class CreateTrainingActivity extends AppCompatActivity {
 
                     User.getInstance().addExercise(t2);
 
+                    int pos = User.getInstance().sizeExerciseList();
+
                     int idTraining = User.getInstance().getTrainingID(titleTraining);
-                    ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/training/" + idTraining + "/exercises");
-                    c.postTrainingExercises();
+                    ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/exercise");
+                    c.postTrainingExercises(idTraining, t2.TitleEx, Integer.parseInt(t2.NumRest), Integer.parseInt(t2.NumSerie), pos-1);
 
                     refreshList();
                     dialog.dismiss();

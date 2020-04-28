@@ -476,22 +476,170 @@ public class ConnetionAPI {
 
 
     /*para trainings*/
-    public void getTrainingExercises(){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void getTrainingExercises(final String title){
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("ENTRA???");
+                try {
+                    JSONArray exercises = new JSONArray(response);
+                    ArrayList<Exercise> exerciseList = new ArrayList<>();
+                    for(int i = 0; i < exercises.length(); i++){
+                        JSONObject exercise = exercises.getJSONObject(i);
+                        Exercise e = new Exercise();
+                        e.TitleEx = (String) exercise.getString("nombre");
+                        int numRest = (Integer) exercise.getInt("tiempodescanso");
+                        e.NumRest = String.valueOf(numRest);
+                        int numSerie = (Integer) exercise.getInt("numsets");
+                        e.NumSerie = String.valueOf(numSerie);
+                        e.id = (Integer) exercise.getInt("idactividad");
+                        exerciseList.add(e);
+                    }
+                    User.getInstance().setExerciseList(exerciseList);
+                    Intent TrainingPage = new Intent(context, CreateTrainingActivity.class);
+                    TrainingPage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    TrainingPage.putExtra("new", false);
+                    TrainingPage.putExtra("title", title);
+                    context.startActivity(TrainingPage);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HOLA" + error);
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
+
     }
 
-    public void postTrainingExercises(){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void postTrainingExercises(int idT, final String nameE, final int numRest, final int numSerie, final int Position){
+        final String data = "{"+
+                "\"idEntrenamiento\": " + idT +"," +
+                "\"nombre\": " + "\"" + nameE + "\"," +
+                "\"descripcion\": " + "\"" + "" + "\"," +
+                "\"tiempoEjecucion\": " + 0 + "," +
+                "\"numSets\": " + numSerie + "," +
+                "\"numRepeticiones\": " + 0 + "," +
+                "\"tiempoDescanso\": " + numRest +
+                "}";
 
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Resgister user response: " + response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.has("idexercise")) {
+                        int id = (Integer) obj.get("idexercise");
+                        Exercise e = new Exercise();
+                        e.TitleEx = nameE;
+                        e.NumSerie = String.valueOf(numSerie);
+                        e.NumRest = String.valueOf(numRest);
+                        e.id = id;
+                        User.getInstance().updateExercise(Position, e);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HIII " + error);
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+            }
+
+
+        };
+
+        enqueue();
     }
 
-    public void updateTrainingExercises(){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void updateTrainingExercises(final String nameE, final int numRest, final int numSerie){
+        System.out.println("AQUI " + nameE);
+        final String data = "{"+
+                "\"nombre\": " + "\"" + nameE + "\"," +
+                "\"descripcion\": " + "\"" + "" + "\"," +
+                "\"tiempoEjecucion\": " + 0 + "," +
+                "\"numSets\": " + numSerie + "," +
+                "\"numRepeticiones\": " + 0 + "," +
+                "\"tiempoDescanso\": " + numRest +
+                "}";
+        request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("NANIIII "  + response);
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your exercise has not been modified. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HIII " + error);
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+            }
+
+
+        };
+
+        enqueue();
 
     }
 
     public void deleteTrainingExercises(){
-        //cuando este la ruta de api definida se añadira el codigo
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your exercise has not been deleted. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HIII " + error);
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
 
     }
 

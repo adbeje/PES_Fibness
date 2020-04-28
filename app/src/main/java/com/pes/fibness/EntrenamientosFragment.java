@@ -39,10 +39,10 @@ public class EntrenamientosFragment extends Fragment {
         listViewT.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent TrainingPage = new Intent(getActivity(), CreateTrainingActivity.class);
-                TrainingPage.putExtra("new", false);
-                TrainingPage.putExtra("title", trainingList.get(position));
-                startActivity(TrainingPage);
+                String nameT = trainingList.get(position);
+                int idT = User.getInstance().getTrainingID(nameT);
+                ConnetionAPI c = new ConnetionAPI(getContext(), "http://10.4.41.146:3001/training/" + idT + "/activities");
+                c.getTrainingExercises(nameT);
             }
         } );
 
