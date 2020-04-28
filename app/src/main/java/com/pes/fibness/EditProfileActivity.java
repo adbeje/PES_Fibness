@@ -10,6 +10,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
@@ -17,31 +19,45 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Calendar;
 
-;import static com.pes.fibness.R.id.*;
+import static com.pes.fibness.R.id.*;
+import static com.pes.fibness.R.id.et_Description;
+import static com.pes.fibness.R.id.et_Name;
+import static com.pes.fibness.R.id.s_Country;
 
 public class EditProfileActivity extends AppCompatActivity {
-    private static final String CERO = "0";
-    private static final String BARRA = "/";
+    private static final String zero = "0";
+    private static final String slash = "/";
 
     //Calendario para obtener fecha & hora
     public final Calendar c = Calendar.getInstance();
 
     //Variables para obtener la fecha
-    final int mes = c.get(Calendar.MONTH);
-    final int dia = c.get(Calendar.DAY_OF_MONTH);
-    final int anio = c.get(Calendar.YEAR);
+    final int month = c.get(Calendar.MONTH);
+    final int day = c.get(Calendar.DAY_OF_MONTH);
+    final int year = c.get(Calendar.YEAR);
 
     //Widgets
-    EditText etFecha;
-    ImageButton ibObtenerFecha;
+    Spinner sCountry;
+    EditText etDate, etName, etDescription;
+    ImageButton ibDateGetter;
+    ToggleButton tb_fem;
+    ToggleButton tb_mal;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+        etName = findViewById(et_Name);
+        etDescription = findViewById(et_Description);
+        sCountry = findViewById(s_Country);
+        etDate = findViewById(et_mostrar_fecha_picker);
+        ibDateGetter = findViewById(ib_obtener_fecha);
+        tb_fem = findViewById(tB_fem);
+        tb_mal = findViewById(tb_male);
 
-        etFecha = (EditText) findViewById(et_mostrar_fecha_picker);
-        ibObtenerFecha = findViewById(ib_obtener_fecha);
+
+        showUserInfo();
+
 
         ImageView backButton = (ImageView) findViewById(backImgButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -53,25 +69,33 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        ImageView calendarButton = (ImageView) findViewById(ib_obtener_fecha);
+        TextView doneButton = findViewById(confirm);
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceType")
+            @Override
+            public void onClick(View v) {
+                saveEditData();
+                Intent intent = new Intent(EditProfileActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageView calendarButton = findViewById(ib_obtener_fecha);
         calendarButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
-                obtenerFecha();
+                getDate();
 
             }
         });
-
-        final ToggleButton tb_fem = (ToggleButton) findViewById(tB_fem);
-        final ToggleButton tb_mal = (ToggleButton) findViewById(tb_male);
 
         tb_fem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     tb_mal.setChecked(false);
                 } else {
-                    // The toggle is disabled
+                    tb_mal.setChecked(true);
                 }
             }
         });
@@ -81,25 +105,65 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (isChecked) {
                     tb_fem.setChecked(false);
                 } else {
-                    // The toggle is disabled
+                    tb_fem.setChecked(true);
                 }
             }
-        });
 
+        });
 
     }
 
-    private void obtenerFecha(){
-        DatePickerDialog recogerFecha = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+    private void getDate(){
+        DatePickerDialog datePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 final int mesActual = month + 1;
-                String diaFormateado = (dayOfMonth < 10)? CERO + String.valueOf(dayOfMonth):String.valueOf(dayOfMonth);
-                String mesFormateado = (mesActual < 10)? CERO + String.valueOf(mesActual):String.valueOf(mesActual);
-                etFecha.setText(diaFormateado + BARRA + mesFormateado + BARRA + year);
+                String formatDay = (dayOfMonth < 10)? zero + dayOfMonth :String.valueOf(dayOfMonth);
+                String formatMonth = (mesActual < 10)? zero + mesActual :String.valueOf(mesActual);
+                etDate.setText(formatDay + slash + formatMonth + slash + year);
             }
-        },anio, mes, dia);
-        recogerFecha.show();
+        }, year, month, day);
+        datePicker.show();
+
     }
+
+    private void showUserInfo() {
+
+        /*etName.setText("Jose Luis");
+        etDescription.setText("Me gusta cagarme encima");
+        int i = 30;
+        sCountry.setSelection(i);*/
+        User u = User.getInstance();
+        etName.setText(u.getName());
+        if(!u.getDescription().equals("null")) etDescription.setText(u.getDescription());
+        if(!u.getBirthDate().equals("null")) etDate.setText(u.getBirthDate());
+        if (!u.getGender().equals("null")) {
+            if (u.getGender().equals("1")) tb_fem.setChecked(true);
+            else tb_mal.setChecked(true);
+        }
+        if(!u.getCountry().equals("null")) sCountry.setSelection(Integer.parseInt(u.getCountry()));
+
+    }
+
+    private void saveEditData() {
+        User u = User.getInstance();
+        u.setName(etName.getText().toString());
+        if(tb_fem.isChecked())
+            u.setGender("1");
+        else u.setGender("0");
+        u.setDescription(etDescription.getText().toString());
+        u.setBirthDate(etDate.getText().toString());
+        u.setCountry(String.valueOf(sCountry.getSelectedItemPosition()));
+
+
+
+        String route = "http://10.4.41.146:3001/user/"+u.getId()+"/info";
+        ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), route);
+        connetion.postUserInfo();
+    }
+
+
+
 
 }
