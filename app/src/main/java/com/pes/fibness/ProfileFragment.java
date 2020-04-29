@@ -103,6 +103,7 @@ public class ProfileFragment extends Fragment {
             Glide.with(ProfileFragment.this)
                     .load(userImage)
                     .centerCrop()
+                    .circleCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(ivUser);
         }

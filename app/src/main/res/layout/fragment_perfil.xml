@@ -16,14 +16,13 @@
             android:background="#fff"
             android:orientation="vertical">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/iv_user"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:src="@mipmap/iv_profile"
-                android:layout_gravity="center"
-                app:civ_border_width="1dp"
-                app:civ_border_color="@color/c_let_light_bkg"/>
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:src="@drawable/ic_account_frame" />
 
             <TextView
                 android:id="@+id/username"

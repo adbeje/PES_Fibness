@@ -172,6 +172,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 Glide.with(EditProfileActivity.this)
                         .load(imageFiles.get(0))
                         .centerCrop()
+                        .circleCrop()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(ivUser);
             }
@@ -212,6 +213,7 @@ public class EditProfileActivity extends AppCompatActivity {
             Glide.with(EditProfileActivity.this)
                     .load(userImage)
                     .centerCrop()
+                    .circleCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(ivUser);
         }
