@@ -76,5 +76,9 @@
     <string name="following">Seguidos</string>
     <string name="post">Post</string>
 
+    <string name="Rest">DESCANSO: </string>
+    <string name="Series">SERIES: </string>
+    <string name="Repetitions">REPETICIONES: </string>
+
 
 </resources>

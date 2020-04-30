@@ -46,9 +46,11 @@ public class Exercise_Adap extends BaseAdapter {
             TextView titulo = (TextView) vista.findViewById(R.id.ExerciseTitle);
             TextView repet = (TextView) vista.findViewById(R.id.txtRepet);
             TextView rest = (TextView) vista.findViewById(R.id.txtRest);
+            TextView series = (TextView) vista.findViewById(R.id.txtSeries);
             titulo.setText(dades.get(position).TitleEx);
-            repet.setText("SERIES: " + dades.get(position).NumSerie);
+            series.setText("SERIES: " + dades.get(position).NumSerie);
             rest.setText("REST: " + dades.get(position).NumRest + "s");
+            repet.setText("REPETITIONS: " + dades.get(position).NumRepet);
         }
 
         return vista;

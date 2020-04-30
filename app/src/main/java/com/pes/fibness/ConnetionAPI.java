@@ -492,6 +492,8 @@ public class ConnetionAPI {
                         e.NumRest = String.valueOf(numRest);
                         int numSerie = (Integer) exercise.getInt("numsets");
                         e.NumSerie = String.valueOf(numSerie);
+                        int numRept = (Integer) exercise.getInt("numrepeticiones");
+                        e.NumRepet = String.valueOf(numRept);
                         e.id = (Integer) exercise.getInt("idactividad");
                         exerciseList.add(e);
                     }
@@ -517,14 +519,15 @@ public class ConnetionAPI {
 
     }
 
-    public void postTrainingExercises(int idT, final String nameE, final int numRest, final int numSerie, final int Position){
+    public void postTrainingExercises(int idT, final String nameE, final int numRest, final int numSerie, final int numRept,
+                                      final int Position){
         final String data = "{"+
                 "\"idEntrenamiento\": " + idT +"," +
                 "\"nombre\": " + "\"" + nameE + "\"," +
                 "\"descripcion\": " + "\"" + "" + "\"," +
                 "\"tiempoEjecucion\": " + 0 + "," +
                 "\"numSets\": " + numSerie + "," +
-                "\"numRepeticiones\": " + 0 + "," +
+                "\"numRepeticiones\": " + numRept + "," +
                 "\"tiempoDescanso\": " + numRest +
                 "}";
 
@@ -541,6 +544,7 @@ public class ConnetionAPI {
                         e.TitleEx = nameE;
                         e.NumSerie = String.valueOf(numSerie);
                         e.NumRest = String.valueOf(numRest);
+                        e.NumRepet = String.valueOf(numRept);
                         e.id = id;
                         User.getInstance().updateExercise(Position, e);
                     }
@@ -577,14 +581,14 @@ public class ConnetionAPI {
         enqueue();
     }
 
-    public void updateTrainingExercises(final String nameE, final int numRest, final int numSerie){
+    public void updateTrainingExercises(final String nameE, final int numRest, final int numSerie, final int numRept){
         System.out.println("AQUI " + nameE);
         final String data = "{"+
                 "\"nombre\": " + "\"" + nameE + "\"," +
                 "\"descripcion\": " + "\"" + "" + "\"," +
                 "\"tiempoEjecucion\": " + 0 + "," +
                 "\"numSets\": " + numSerie + "," +
-                "\"numRepeticiones\": " + 0 + "," +
+                "\"numRepeticiones\": " + numRept + "," +
                 "\"tiempoDescanso\": " + numRest +
                 "}";
         request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {

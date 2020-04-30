@@ -329,6 +329,7 @@ class Training{
 class Exercise{
     int id;
     String TitleEx;
+    String NumRepet;
     String NumSerie;
     String NumRest;
     //Image image;
