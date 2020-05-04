@@ -4,6 +4,6 @@
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:textSize="20dp"
-    android:gravity="left"
+    android:gravity="center"
     android:textColor="#FFFFFF"
 />

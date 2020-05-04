@@ -75,7 +75,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
         final EditText numSeries = (EditText) dialog.findViewById(R.id.num_Series_edit);
         numSeries.setText(exercise.get(position).NumSerie);
         final EditText numRepet = (EditText) dialog.findViewById(R.id.num_Repet_edit);
-        numSeries.setText(exercise.get(position).NumRepet);
+        numRepet.setText(exercise.get(position).NumRepet);
         Button btndone = (Button) dialog.findViewById(R.id.btn_done_edit);
         Button btndelete = (Button) dialog.findViewById(R.id.btn_delete_edit);
         btndone.setOnClickListener(new View.OnClickListener() {

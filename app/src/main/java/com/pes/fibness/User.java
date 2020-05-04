@@ -30,6 +30,8 @@ public class User {
     private boolean[] settings = new boolean[5]; /*0 = Age, 1 = Distance, 2 = Invitation , 3 = Follower, 4 = Message*/
     private String recoveryCode;
 
+    private String[] dias = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"};
+
     /*User fitness*/
     private static ArrayList<Training> trainingList = new ArrayList<>();
     private static ArrayList<Exercise> exerciseList = new ArrayList<>();
@@ -274,6 +276,15 @@ public class User {
         return -1;
     }
 
+    /**Dias**/
+    public ArrayList<String> getDias(){
+        ArrayList<String> ListaDias = new ArrayList<>();
+        for(int i = 0; i < dias.length; i++){
+            ListaDias.add(dias[i]);
+        }
+        return ListaDias;
+    }
+
     /** Meals **/
     public ArrayList<Meal> getMealList(){
         return mealList;
@@ -295,6 +306,26 @@ public class User {
         mealList.set(pos, m);
     }
 
+    public int sizeMealList(){return mealList.size();}
+
+    public void setMealID(String name, int newID) {
+        for(int i = 0; i < mealList.size(); ++i){
+            if(mealList.get(i).name.equals(name)){
+                mealList.get(i).id = newID;
+                break;
+            }
+        }
+    }
+
+    public int getMealID(String name) {
+        for (int i = 0; i < mealList.size(); ++i) {
+            if (mealList.get(i).name.equals(name)) {
+                return mealList.get(i).id;
+            }
+        }
+        return -1;
+    }
+
     /** Aliments **/
     public ArrayList<Aliment> getAlimentList(){
         return alimentList;
@@ -314,6 +345,14 @@ public class User {
 
     public void updateAliment(int pos, Aliment a){
         alimentList.set(pos, a);
+    }
+
+    public int getAlimentID(int position){ return alimentList.get(position).id;  }
+
+    public int getSizeAlimentList(){ return alimentList.size(); }
+
+    public void setAlimentID(int pos, int newID){
+        alimentList.get(pos).id = newID;
     }
 
 }

@@ -27,6 +27,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/trainings");
         c.getUserTrainings();
+        ConnetionAPI d = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/diets");
+        d.getUserDiets();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_layout, perfil);
         ft.commit();

@@ -79,4 +79,17 @@
     <string name="Series">SERIES: </string>
     <string name="Repetitions">REPETITIONS: </string>
 
+    <string name="AddEx">Add an Exercise</string>
+
+    <string name="AddMeal">Add a Meal</string>
+    <string name="Time">Hour</string>
+    <string name="Min">Minutes</string>
+
+    <string name="Delete">Delete</string>
+
+    <string name="Description">Description</string>
+    <string name="Name">Name</string>
+
+    <string name="Calories">Calories</string>
+
 </resources>

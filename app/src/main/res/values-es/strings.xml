@@ -80,5 +80,17 @@
     <string name="Series">SERIES: </string>
     <string name="Repetitions">REPETICIONES: </string>
 
+    <string name="AddEx">Añade Ejercicio</string>
+
+    <string name="AddMeal">Añade una Comida</string>
+    <string name="Time">Hora</string>
+    <string name="Min">Minutos</string>
+
+    <string name="Delete">Borrar</string>
+
+    <string name="Description">Descripción</string>
+    <string name="Name">Nombre</string>
+
+    <string name="Calories">Calorias</string>
 
 </resources>

@@ -21,6 +21,8 @@
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".CreateTrainingActivity" />
         <activity android:name=".CreateDietActivity" />
+        <activity android:name=".ChooseDayActivity" />
+        <activity android:name=".MealActivity"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

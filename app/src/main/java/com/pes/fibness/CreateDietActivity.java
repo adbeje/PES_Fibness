@@ -21,7 +21,9 @@ public class CreateDietActivity extends AppCompatActivity {
     private Boolean isNew;
     private String titleDiet = "";
     private ListView foodList;
-    private ArrayList<Meal> food = new ArrayList<>();
+    private ArrayList<Aliment> food = new ArrayList<>();
+    private String day = "";
+    private String meal = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,11 +31,11 @@ public class CreateDietActivity extends AppCompatActivity {
         setContentView(R.layout.activity_concrete_diet);
         getExtras();
 
-        food = User.getInstance().getMealList();
+        food = User.getInstance().getAlimentList();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarCD);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(titleDiet);
+        getSupportActionBar().setTitle(titleDiet + "-" + day + "-" + meal);
         getSupportActionBar().setSubtitle(User.getInstance().getDietDesc(titleDiet));
 
         foodList = (ListView) findViewById(R.id.FoodList);
@@ -67,14 +69,12 @@ public class CreateDietActivity extends AppCompatActivity {
         builder.setTitle("Food");
         final AlertDialog dialog = builder.create();
         dialog.show();
-        final EditText txtName = (EditText) dialog.findViewById(R.id.FoodTitle_edit);
+        final EditText txtName = (EditText) dialog.findViewById(R.id.EditNameAliment);
         txtName.setText(food.get(position).name);
-        final EditText numCalories = (EditText) dialog.findViewById(R.id.num_Calories_edit);
-        numCalories.setText(food.get(position).id);
-        final EditText numHour = (EditText) dialog.findViewById(R.id.num_Hour_edit);
-        numHour.setText(food.get(position).time);
-        Button btndone = (Button) dialog.findViewById(R.id.btn_doneFood_edit);
-        Button btndelete = (Button) dialog.findViewById(R.id.btn_deleteFood_edit);
+        final EditText numCalories = (EditText) dialog.findViewById(R.id.EditSetCalories);
+        numCalories.setText(food.get(position).calories);
+        Button btndone = (Button) dialog.findViewById(R.id.btEditDone);
+        Button btndelete = (Button) dialog.findViewById(R.id.btEditDelete);
         btndone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,17 +87,18 @@ public class CreateDietActivity extends AppCompatActivity {
                     numCalories.setError("Please, add a number");
                     correct = false;
                 }
-                if (numHour.getText().toString().trim().length() == 0) {
-                    numHour.setError("Please, add a time");
-                    correct = false;
-                }
                 if (correct) {
-                    Meal d2 = new Meal();
-                    d2.name = txtName.getText().toString();
-                    d2.id = Integer.getInteger(numCalories.getText().toString());
-                    d2.time = numHour.getText().toString();
-                    food.set(position, d2);
-                    User.getInstance().setMealList(food);
+                    Aliment a2 = new Aliment();
+                    a2.name = txtName.getText().toString();
+                    a2.calories = numCalories.getText().toString();
+                    int idFood = User.getInstance().getAlimentID(position);
+                    a2.id = idFood;
+                    food.set(position, a2);
+                    User.getInstance().setAlimentList(food);
+
+                    ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/aliment/" + idFood);
+                    c.updateMealAliment(a2.name, a2.calories);
+
                     refreshList();
                     dialog.dismiss();
                 }
@@ -106,8 +107,12 @@ public class CreateDietActivity extends AppCompatActivity {
         btndelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                food.remove(position);
-                User.getInstance().setMealList(food);
+                int idFood = User.getInstance().getAlimentID(position);
+                ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/aliment/" + idFood );
+                c.deleteMealAliment();
+
+                User.getInstance().deleteAliment(position);
+
                 refreshList();
                 dialog.dismiss();
             }
@@ -125,10 +130,9 @@ public class CreateDietActivity extends AppCompatActivity {
         builder.setTitle("Food");
         final AlertDialog dialog = builder.create();
         dialog.show();
-        final EditText txtName = (EditText) dialog.findViewById(R.id.FoodTitle);
-        final EditText numCalories = (EditText) dialog.findViewById(R.id.num_Calories);
-        final EditText numHour = (EditText) dialog.findViewById(R.id.num_Hour);
-        Button bt = (Button) dialog.findViewById(R.id.btn_doneFood);
+        final EditText txtName = (EditText) dialog.findViewById(R.id.NewNameAliment);
+        final EditText numCalories = (EditText) dialog.findViewById(R.id.NewSetCalories);
+        Button bt = (Button) dialog.findViewById(R.id.btdone);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,17 +145,20 @@ public class CreateDietActivity extends AppCompatActivity {
                     numCalories.setError("Please, add a number");
                     correct = false;
                 }
-                if (numHour.getText().toString().trim().length() == 0) {
-                    numHour.setError("Please, add a time");
-                    correct = false;
-                }
                 if (correct) {
-                    Meal d2 = new Meal();
-                    d2.name = txtName.getText().toString();
-                    d2.id = Integer.valueOf(numCalories.getText().toString());
-                    d2.time = numHour.getText().toString();
-                    food.add(d2);
-                    User.getInstance().setMealList(food);
+                    Aliment a2 = new Aliment();
+                    a2.name = txtName.getText().toString();
+                    a2.calories = numCalories.getText().toString();
+                    a2.id = -1;
+
+                    User.getInstance().addAliment(a2);
+
+                    int pos = User.getInstance().getSizeAlimentList();
+
+                    int idMeal = User.getInstance().getMealID(meal);
+                    ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/aliment");
+                    c.postMealAliment(idMeal, a2.name, a2.calories, pos-1);
+
                     refreshList();
                     dialog.dismiss();
                 }
@@ -163,6 +170,8 @@ public class CreateDietActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         isNew = extras.getBoolean("new");
         titleDiet = extras.getString("title");
+        day = extras.getString("dia");
+        meal = extras.getString("comida");
     }
 
 }
