@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/text1"
-    android:layout_width="fill_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:textSize="20dp"
-    android:gravity="left"
-    android:textColor="#FFFFFF"
-/>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@android:id/text1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textSize="20sp"
+            android:gravity="start"
+            android:textColor="#FFFFFF"
+        />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

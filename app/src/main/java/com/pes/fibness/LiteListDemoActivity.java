@@ -35,7 +35,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 /**
  * This shows to include a map in lite mode in a ListView.
@@ -91,7 +91,7 @@ public class LiteListDemoActivity extends AppCompatActivity {
      * that is programatically initialised in
      * {@link #(int, android.view.View, android.view.ViewGroup)}
      */
-    private class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
+    class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
 
         private NamedLocation[] namedLocations;
 
@@ -172,13 +172,16 @@ public class LiteListDemoActivity extends AppCompatActivity {
 
                 // Add a marker for this item and set the camera
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(data.location, 13f));
-                map.addMarker(new MarkerOptions().position(data.location));
+                //map.addMarker(new MarkerOptions().position(data.location));
+                map.addPolyline(new PolylineOptions()
+                                .add(data.location)
+                                .add(new LatLng(37.45, -122.0)));
 
                 // Set the map type back to normal.
                 map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             }
 
-            private void bindView(int pos) {
+            void bindView(int pos) {
                 NamedLocation item = namedLocations[pos];
                 // Store a reference of the ViewHolder object in the layout.
                 layout.setTag(this);
@@ -216,7 +219,7 @@ public class LiteListDemoActivity extends AppCompatActivity {
      * Location represented by a position ({@link com.google.android.gms.maps.model.LatLng} and a
      * name ({@link java.lang.String}).
      */
-    private static class NamedLocation {
+    static class NamedLocation {
 
         public final String name;
         public final LatLng location;

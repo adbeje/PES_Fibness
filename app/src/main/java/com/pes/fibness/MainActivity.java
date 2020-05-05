@@ -71,11 +71,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                //boolean b = verifyEmail(emailAddress.getEditableText().toString().trim());
+                boolean b = verifyEmail(emailAddress.getEditableText().toString().trim());
 
-                //if (!b)
-                //    emailAddress.setError("Enter a valid email.");
-                //else checkUser();
+                if (!b)
+                    emailAddress.setError("Enter a valid email.");
+                else checkUser();
 
                 homeActivity();
             }
