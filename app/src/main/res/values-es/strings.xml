@@ -56,7 +56,7 @@
     <string name="achievements">Logros</string>
     <string name="editProfile">Editar perfil</string>
     <string name="titleAch">"Empieza la aventura "</string>
-    <string name="descriptionAch">Por cada entrenamiento completado se añade una cierta cantidad de metros a tu progresión. ¿Cuántos cimas puedes coronar?</string>
+    <string name="descriptionAch">Por cada ruta recorrida se añade una cierta cantidad de metros a tu progresión. ¿Cuántos cimas puedes coronar?</string>
     <string name="letGo">¡Allá vamos!</string>
     <string name="share">Compartir</string>
     <string name="done">Hecho</string>

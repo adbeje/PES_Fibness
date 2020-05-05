@@ -34,12 +34,13 @@ public class User {
     private static ArrayList<Diet> dietList = new ArrayList<>();
     private static ArrayList<Meal> mealList = new ArrayList<>();
     private static ArrayList<Aliment> alimentList = new ArrayList<>();
-
+    private ArrayList<Achievement> achievements = new ArrayList<>(4);
 
     /*we are applying singleton because we will have an instance for each aplication user*/
     private static User instance = null;
     private User(){
         image = null; recoveryCode = "";
+        System.out.println("achievements size: " +  achievements.size());
 
     }
 
@@ -102,6 +103,10 @@ public class User {
 
     public String getImageRoute() { return imageRoute; }
     public void setImageRoute(String imageRoute) { this.imageRoute = imageRoute; }
+
+    /** Achievements **/
+    public ArrayList<Achievement> getAchievements() { return achievements; }
+    public void setAchievements(ArrayList<Achievement> achievements) { this.achievements = achievements; }
 
 
     /***************************************************************************/
@@ -344,4 +349,11 @@ class Aliment{
     int id;
     String name;
     String calories;
+}
+
+class Achievement{
+    int id;
+    Boolean active;
+    int distance;
+
 }

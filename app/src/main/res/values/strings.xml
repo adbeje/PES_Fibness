@@ -55,7 +55,7 @@
     <string name="achievements">Achievements</string>
     <string name="editProfile">Edit Profile</string>
     <string name="titleAch">"Start the adventure "</string>
-    <string name="descriptionAch">For each completed workout is added a certain amount of meters to your progression. How many peaks can you crown?</string>
+    <string name="descriptionAch">For each route traveled is added a certain amount of meters to your progression. How many peaks can you crown?</string>
     <string name="letGo">Here we go!</string>
     <string name="share">Share</string>
     <string name="done">Done</string>
@@ -75,5 +75,6 @@
     <string name="following">Following</string>
     <string name="post">Post</string>
     <string name="title_activity_maps">Map</string>
+    <string name="message">The best views are achieved after a hard climb.</string>
 
 </resources>
