@@ -1,5 +1,6 @@
 package com.pes.fibness;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -38,11 +39,21 @@ public class RutasFragment extends Fragment {
         mRecyclerView = root.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mRecyclerView.setAdapter(new RutasFragment.MapAdapter(LIST_LOCATIONS));
+        RutasFragment.MapAdapter adapter = new RutasFragment.MapAdapter(LIST_LOCATIONS);
+        adapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mapPage = new Intent(getActivity(), MapViewActivity.class);
+                mapPage.putExtra("origen", "");
+                mapPage.putExtra("destino", "");
+                mapPage.putExtra("tituloRuta", "");
+                startActivity(mapPage);
+            }
+        });
+        mRecyclerView.setAdapter(adapter);
         mRecyclerView.setRecyclerListener(mRecycleListener);
         return root;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -63,9 +74,10 @@ public class RutasFragment extends Fragment {
      * that is programatically initialised in
      * {@link #(int, android.view.View, android.view.ViewGroup)}
      */
-    private class MapAdapter extends RecyclerView.Adapter<RutasFragment.MapAdapter.ViewHolder> {
+    private class MapAdapter extends RecyclerView.Adapter<RutasFragment.MapAdapter.ViewHolder> implements View.OnClickListener{
 
         private RutasFragment.NamedLocation[] namedLocations;
+        private View.OnClickListener listener;
 
         private MapAdapter(RutasFragment.NamedLocation[] locations) {
             super();
@@ -74,8 +86,12 @@ public class RutasFragment extends Fragment {
 
         @Override
         public RutasFragment.MapAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new RutasFragment.MapAdapter.ViewHolder(LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.lite_list_demo_row, parent, false));
+
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lite_list_demo_row, parent, false);
+
+            view.setOnClickListener(this);
+
+            return new RutasFragment.MapAdapter.ViewHolder(view);
         }
 
         /**
@@ -93,6 +109,17 @@ public class RutasFragment extends Fragment {
         @Override
         public int getItemCount() {
             return namedLocations.length;
+        }
+
+        public void setOnClickListener(View.OnClickListener listener){
+            this.listener = listener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(listener != null){
+                listener.onClick(v);
+            }
         }
 
         /**
