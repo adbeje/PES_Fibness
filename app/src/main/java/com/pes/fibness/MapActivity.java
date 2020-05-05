@@ -1,24 +1,21 @@
 package com.pes.fibness;
 
-import android.os.Bundle;
-
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-class MapViewActivity extends AppCompatActivity {
+import android.os.Bundle;
+
+public class MapActivity extends AppCompatActivity {
 
     private String origen = "";
     private String destino = "";
     private String tituloRuta = "";
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map_ruta);
+        setContentView(R.layout.activity_map_rutas);
         getExtras();
-
     }
-
 
     private void getExtras() {
         Bundle extras = getIntent().getExtras();

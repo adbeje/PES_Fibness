@@ -43,7 +43,7 @@ public class RutasFragment extends Fragment {
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent mapPage = new Intent(getActivity(), MapViewActivity.class);
+                Intent mapPage = new Intent(getActivity(), MapActivity.class);
                 mapPage.putExtra("origen", "");
                 mapPage.putExtra("destino", "");
                 mapPage.putExtra("tituloRuta", "");
