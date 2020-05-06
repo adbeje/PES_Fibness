@@ -76,5 +76,7 @@
     <string name="post">Post</string>
     <string name="title_activity_maps">Map</string>
     <string name="message">The best views are achieved after a hard climb.</string>
+    <string name="chat">CHAT</string>
+    <string name="users">USERS</string>
 
 </resources>

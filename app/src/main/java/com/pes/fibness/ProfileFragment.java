@@ -1,5 +1,6 @@
 package com.pes.fibness;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -22,7 +25,7 @@ import static com.pes.fibness.R.id.iv_user;
 
 public class ProfileFragment extends Fragment {
 
-    private TextView username, nFollowers, nFollowing, nPost;
+    private TextView username, chat, users;
     private User u = User.getInstance();
     ImageView ivUser;
 
@@ -33,9 +36,8 @@ public class ProfileFragment extends Fragment {
         Context thiscontext = container.getContext();
 
         username = root.findViewById(R.id.username);
-        nFollowers = root.findViewById(R.id.nFollowers);
-        nFollowing = root.findViewById(R.id.nFollowing);
-        nPost = root.findViewById(R.id.nPost);
+        chat = root.findViewById(R.id.chat);
+        users = root.findViewById(R.id.userModels);
         ivUser = root.findViewById(iv_user);
 
 
@@ -85,6 +87,23 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+
+        users.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*hay que cargar (id, nombre) de los usuario, excepto el que solicita */
+                Intent i = new Intent(getActivity(), SearchUsersActivity.class);
+                startActivity(i);
+            }
+        });
+
+
+
+
+
+
+
+
         return root;
     }
 
@@ -96,9 +115,6 @@ public class ProfileFragment extends Fragment {
             userImage = u.getImage();
         }
         username.setText(u.getName());
-        nFollowers.setText(String.valueOf(User.getInstance().getnFollower()));
-        nFollowing.setText(String.valueOf(User.getInstance().getnFollowing()));
-        nPost.setText(String.valueOf(User.getInstance().getnPost()));
         if (validImage) {
             Glide.with(ProfileFragment.this)
                     .load(userImage)

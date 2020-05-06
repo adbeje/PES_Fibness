@@ -52,73 +52,38 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:gravity="center"
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/chat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/followers"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/nFollowers"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="10dp"
-                        android:text=""
-                        android:textColor="@color/app_bkg_color"
+                        android:text="@string/chat"
+                        android:textColor="@color/c_let_light_bkg"
+                        android:textStyle="bold"
                         android:textSize="20sp"
-                        android:textStyle="bold" />
+                        />
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:gravity="center"
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/userModels"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/following"
+                        android:text="@string/users"
+                        android:textColor="@color/c_let_light_bkg"
+                        android:textStyle="bold"
                         android:textSize="20sp" />
 
-                    <TextView
-                        android:id="@+id/nFollowing"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="10dp"
-                        android:text=""
-                        android:textColor="@color/app_bkg_color"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/post"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/nPost"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="10dp"
-                        android:text=""
-                        android:textColor="@color/app_bkg_color"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

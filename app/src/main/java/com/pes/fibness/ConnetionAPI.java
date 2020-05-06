@@ -292,11 +292,19 @@ public class ConnetionAPI {
             public void onResponse(String response) {
 
                 System.out.println("Respuesta: "+ response);
-                if(response.equals("OK")){
-                    Toast.makeText(getApplicationContext(), "Your password has been reset successfully", Toast.LENGTH_SHORT).show();
-                    homeActivity();
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    Boolean b = (Boolean)obj.get("result");
+                    if(b){
+                        Toast.makeText(getApplicationContext(), "Your password has been reset successfully", Toast.LENGTH_SHORT).show();
+                        homeActivity();
+                    }
+                    else Toast.makeText(getApplicationContext(), "Your password has not been reset successfully", Toast.LENGTH_SHORT).show();
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                else Toast.makeText(getApplicationContext(), "Your password has not been reset successfully", Toast.LENGTH_SHORT).show();
 
             }
         }, new Response.ErrorListener() {
