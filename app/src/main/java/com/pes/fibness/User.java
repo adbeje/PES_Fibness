@@ -1,7 +1,6 @@
 package com.pes.fibness;
 
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class User {
@@ -24,7 +23,7 @@ public class User {
     /*User profile*/
     private String name, email, userType, profileType, gender, description, birthDate, registerDate, country, imageRoute;
     private int nFollower, nFollowing,  nPost;
-    private File image;
+    private byte[] imageByteArray;
     private boolean[] settings = new boolean[5]; /*0 = Age, 1 = Distance, 2 = Invitation , 3 = Follower, 4 = Message*/
     private String recoveryCode;
 
@@ -39,7 +38,7 @@ public class User {
     /*we are applying singleton because we will have an instance for each aplication user*/
     private static User instance = null;
     private User(){
-        image = null; recoveryCode = "";
+        imageByteArray = null; recoveryCode = "";
 
     }
 
@@ -63,8 +62,8 @@ public class User {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public File getImage() { return image; }
-    public void setImage(File image) { this.image = image; }
+    public byte[] getImage() { return imageByteArray; }
+    public void setImage(byte[] imageArray) { this.imageByteArray = imageArray; }
 
     public int getnFollower() { return nFollower; }
     public void setnFollower(int nFollower) { this.nFollower = nFollower; }

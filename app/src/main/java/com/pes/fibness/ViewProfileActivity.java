@@ -77,7 +77,7 @@ public class ViewProfileActivity extends AppCompatActivity {
         File userImage = null;
         if (u.getImage() != null) {
             validImage = true;
-            userImage = u.getImage();
+            //userImage = u.getImage();
         }
 
         username.setText(u.getName());

@@ -168,7 +168,7 @@ public class EditProfileActivity extends AppCompatActivity {
         EasyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
             @Override
             public void onImagesPicked(@NonNull List<File> imageFiles, EasyImage.ImageSource source, int type) {
-                u.setImage(imageFiles.get(0));
+                //u.setImage(imageFiles.get(0));
                 Glide.with(EditProfileActivity.this)
                         .load(imageFiles.get(0))
                         .centerCrop()
@@ -200,7 +200,7 @@ public class EditProfileActivity extends AppCompatActivity {
         File userImage = null;
         if (u.getImage() != null) {
             validImage = true;
-            userImage = u.getImage();
+            //userImage = u.getImage();
         }
         if(!u.getDescription().equals("null")) etDescription.setText(u.getDescription());
         if(!u.getBirthDate().equals("null")) etDate.setText(u.getBirthDate());
