@@ -1,6 +1,8 @@
 package com.pes.fibness;
 
 
+import android.util.Pair;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -35,6 +37,7 @@ public class User {
     private static ArrayList<Meal> mealList = new ArrayList<>();
     private static ArrayList<Aliment> alimentList = new ArrayList<>();
     private ArrayList<Achievement> achievements = new ArrayList<>(4);
+    private ArrayList<Pair<Integer, String>> shortUsersInfo = new ArrayList<>();
 
     /*we are applying singleton because we will have an instance for each aplication user*/
     private static User instance = null;
@@ -107,6 +110,11 @@ public class User {
     /** Achievements **/
     public ArrayList<Achievement> getAchievements() { return achievements; }
     public void setAchievements(ArrayList<Achievement> achievements) { this.achievements = achievements; }
+
+    /** Serach Users **/
+    public ArrayList<Pair<Integer, String>> getShortUsersInfo() { return shortUsersInfo; }
+    public void setShortUsersInfo(ArrayList<Pair<Integer, String>> shortUsersInfo) { this.shortUsersInfo = shortUsersInfo; }
+
 
 
     /***************************************************************************/

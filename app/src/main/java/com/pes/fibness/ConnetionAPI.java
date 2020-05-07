@@ -2,6 +2,8 @@ package com.pes.fibness;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
+import android.util.Pair;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -730,6 +732,44 @@ public class ConnetionAPI {
         //cuando este la ruta de api definida se añadira el codigo
 
     }
+
+
+    /*load id & username to show in SearchUsers activity*/
+    public void getShortUserInfo(Integer id) {
+        System.out.println("Dentro de getShortUserInfo");
+
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Respuesta: "+ response);
+
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    System.out.println("Respuesta de getShortUserInfo: " + obj);
+
+                    //obtener el listado y introducir en arrayList
+
+                    /*
+                    ArrayList<Pair<Integer,String>> users = new ArrayList<>();
+                    User.getInstance().setShortUsersInfo(users);*/
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+    }
+
+
 
 
 

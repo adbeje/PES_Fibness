@@ -92,6 +92,10 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 /*hay que cargar (id, nombre) de los usuario, excepto el que solicita */
+                /*cargar (id,username) de los usuarios*/
+                ConnetionAPI connetionAPI = new ConnetionAPI(getContext(), "");
+                connetionAPI.getShortUserInfo(User.getInstance().getId());
+
                 Intent i = new Intent(getActivity(), SearchUsersActivity.class);
                 startActivity(i);
             }
