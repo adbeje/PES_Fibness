@@ -37,13 +37,8 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
         following = findViewById(R.id.following);
         recyclerView = findViewById(R.id.recyclerview);
 
-        /*falta añadir
         ArrayList<Pair<Integer,String>> users = User.getInstance().getShortUsersInfo();
         names = users;
-        */
-        for(int i=0; i< 10; ++i){
-            names.add(i,new Pair<Integer, String>(i, "HOLA"));
-        }
 
         this.setSupportActionBar(toolbar);
         this.getSupportActionBar().setTitle("");

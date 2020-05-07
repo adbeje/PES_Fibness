@@ -745,14 +745,18 @@ public class ConnetionAPI {
                 System.out.println("Respuesta: "+ response);
 
                 try {
-                    JSONObject obj = new JSONObject(response);
-                    System.out.println("Respuesta de getShortUserInfo: " + obj);
-
-                    //obtener el listado y introducir en arrayList
-
-                    /*
+                    JSONArray jsonArray = new JSONArray(response);
                     ArrayList<Pair<Integer,String>> users = new ArrayList<>();
-                    User.getInstance().setShortUsersInfo(users);*/
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            JSONObject obj = jsonArray.getJSONObject(i);
+                            users.add(i, new Pair<Integer, String>((Integer) obj.get("id"), (String) obj.get("nombre")));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    User.getInstance().setShortUsersInfo(users);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

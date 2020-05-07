@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,18 +90,29 @@ public class ProfileFragment extends Fragment {
         });
 
 
+        /*load user info (id,username)*/
         users.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*hay que cargar (id, nombre) de los usuario, excepto el que solicita */
-                /*cargar (id,username) de los usuarios*/
-                ConnetionAPI connetionAPI = new ConnetionAPI(getContext(), "");
-                connetionAPI.getShortUserInfo(User.getInstance().getId());
+                User u = User.getInstance();
+                ConnetionAPI connetionAPI = new ConnetionAPI(getContext(), "http://10.4.41.146:3001/user/shortInfo/"+ u.getId());
+                connetionAPI.getShortUserInfo(u.getId());
 
-                Intent i = new Intent(getActivity(), SearchUsersActivity.class);
-                startActivity(i);
+                @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                    @Override
+                    public void handleMessage(Message msg) {
+
+                        Intent i = new Intent().setClass(getActivity(), SearchUsersActivity.class);
+                        startActivity(i);
+                    }
+                };
+                h.sendEmptyMessageDelayed(0, 50);
+
             }
         });
+
+
+
 
 
 
