@@ -23,7 +23,9 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,14 +43,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <com.google.android.gms.maps.MapView
+                <ImageView
                     android:id="@+id/lite_listrow_map"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    map:liteMode="true"
-                    map:mapType="none" />
+                    android:layout_width="fill_parent"
+                    android:layout_height="150dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -60,14 +60,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Descripcion" />
+                        android:text="Descripcion:" />
 
                     <TextView
                         android:id="@+id/textView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="KM recorridos" />
+                        android:text="Distancia:" />
                 </LinearLayout>
 
             </LinearLayout>

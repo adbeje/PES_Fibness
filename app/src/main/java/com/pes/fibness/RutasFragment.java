@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,13 +16,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolylineOptions;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.mapbox.api.staticmap.v1.MapboxStaticMap;
+import com.mapbox.api.staticmap.v1.StaticMapCriteria;
+import com.mapbox.geojson.Point;
 
 public class RutasFragment extends Fragment {
 
@@ -43,15 +43,16 @@ public class RutasFragment extends Fragment {
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent mapPage = new Intent(getActivity(), MapActivity.class);
-                mapPage.putExtra("origen", "");
-                mapPage.putExtra("destino", "");
-                mapPage.putExtra("tituloRuta", "");
+                Intent mapPage = new Intent(getActivity(), MapViewActivity.class);
+                int pos = mRecyclerView.getChildLayoutPosition(view);
+                Toast.makeText(view.getContext(), "" + pos, Toast.LENGTH_SHORT).show();
+                mapPage.putExtra("origen", LIST_LOCATIONS[pos].origen);
+                mapPage.putExtra("destino", LIST_LOCATIONS[pos].destino);
+                mapPage.putExtra("tituloRuta", LIST_LOCATIONS[pos].name);
                 startActivity(mapPage);
             }
         });
         mRecyclerView.setAdapter(adapter);
-        mRecyclerView.setRecyclerListener(mRecycleListener);
         return root;
     }
 
@@ -84,6 +85,7 @@ public class RutasFragment extends Fragment {
             namedLocations = locations;
         }
 
+        @NonNull
         @Override
         public RutasFragment.MapAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -123,19 +125,19 @@ public class RutasFragment extends Fragment {
         }
 
         /**
-         * Holder for Views used in the {@link LiteListDemoActivity.MapAdapter}.
+         * Holder for Views used in the {@link RutasFragment.MapAdapter}.
          * Once the  the <code>map</code> field is set, otherwise it is null.
-         * When the {@link #onMapReady(com.google.android.gms.maps.GoogleMap)} callback is received and
+         *
          * the {@link com.google.android.gms.maps.GoogleMap} is ready, it stored in the {@link #map}
          * field. The map is then initialised with the NamedLocation that is stored as the tag of the
          * MapView. This ensures that the map is initialised with the latest data that it should
          * display.
          */
-        class ViewHolder extends RecyclerView.ViewHolder implements OnMapReadyCallback {
+        class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-            MapView mapView;
+            ImageView mapView;
             TextView title;
-            GoogleMap map;
+            MapboxStaticMap map;
             View layout;
 
             private ViewHolder(View itemView) {
@@ -143,41 +145,36 @@ public class RutasFragment extends Fragment {
                 layout = itemView;
                 mapView = layout.findViewById(R.id.lite_listrow_map);
                 title = layout.findViewById(R.id.lite_listrow_text);
-                if (mapView != null) {
-                    // Initialise the MapView
-                    mapView.onCreate(null);
-                    // Set the map ready callback to receive the GoogleMap object
-                    mapView.getMapAsync(this);
-                }
-            }
-
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                MapsInitializer.initialize(getContext());
-                map = googleMap;
-                setMapLocation();
             }
 
             /**
-             * Displays a {@link LiteListDemoActivity.NamedLocation} on a
+             * Displays a {@link RutasFragment.NamedLocation} on a
              * {@link com.google.android.gms.maps.GoogleMap}.
              * Adds a marker and centers the camera on the NamedLocation with the normal map type.
              */
             private void setMapLocation() {
-                if (map == null) return;
 
                 RutasFragment.NamedLocation data = (RutasFragment.NamedLocation) mapView.getTag();
-                if (data == null) return;
+                com.google.android.gms.maps.model.LatLng center = LatLngBounds.builder()
+                        .include(new com.google.android.gms.maps.model.LatLng(data.origen.latitude(), data.origen.longitude()))
+                        .include(new com.google.android.gms.maps.model.LatLng(data.destino.latitude(), data.destino.longitude()))
+                        .build()
+                        .getCenter();
+                map = MapboxStaticMap.builder()
+                        .accessToken(getString(R.string.mapBox_ACCESS_TOKEN))
+                        .styleId(StaticMapCriteria.STREET_STYLE)
+                        .cameraPoint( Point.fromLngLat(center.longitude, center.latitude)) // Image's centerpoint on map
+                        .cameraZoom(13)
+                        .width(320) // Image width
+                        .height(150) // Image height
+                        .retina(true) // Retina 2x image will be returned
+                        .build();
+                String imageUrl = map.url().toString();
 
-                // Add a marker for this item and set the camera
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(data.location, 13f));
-                //map.addMarker(new MarkerOptions().position(data.location));
-                map.addPolyline(new PolylineOptions()
-                        .add(data.location)
-                        .add(new LatLng(37.45, -122.0)));
-
-                // Set the map type back to normal.
-                map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                Glide.with(RutasFragment.this)
+                        .load(imageUrl)
+                        .centerCrop()
+                        .into(mapView);
             }
 
             private void bindView(int pos) {
@@ -190,29 +187,16 @@ public class RutasFragment extends Fragment {
                 setMapLocation();
                 title.setText(item.name);
             }
-        }
-    }
 
-    /**
-     * RecycleListener that completely clears the {@link com.google.android.gms.maps.GoogleMap}
-     * attached to a row in the RecyclerView.
-     * Sets the map type to {@link com.google.android.gms.maps.GoogleMap#MAP_TYPE_NONE} and clears
-     * the map.
-     */
-    private RecyclerView.RecyclerListener mRecycleListener = new RecyclerView.RecyclerListener() {
-
-        @Override
-        public void onViewRecycled(RecyclerView.ViewHolder holder) {
-            RutasFragment.MapAdapter.ViewHolder mapHolder = (RutasFragment.MapAdapter.ViewHolder) holder;
-            if (mapHolder != null && mapHolder.map != null) {
-                // Clear the map and free up resources by changing the map type to none.
-                // Also reset the map when it gets reattached to layout, so the previous map would
-                // not be displayed.
-                mapHolder.map.clear();
-                mapHolder.map.setMapType(GoogleMap.MAP_TYPE_NONE);
+            @Override
+            public void onClick(View v) {
+                int position = getAdapterPosition();
+                Toast.makeText(v.getContext(),Integer.toString(position), Toast.LENGTH_SHORT).show();
+                Intent mapPage = new Intent(getActivity(), MapViewActivity.class);
+                startActivity(mapPage);
             }
         }
-    };
+    }
 
     /**
      * Location represented by a position ({@link com.google.android.gms.maps.model.LatLng} and a
@@ -221,11 +205,17 @@ public class RutasFragment extends Fragment {
     private static class NamedLocation {
 
         public final String name;
-        public final LatLng location;
+        private final Point origen;
+        private final Point destino;
 
-        NamedLocation(String name, LatLng location) {
+        NamedLocation(String name, Point orig, Point dest) {
             this.name = name;
-            this.location = location;
+            this.origen = orig;
+            this.destino = dest;
+        }
+
+        public String getName() {
+            return name;
         }
     }
 
@@ -233,15 +223,10 @@ public class RutasFragment extends Fragment {
      * A list of locations to show in this ListView.
      */
     private static final RutasFragment.NamedLocation[] LIST_LOCATIONS = new RutasFragment.NamedLocation[]{
-            new RutasFragment.NamedLocation("Cape Town", new LatLng(-33.920455, 18.466941)),
-            new RutasFragment.NamedLocation("Beijing", new LatLng(39.937795, 116.387224)),
-            new RutasFragment.NamedLocation("Bern", new LatLng(46.948020, 7.448206)),
-            new RutasFragment.NamedLocation("Breda", new LatLng(51.589256, 4.774396)),
-            new RutasFragment.NamedLocation("Brussels", new LatLng(50.854509, 4.376678)),
-            new RutasFragment.NamedLocation("Copenhagen", new LatLng(55.679423, 12.577114)),
-            new RutasFragment.NamedLocation("Hannover", new LatLng(52.372026, 9.735672)),
-            new RutasFragment.NamedLocation("Helsinki", new LatLng(60.169653, 24.939480)),
-            new RutasFragment.NamedLocation("Hong Kong", new LatLng(22.325862, 114.165532)),
+            new RutasFragment.NamedLocation("Ruta Granada", Point.fromLngLat(-3.588098, 37.176164), Point.fromLngLat(-3.601845, 37.184080)),
+            new RutasFragment.NamedLocation("De casa al insti", Point.fromLngLat(2.093580, 41.322220), Point.fromLngLat(2.102213, 41.330124)),
+            new RutasFragment.NamedLocation("Ruta Granada", Point.fromLngLat(-3.588098, 37.176164), Point.fromLngLat(-3.601845, 37.184080)),
+            new RutasFragment.NamedLocation("Ruta Granada", Point.fromLngLat(-3.588098, 37.176164), Point.fromLngLat(-3.601845, 37.184080))
     };
 
 

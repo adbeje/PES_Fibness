@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mapBox_ACCESS_TOKEN" templateMergeStrategy="preserve" translatable="false"> pk.eyJ1IjoiYWR2ZWhlIiwiYSI6ImNrOXVhdGRnMDFtY3IzbHFoeDJheG9oYTUifQ.gPsEkclqdi9Iyc4P3IdDVQ </string>
+    <string name="mapBox_ACCESS_TOKEN" templateMergeStrategy="preserve" translatable="false"> pk.eyJ1IjoiYWR2ZWhlIiwiYSI6ImNrOXgzZm80dzA3Zmwzc3FkMnN2ODQ4ZGcifQ.xu6iKxJMZDnzYvhtzCTzyw </string>
 </resources>

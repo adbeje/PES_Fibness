@@ -35,26 +35,19 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapActivity"
+            android:name=".MapViewActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
-            android:name=".LiteListDemoActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AchievementsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ViewProfileActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ViewProfileActivity" />
         <activity
             android:name=".ResetPasswordActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SettingsActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".SettingsActivity" />
         <activity
-            android:name=".EditProfileActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".EditProfileActivity" />
         <activity
             android:name=".CreateTrainingActivity"
             android:theme="@style/AppTheme.NoActionBar" />

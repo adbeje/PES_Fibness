@@ -74,6 +74,7 @@
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="post">Post</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps" tools:ignore="MissingTranslation">Map</string>
+    <string name="directions_activity_toast_message" tools:ignore="MissingTranslation">La distancia de la ruta es:</string>
 
 </resources>
