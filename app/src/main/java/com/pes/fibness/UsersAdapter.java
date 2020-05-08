@@ -113,12 +113,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersAdapter
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    /*CARGAR INFO DEL USUARIO
-                    Integer userId = User.getInstance().getShortUsersInfo().get(getAdapterPosition()).first;
-                    llamar /user/{id}/info, tendre que pasar un bool a la funcion de la ConnectionAPI para diferenciar
-                     */
-
-
                     selectedUser.selectedUser(userModelList.get(getAdapterPosition()));
                 }
             });

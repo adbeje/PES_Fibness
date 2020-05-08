@@ -11,6 +11,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -758,6 +759,7 @@ public class ConnetionAPI {
                     }
                     User.getInstance().setShortUsersInfo(users);
 
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -774,6 +776,43 @@ public class ConnetionAPI {
     }
 
 
+    public void getSelectedUserInfo() {
+        System.out.println("Dentro de getShortUserInfo");
+
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Respuesta: "+ response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    ArrayList<UsersInfo> a = new ArrayList<>();
+                    UsersInfo ui= new UsersInfo();
+                    ui.id = (Integer) obj.get("id");
+                    /**coger otros parametros*/
+                    a.add(ui);
+                    User.getInstance().setSelectedUser(a);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+
+
+
+
+
+
+    }
 
 
 
@@ -788,7 +827,6 @@ public class ConnetionAPI {
     private void enqueue(){
         requestQueue.add(request);
     }
-
 
 
 }

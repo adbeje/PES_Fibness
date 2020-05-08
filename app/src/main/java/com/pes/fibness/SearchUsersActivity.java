@@ -6,14 +6,19 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import java.net.ConnectException;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,10 +66,24 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
     }
 
     @Override
-    public void selectedUser(UserModel userModel) {
+    public void selectedUser(final UserModel userModel) {
 
         /**hay que cargar los datos del usuario seleccionado*/
-        startActivity(new Intent(SearchUsersActivity.this, SelectedUserActivity.class).putExtra("data", userModel));
+        String route = "http://10.4.41.146:3001/user/"+userModel.getId()+"/info/" + User.getInstance().getId();
+        ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), route);
+        connetionAPI.getSelectedUserInfo();
+
+        @SuppressLint("HandlerLeak") Handler h = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                Intent i = new Intent().setClass(SearchUsersActivity.this, SelectedUserActivity.class).putExtra("data", userModel);
+                startActivity(i);
+            }
+        };
+        h.sendEmptyMessageDelayed(0, 50);
+
+
+        //startActivity(new Intent(SearchUsersActivity.this, SelectedUserActivity.class).putExtra("data", userModel));
     }
 
 
@@ -99,5 +118,13 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
             return  true;
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(SearchUsersActivity.this, HomeActivity.class);
+        startActivity(intent);
+
     }
 }

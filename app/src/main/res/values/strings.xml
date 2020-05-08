@@ -78,5 +78,8 @@
     <string name="message">The best views are achieved after a hard climb.</string>
     <string name="chat">CHAT</string>
     <string name="users">USERS</string>
+    <string name="blockUser">Block user</string>
+    <string name="sayHello">Say hello</string>
+    <string name="Send">Send</string>
 
 </resources>

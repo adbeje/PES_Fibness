@@ -9,19 +9,6 @@ import java.util.ArrayList;
 public class User {
 
     private Integer user_id;
-    /*obj.get("nombre").toString(),
-                            obj.get("email").toString(),
-                            obj.get("rutaimagen").toString(),
-                            obj.get("descripcion").toString(),
-                            obj.get("fechadenacimiento").toString(),
-                            obj.get("fechaderegistro").toString(),
-                            obj.get("tipousuario").toString(),
-                            obj.get("tipoperfil").toString(),
-                            obj.get("nseguidores").toString(),
-                            obj.get("nseguidos").toString(),
-                            obj.get("npost").toString(),
-                            obj.get("pais").toString(),
-                            obj.get("genero").toString()};*/
 
     /*User profile*/
     private String name, email, userType, profileType, gender, description, birthDate, registerDate, country, imageRoute;
@@ -38,6 +25,8 @@ public class User {
     private static ArrayList<Aliment> alimentList = new ArrayList<>();
     private ArrayList<Achievement> achievements = new ArrayList<>(4);
     private ArrayList<Pair<Integer, String>> shortUsersInfo = new ArrayList<>();
+    private ArrayList<UsersInfo> selectedUser = new ArrayList<>();
+
 
     /*we are applying singleton because we will have an instance for each aplication user*/
     private static User instance = null;
@@ -115,6 +104,9 @@ public class User {
     public ArrayList<Pair<Integer, String>> getShortUsersInfo() { return shortUsersInfo; }
     public void setShortUsersInfo(ArrayList<Pair<Integer, String>> shortUsersInfo) { this.shortUsersInfo = shortUsersInfo; }
 
+    /*Selected Users*/
+    public ArrayList<UsersInfo> getSelectedUser() { return selectedUser; }
+    public void setSelectedUser(ArrayList<UsersInfo> selectedUser) { this.selectedUser = selectedUser; }
 
 
     /***************************************************************************/
@@ -364,4 +356,16 @@ class Achievement{
     Boolean active;
     int distance;
 
+}
+
+class UsersInfo{
+    Integer id;
+    String image;
+    String username;
+    String description;
+    String BirthDate;
+    String country;
+    Integer nFollower;
+    Integer nFollowing;
+    Boolean follow;
 }

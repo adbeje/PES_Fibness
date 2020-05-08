@@ -74,8 +74,9 @@ public class AchievementsActivity extends AppCompatActivity {
 
         /*TEST*/
         ArrayList<Achievement> a = new ArrayList<>();
-        Achievement a1 = new Achievement();
+        Achievement a1;
         for(int i=0; i<4; ++i){
+            a1 = new Achievement();
             a1.id = i;
             a1.active = false;
             a1.distance = i * 20;
