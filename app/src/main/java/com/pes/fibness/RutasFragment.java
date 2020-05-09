@@ -30,7 +30,7 @@ public class RutasFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.lite_list_demo, container, false);
+        View root = inflater.inflate(R.layout.fragment_rutas, container, false);
 
         mGridLayoutManager = new GridLayoutManager(getContext(), 2);
         mLinearLayoutManager = new LinearLayoutManager(getContext());
@@ -49,6 +49,7 @@ public class RutasFragment extends Fragment {
                 mapPage.putExtra("origen", LIST_LOCATIONS[pos].origen);
                 mapPage.putExtra("destino", LIST_LOCATIONS[pos].destino);
                 mapPage.putExtra("tituloRuta", LIST_LOCATIONS[pos].name);
+                mapPage.putExtra("descripcion", LIST_LOCATIONS[pos].description);
                 startActivity(mapPage);
             }
         });
@@ -71,7 +72,7 @@ public class RutasFragment extends Fragment {
 
     /**
      * Adapter that displays a title and {@link com.google.android.gms.maps.MapView} for each item.
-     * The layout is defined in <code>lite_list_demo_row.xml</code>. It contains a MapView
+     * The layout is defined in <code>maps_list_row.xmle>. It contains a MapView
      * that is programatically initialised in
      * {@link #(int, android.view.View, android.view.ViewGroup)}
      */
@@ -89,7 +90,7 @@ public class RutasFragment extends Fragment {
         @Override
         public RutasFragment.MapAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lite_list_demo_row, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.maps_list_row, parent, false);
 
             view.setOnClickListener(this);
 
@@ -137,6 +138,8 @@ public class RutasFragment extends Fragment {
 
             ImageView mapView;
             TextView title;
+            TextView desc;
+            TextView dist;
             MapboxStaticMap map;
             View layout;
 
@@ -145,6 +148,8 @@ public class RutasFragment extends Fragment {
                 layout = itemView;
                 mapView = layout.findViewById(R.id.lite_listrow_map);
                 title = layout.findViewById(R.id.lite_listrow_text);
+                desc = layout.findViewById(R.id.textView_desc);
+                dist = layout.findViewById(R.id.textView_dist);
             }
 
             /**
@@ -186,6 +191,8 @@ public class RutasFragment extends Fragment {
                 mapView.setTag(item);
                 setMapLocation();
                 title.setText(item.name);
+                desc.setText("Descripcion: " + item.description);
+                dist.setText("Distancia: " + item.distance);
             }
 
             @Override
@@ -205,13 +212,17 @@ public class RutasFragment extends Fragment {
     private static class NamedLocation {
 
         public final String name;
+        public final String description;
+        public final Integer distance;
         private final Point origen;
         private final Point destino;
 
-        NamedLocation(String name, Point orig, Point dest) {
+        NamedLocation(String name, String desc, Integer dist, Point orig, Point dest) {
             this.name = name;
             this.origen = orig;
             this.destino = dest;
+            this.description = desc;
+            this.distance = dist;
         }
 
         public String getName() {
@@ -223,10 +234,10 @@ public class RutasFragment extends Fragment {
      * A list of locations to show in this ListView.
      */
     private static final RutasFragment.NamedLocation[] LIST_LOCATIONS = new RutasFragment.NamedLocation[]{
-            new RutasFragment.NamedLocation("Ruta Granada", Point.fromLngLat(-3.588098, 37.176164), Point.fromLngLat(-3.601845, 37.184080)),
-            new RutasFragment.NamedLocation("De casa al insti", Point.fromLngLat(2.093580, 41.322220), Point.fromLngLat(2.102213, 41.330124)),
-            new RutasFragment.NamedLocation("Ruta Granada", Point.fromLngLat(-3.588098, 37.176164), Point.fromLngLat(-3.601845, 37.184080)),
-            new RutasFragment.NamedLocation("Ruta Granada", Point.fromLngLat(-3.588098, 37.176164), Point.fromLngLat(-3.601845, 37.184080))
+            new RutasFragment.NamedLocation("Ruta Granada", "Descripcion 1", 1000, Point.fromLngLat(-3.588098, 37.176164), Point.fromLngLat(-3.601845, 37.184080)),
+            new RutasFragment.NamedLocation("De casa al insti", "Descripcion 2", 5000, Point.fromLngLat(2.093580, 41.322220), Point.fromLngLat(2.102213, 41.330124)),
+            new RutasFragment.NamedLocation("Ruta Granada", "Descripcion 3", 10000, Point.fromLngLat(-3.588098, 37.176164), Point.fromLngLat(-3.601845, 37.184080)),
+            new RutasFragment.NamedLocation("Ruta Granada", "Descripcion 4", 20000, Point.fromLngLat(-3.588098, 37.176164), Point.fromLngLat(-3.601845, 37.184080))
     };
 
 

@@ -3,10 +3,12 @@ package com.pes.fibness;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
@@ -61,7 +63,8 @@ public class MapViewActivity extends AppCompatActivity {
     private MapboxDirections client;
     private Point origin;
     private Point destination;
-    private String tituloRuta = "";
+    private String tituloRuta;
+    private String descripcion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,11 @@ public class MapViewActivity extends AppCompatActivity {
         Mapbox.getInstance(this, getString(R.string.mapBox_ACCESS_TOKEN));
         setContentView(R.layout.activity_map_rutas);
         getExtras();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarM);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(tituloRuta);
+        getSupportActionBar().setSubtitle(descripcion);
 
         // Setup the MapView
         mapView = findViewById(R.id.mapView);
@@ -190,6 +198,9 @@ public class MapViewActivity extends AppCompatActivity {
                 Toast.makeText(MapViewActivity.this, getString(R.string.directions_activity_toast_message) +
                 currentRoute.distance(), Toast.LENGTH_SHORT).show();
 
+                TextView dist = (TextView) findViewById(R.id.map_dist);
+                dist.setText("Distancia: " + currentRoute.distance().intValue() + " m");
+
                 if (mapboxMap != null) {
                     mapboxMap.getStyle(new Style.OnStyleLoaded() {
                         @Override
@@ -269,6 +280,7 @@ public class MapViewActivity extends AppCompatActivity {
             origin = (Point) extras.get("origen");
             destination = (Point)extras.get("destino");
             tituloRuta = extras.getString("tituloRuta");
+            descripcion = extras.getString("descripcion");
         }
 
     }
