@@ -82,7 +82,6 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
         };
         h.sendEmptyMessageDelayed(0, 50);
 
-
         //startActivity(new Intent(SearchUsersActivity.this, SelectedUserActivity.class).putExtra("data", userModel));
     }
 

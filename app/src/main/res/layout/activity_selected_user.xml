@@ -59,11 +59,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/btn_bg"
                 app:layout_constraintBottom_toTopOf="@+id/constraintLayoutCardview"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:src="@drawable/ic_add_black_24dp"
-                app:fab_size="normal" />
+                app:fab_size="normal"
+                android:backgroundTint="@color/c_icon_bkg_unsel"
+                />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayoutCardview"

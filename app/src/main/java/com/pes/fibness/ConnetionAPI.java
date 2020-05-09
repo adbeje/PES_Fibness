@@ -786,12 +786,10 @@ public class ConnetionAPI {
                 System.out.println("Respuesta: "+ response);
                 try {
                     JSONObject obj = new JSONObject(response);
-                    ArrayList<UsersInfo> a = new ArrayList<>();
-                    UsersInfo ui= new UsersInfo();
+                    UsersInfo ui = new UsersInfo();
                     ui.id = (Integer) obj.get("id");
                     /**coger otros parametros*/
-                    a.add(ui);
-                    User.getInstance().setSelectedUser(a);
+                    User.getInstance().setSelectedUser(ui);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -807,12 +805,73 @@ public class ConnetionAPI {
 
         enqueue();
 
+    }
 
+    /*post to follow*/
+    public void followUser(int currentUser, int anotherUser) {
+        System.out.println("DENTRO DE followUser");
 
+        final String data = "{"+
+                "\"idFollower\": " + "\"" + currentUser + "\"," +
+                "\"idFollowed\": " + "\"" + anotherUser+ "\"" +
+                "}";
 
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Follow response: " + response);
+                if(response.equals("Created"))
+                    Toast.makeText(context, "You are following", Toast.LENGTH_LONG).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Message error: " + error);
+                Toast.makeText(context, "You are already following", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+            }
+
+        };
+        enqueue();
 
 
     }
+
+
+
+    public void deleteFollowing() {
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Respuesta: "+ response);
+                Toast.makeText(getApplicationContext(), "You have unfollowed", Toast.LENGTH_SHORT).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
+
+    }
+
 
 
 
@@ -827,6 +886,7 @@ public class ConnetionAPI {
     private void enqueue(){
         requestQueue.add(request);
     }
+
 
 
 }
