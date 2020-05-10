@@ -81,12 +81,13 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.023255814" />
 
-    <EditText
+    <Spinner
         android:id="@+id/ExerciseTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Name"
-        android:textColor="#000000"
+        android:entries="@array/exercises"
+        android:spinnerMode="dropdown"
+        android:textColor="@color/c_let_light_bkg"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.411"

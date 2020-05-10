@@ -79,6 +79,8 @@
     <string name="Rest">DESCANSO: </string>
     <string name="Series">SERIES: </string>
     <string name="Repetitions">REPETICIONES: </string>
+    <string name="Custom">Personalizado</string>
+    <string name="Simple">Simple</string>
 
     <string name="AddEx">Añade Ejercicio</string>
 

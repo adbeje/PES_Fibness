@@ -490,6 +490,7 @@ public class ConnetionAPI {
                         JSONObject exercise = exercises.getJSONObject(i);
                         Exercise e = new Exercise();
                         e.TitleEx = (String) exercise.getString("nombre");
+                        e.Desc = (String) exercise.getString("descripcion");
                         int numRest = (Integer) exercise.getInt("tiempodescanso");
                         e.NumRest = String.valueOf(numRest);
                         int numSerie = (Integer) exercise.getInt("numsets");
@@ -521,12 +522,12 @@ public class ConnetionAPI {
 
     }
 
-    public void postTrainingExercises(int idT, final String nameE, final int numRest, final int numSerie, final int numRept,
+    public void postTrainingExercises(int idT, final String nameE, String desc, final int numRest, final int numSerie, final int numRept,
                                       final int Position){
         final String data = "{"+
                 "\"idEntrenamiento\": " + idT +"," +
                 "\"nombre\": " + "\"" + nameE + "\"," +
-                "\"descripcion\": " + "\"" + "" + "\"," +
+                "\"descripcion\": " + "\"" + desc + "\"," +
                 "\"tiempoEjecucion\": " + 0 + "," +
                 "\"numSets\": " + numSerie + "," +
                 "\"numRepeticiones\": " + numRept + "," +
@@ -583,11 +584,11 @@ public class ConnetionAPI {
         enqueue();
     }
 
-    public void updateTrainingExercises(final String nameE, final int numRest, final int numSerie, final int numRept){
+    public void updateTrainingExercises(final String nameE, String desc, final int numRest, final int numSerie, final int numRept){
         System.out.println("AQUI " + nameE);
         final String data = "{"+
                 "\"nombre\": " + "\"" + nameE + "\"," +
-                "\"descripcion\": " + "\"" + "" + "\"," +
+                "\"descripcion\": " + "\"" + desc + "\"," +
                 "\"tiempoEjecucion\": " + 0 + "," +
                 "\"numSets\": " + numSerie + "," +
                 "\"numRepeticiones\": " + numRept + "," +
