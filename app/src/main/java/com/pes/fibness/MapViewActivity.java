@@ -3,6 +3,8 @@ package com.pes.fibness;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +67,7 @@ public class MapViewActivity extends AppCompatActivity {
     private Point destination;
     private String tituloRuta;
     private String descripcion;
+    private boolean newRuta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +122,18 @@ public class MapViewActivity extends AppCompatActivity {
                 });
             }
         });
+
+        Button bt = (Button) findViewById(R.id.btn_edit_route);
+        bt.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        if(newRuta){
+            bt.callOnClick();
+        }
     }
 
     /**
@@ -201,6 +216,7 @@ public class MapViewActivity extends AppCompatActivity {
                 TextView dist = (TextView) findViewById(R.id.map_dist);
                 dist.setText("Distancia: " + currentRoute.distance().intValue() + " m");
 
+
                 if (mapboxMap != null) {
                     mapboxMap.getStyle(new Style.OnStyleLoaded() {
                         @Override
@@ -279,6 +295,7 @@ public class MapViewActivity extends AppCompatActivity {
         if (extras != null) {
             origin = (Point) extras.get("origen");
             destination = (Point)extras.get("destino");
+            newRuta = extras.getBoolean("new");
             tituloRuta = extras.getString("tituloRuta");
             descripcion = extras.getString("descripcion");
         }

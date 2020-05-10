@@ -1,6 +1,8 @@
 package com.pes.fibness;
 
 
+import com.mapbox.geojson.Point;
+
 import java.util.ArrayList;
 
 public class User {
@@ -34,12 +36,23 @@ public class User {
     private static ArrayList<Meal> mealList = new ArrayList<>();
     private static ArrayList<Aliment> alimentList = new ArrayList<>();
 
+    private static ArrayList<Ruta> rutasList = new ArrayList<>();
+
 
     /*we are applying singleton because we will have an instance for each aplication user*/
     private static User instance = null;
     private User(){
         imageByteArray = null; recoveryCode = "";
 
+        for(int i = 0; i < 10; ++i){
+            Ruta r = new Ruta();
+            r.name = "Ruta " + i;
+            r.description = "Descripcion " + i;
+            r.id = i;
+            r.origen = Point.fromLngLat(2.093580 + i, 41.322220 + i);
+            r.destino = Point.fromLngLat(2.102213 + i, 41.330124 + i);
+            addRuta(r);
+        }
     }
 
     public static User getInstance(){
@@ -309,6 +322,40 @@ public class User {
         alimentList.set(pos, a);
     }
 
+
+    /** Rutas **/
+    public ArrayList<String> getRutasNames(){
+        ArrayList<String> lista = new ArrayList<>();
+        for(int i = 0; i < trainingList.size(); ++i) {
+            lista.add(trainingList.get(i).name);
+        }
+        return lista;
+    }
+
+    public ArrayList<Ruta> getRutasList(){
+        return rutasList;
+    }
+
+    public void setRutasList(ArrayList<Ruta> rutas){
+        rutasList = rutas;
+    }
+
+    public void addRuta(Ruta r){
+        rutasList.add(r);
+    }
+
+    public void deleteRuta(int pos){
+        rutasList.remove(pos);
+    }
+
+    public void updateRuta(int pos, Ruta r){
+        rutasList.set(pos, r);
+    }
+
+    public int getRutaID(int pos){
+        return rutasList.get(pos).id;
+    }
+
 }
 
 
@@ -343,4 +390,13 @@ class Aliment{
     int id;
     String name;
     String calories;
+}
+
+class Ruta{
+    int id;
+    String name;
+    String description;
+    Integer distance;
+    Point origen;
+    Point destino;
 }
