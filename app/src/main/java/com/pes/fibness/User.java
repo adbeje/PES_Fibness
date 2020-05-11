@@ -27,7 +27,7 @@ public class User {
     private ArrayList<Pair<Integer, String>> shortUsersInfo = new ArrayList<>();
     private UsersInfo selectedUser = new UsersInfo();
     private ArrayList<Pair<Integer, String>> userFollowers = new ArrayList<>();
-
+    private ArrayList<Pair<Integer, String>> userFollowing = new ArrayList<>();
 
     /*we are applying singleton because we will have an instance for each aplication user*/
     private static User instance = null;
@@ -113,6 +113,9 @@ public class User {
     public ArrayList<Pair<Integer, String>> getUserFollowers() { return userFollowers; }
     public void setUserFollowers(ArrayList<Pair<Integer, String>> userFollowers) { this.userFollowers = userFollowers; }
 
+    /*User Following*/
+    public ArrayList<Pair<Integer, String>> getUserFollowing() { return userFollowing; }
+    public void setUserFollowing(ArrayList<Pair<Integer, String>> userFollowing) { this.userFollowing = userFollowing; }
 
 
     /***************************************************************************/

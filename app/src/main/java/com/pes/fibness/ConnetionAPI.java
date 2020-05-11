@@ -917,8 +917,48 @@ public class ConnetionAPI {
 
         enqueue();
 
+    }
+
+    public void getUserFollowing() {
+        System.out.println("Dentro de getUserFollowing");
+
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Respuesta: "+ response);
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    ArrayList<Pair<Integer,String>> userFollowing = new ArrayList<>();
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            JSONObject obj = jsonArray.getJSONObject(i);
+                            userFollowing.add(i, new Pair<Integer, String>((Integer) obj.get("id"), (String) obj.get("nombre")));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    User.getInstance().setUserFollowing(userFollowing);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
 
     }
+
+
 
 
     //to go HomePage

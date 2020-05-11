@@ -83,6 +83,9 @@
     <string name="sayHello">Di hola</string>
     <string name="Send">Enviar</string>
     <string name="Users">Usuarios</string>
+    <string name="Follow">Seguir</string>
+    <string name="Following">Siguiendo</string>
+    <string name="msgFollow">Estas siguiendo</string>
 
 
 </resources>

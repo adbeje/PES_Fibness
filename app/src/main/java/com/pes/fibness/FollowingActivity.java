@@ -14,37 +14,31 @@ import android.os.Message;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.SearchView;
-import android.widget.TextView;
 
-import java.net.ConnectException;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SearchUsersActivity extends AppCompatActivity implements UsersAdapter.SelectedUser{
+public class FollowingActivity extends AppCompatActivity implements FollowingAdapter.SelectedUser{
+
 
     private Toolbar toolbar;
     private RecyclerView recyclerView;
-    private TextView followers, following;
 
     private List<UserModel> userModelList = new ArrayList<>();
     private ArrayList<Pair<Integer, String>> names = new ArrayList<>();
-    private UsersAdapter usersAdapter;
+    private FollowingAdapter followingAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_users);
+        setContentView(R.layout.activity_following);
 
         toolbar = findViewById(R.id.toolbar);
-        followers = findViewById(R.id.followers);
-        following = findViewById(R.id.following);
         recyclerView = findViewById(R.id.recyclerview);
 
-        ArrayList<Pair<Integer,String>> users = User.getInstance().getShortUsersInfo();
+        ArrayList<Pair<Integer,String>> users = User.getInstance().getUserFollowing();
         names = users;
 
         this.setSupportActionBar(toolbar);
@@ -61,60 +55,14 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
         }
         Collections.sort(userModelList);
 
-
-        usersAdapter = new UsersAdapter(userModelList, this);
-        recyclerView.setAdapter(usersAdapter);
-
-
-
-        followers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                User u = User.getInstance();
-                ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/"+u.getId()+ "/followers");
-                connetionAPI.getUserFollowers();
-
-                @SuppressLint("HandlerLeak") Handler h = new Handler(){
-                    @Override
-                    public void handleMessage(Message msg) {
-                        Intent i = new Intent(getApplicationContext(), FollowersActivity.class);
-                        startActivity(i);
-                    }
-                };
-                h.sendEmptyMessageDelayed(0, 50);
-
-            }
-        });
-
-
-        following.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                User u = User.getInstance();
-                ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/"+u.getId()+ "/followed");
-                connetionAPI.getUserFollowing();
-
-                @SuppressLint("HandlerLeak") Handler h = new Handler(){
-                    @Override
-                    public void handleMessage(Message msg) {
-                        Intent i = new Intent(getApplicationContext(), FollowingActivity.class);
-                        startActivity(i);
-                    }
-                };
-                h.sendEmptyMessageDelayed(0, 50);
-
-            }
-        });
-
-
-
-
+        followingAdapter = new FollowingAdapter(userModelList, this);
+        recyclerView.setAdapter(followingAdapter);
 
     }
 
+
     @Override
     public void selectedUser(final UserModel userModel) {
-
         /**hay que cargar los datos del usuario seleccionado*/
         String route = "http://10.4.41.146:3001/user/"+userModel.getId()+"/info/" + User.getInstance().getId();
         ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), route);
@@ -123,13 +71,12 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
         @SuppressLint("HandlerLeak") Handler h = new Handler(){
             @Override
             public void handleMessage(Message msg) {
-                Intent i = new Intent().setClass(SearchUsersActivity.this, SelectedUserActivity.class).putExtra("data", userModel);
-                i.putExtra("name", "SearchUserActivity");
+                Intent i = new Intent().setClass(FollowingActivity.this, SelectedUserActivity.class).putExtra("data", userModel);
+                i.putExtra("name", "FollowingActivity");
                 startActivity(i);
             }
         };
         h.sendEmptyMessageDelayed(0, 100);
-
     }
 
 
@@ -148,7 +95,7 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                usersAdapter.getFilter().filter(newText);
+                followingAdapter.getFilter().filter(newText);
                 return true;
             }
         });
@@ -156,21 +103,16 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if(id == R.id.search_view)
-            return  true;
-
-        return super.onOptionsItemSelected(item);
-    }
 
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(SearchUsersActivity.this, HomeActivity.class);
+        Intent intent = new Intent(FollowingActivity.this, SearchUsersActivity.class);
         startActivity(intent);
 
     }
+
+
+
+
 }

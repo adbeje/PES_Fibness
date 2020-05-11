@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:weightSum="8"
     android:background="@color/c_bkg"
-    tools:context=".FollowersActivity">
+    tools:context=".FollowingActivity">
 
     <LinearLayout
         android:layout_weight="0.65"
@@ -22,7 +22,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/followers"
+                android:text="@string/following"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"

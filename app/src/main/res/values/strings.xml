@@ -82,5 +82,8 @@
     <string name="sayHello">Say hello</string>
     <string name="Send">Send</string>
     <string name="Users">Users</string>
+    <string name="Follow">Follow</string>
+    <string name="Following">Following</string>
+    <string name="msgFollow">You are following</string>
 
 </resources>

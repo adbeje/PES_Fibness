@@ -21,8 +21,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".FollowersActivity"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".FollowingActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".FollowersActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".SelectedUserActivity" />
         <activity
             android:name=".SearchUsersActivity"
