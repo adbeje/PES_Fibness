@@ -75,6 +75,14 @@
     <string name="followers">Seguidores</string>
     <string name="following">Seguidos</string>
     <string name="post">Post</string>
+    <string name="title_activity_maps">Mapa</string>
+    <string name="message">Las mejores vistas se logran tras una escalada dura.</string>
+    <string name="chat">CHAT</string>
+    <string name="users">USUARIOS</string>
+    <string name="blockUser">Bloquear usuario</string>
+    <string name="sayHello">Di hola</string>
+    <string name="Send">Enviar</string>
+    <string name="Users">Usuarios</string>
 
 
 </resources>

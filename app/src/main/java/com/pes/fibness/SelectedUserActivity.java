@@ -69,8 +69,17 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
         backImgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SelectedUserActivity.this, SearchUsersActivity.class);
+                Intent intent;
+                if(getIntent().getStringExtra("name").equals("SearchUserActivity")){
+                    System.out.println("onBackPressed----1");
+                    intent = new Intent(SelectedUserActivity.this, SearchUsersActivity.class);
+                }
+                else {
+                    System.out.println("onBackPressed----2");
+                    intent = new Intent(SelectedUserActivity.this, FollowersActivity.class);
+                }
                 startActivity(intent);
+
             }
         });
 
@@ -124,7 +133,20 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
         return false;
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent;
+        if(getIntent().getStringExtra("name").equals("SearchUserActivity")){
+            System.out.println("onBackPressed----1");
+            intent = new Intent(SelectedUserActivity.this, SearchUsersActivity.class);
+        }
+        else {
+            System.out.println("onBackPressed----2");
+            intent = new Intent(SelectedUserActivity.this, FollowersActivity.class);
+        }
+        startActivity(intent);
 
+    }
 
 
 }

@@ -26,7 +26,7 @@ public class User {
     private ArrayList<Achievement> achievements = new ArrayList<>(4);
     private ArrayList<Pair<Integer, String>> shortUsersInfo = new ArrayList<>();
     private UsersInfo selectedUser = new UsersInfo();
-
+    private ArrayList<Pair<Integer, String>> userFollowers = new ArrayList<>();
 
 
     /*we are applying singleton because we will have an instance for each aplication user*/
@@ -109,8 +109,13 @@ public class User {
     public UsersInfo getSelectedUser() { return selectedUser; }
     public void setSelectedUser(UsersInfo selectedUser) { this.selectedUser = selectedUser; }
 
+    /*User Followers*/
+    public ArrayList<Pair<Integer, String>> getUserFollowers() { return userFollowers; }
+    public void setUserFollowers(ArrayList<Pair<Integer, String>> userFollowers) { this.userFollowers = userFollowers; }
 
-/***************************************************************************/
+
+
+    /***************************************************************************/
     /** Trainings **/
     public void setTrainingList(ArrayList<Training> t){
         trainingList = t;

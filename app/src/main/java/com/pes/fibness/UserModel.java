@@ -2,7 +2,7 @@ package com.pes.fibness;
 
 import java.io.Serializable;
 
-public class UserModel implements Serializable {
+public class UserModel implements Serializable, Comparable<UserModel>{
 
     private int id;
     private String username;
@@ -26,5 +26,12 @@ public class UserModel implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+
+    /*use to sort list by username*/
+    @Override
+    public int compareTo(UserModel userModel) {
+        return this.username.compareTo(userModel.username);
     }
 }

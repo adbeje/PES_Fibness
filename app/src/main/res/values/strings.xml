@@ -81,5 +81,6 @@
     <string name="blockUser">Block user</string>
     <string name="sayHello">Say hello</string>
     <string name="Send">Send</string>
+    <string name="Users">Users</string>
 
 </resources>

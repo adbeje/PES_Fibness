@@ -1,8 +1,11 @@
 package com.pes.fibness;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Pair;
 import android.widget.Toast;
 
@@ -39,21 +42,6 @@ public class ConnetionAPI {
         this.urlAPI = url;
     }
 
-    /*test to sure that database work*/
-    public void getTest(){
-        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                System.out.println("INFO: "+ response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("INFO: ERROR");
-            }
-        });
-        enqueue();
-    }
 
     /*to register an user in database*/
     public void postUser(String userName, String password, String emailAddress){
@@ -84,7 +72,16 @@ public class ConnetionAPI {
                         /*nedd to load user information & setting*/
                         getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
                         getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
-                        homeActivity();
+
+                        @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                            @Override
+                            public void handleMessage(Message msg) {
+                                homeActivity();
+                            }
+                        };
+                        h.sendEmptyMessageDelayed(0, 10);
+
+
                     }
                     else Toast.makeText(getApplicationContext(), "Register response error", Toast.LENGTH_SHORT).show();
 
@@ -147,8 +144,13 @@ public class ConnetionAPI {
 
                     getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
                     getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
-                    homeActivity();
-
+                    @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                        @Override
+                        public void handleMessage(Message msg) {
+                            homeActivity();
+                        }
+                    };
+                    h.sendEmptyMessageDelayed(0, 10);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -214,7 +216,13 @@ public class ConnetionAPI {
                         getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
                         getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
 
-                        homeActivity();
+                        @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                            @Override
+                            public void handleMessage(Message msg) {
+                                homeActivity();
+                            }
+                        };
+                        h.sendEmptyMessageDelayed(0, 10);
                     }
                     else Toast.makeText(getApplicationContext(), "Invalid Login Credentials", Toast.LENGTH_SHORT).show();
 
@@ -853,7 +861,6 @@ public class ConnetionAPI {
     }
 
 
-
     public void deleteFollowing() {
         request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
             @Override
@@ -873,6 +880,45 @@ public class ConnetionAPI {
     }
 
 
+    public void getUserFollowers() {
+        System.out.println("Dentro de getUserFollowers");
+
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Respuesta: "+ response);
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    ArrayList<Pair<Integer,String>> userFollowers = new ArrayList<>();
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            JSONObject obj = jsonArray.getJSONObject(i);
+                            userFollowers.add(i, new Pair<Integer, String>((Integer) obj.get("id"), (String) obj.get("nombre")));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    User.getInstance().setUserFollowers(userFollowers);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+
+
+    }
 
 
     //to go HomePage
