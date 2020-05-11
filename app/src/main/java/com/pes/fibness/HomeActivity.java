@@ -16,7 +16,7 @@ public class HomeActivity extends AppCompatActivity {
 
     Fragment perfil = new ProfileFragment();
     Fragment entrenamientos = new EntrenamientosFragment();
-    Fragment rutas = new RutasFragment();
+    Fragment rutas = new RoutesFragment();
     Fragment dietas = new DietasFragment();
     Fragment eventos = new EventosFragment();
     private long backPressedTime;

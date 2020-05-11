@@ -27,18 +27,18 @@ import com.mapbox.geojson.Point;
 
 import java.util.ArrayList;
 
-public class RutasFragment extends Fragment {
+public class RoutesFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private GridLayoutManager mGridLayoutManager;
-    private ArrayList<Ruta> rutasList;
+    private ArrayList<Ruta> routesList;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_rutas, container, false);
 
-        rutasList = User.getInstance().getRutasList();
+        routesList = User.getInstance().getRutasList();
 
         mGridLayoutManager = new GridLayoutManager(getContext(), 2);
         mLinearLayoutManager = new LinearLayoutManager(getContext());
@@ -47,17 +47,17 @@ public class RutasFragment extends Fragment {
         mRecyclerView = root.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        RutasFragment.MapAdapter adapter = new RutasFragment.MapAdapter(rutasList);
+        RoutesFragment.MapAdapter adapter = new RoutesFragment.MapAdapter(routesList);
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent mapPage = new Intent(getActivity(), MapViewActivity.class);
                 int pos = mRecyclerView.getChildLayoutPosition(view);
                 mapPage.putExtra("new", false);
-                mapPage.putExtra("origen", rutasList.get(pos).origen);
-                mapPage.putExtra("destino", rutasList.get(pos).destino);
-                mapPage.putExtra("tituloRuta", rutasList.get(pos).name);
-                mapPage.putExtra("descripcion", rutasList.get(pos).description);
+                mapPage.putExtra("originPoint", routesList.get(pos).origen);
+                mapPage.putExtra("destinationPoint", routesList.get(pos).destino);
+                mapPage.putExtra("routeTitle", routesList.get(pos).name);
+                mapPage.putExtra("routeDescription", routesList.get(pos).description);
                 startActivity(mapPage);
             }
         });
@@ -127,7 +127,7 @@ public class RutasFragment extends Fragment {
         });
     }
 
-    private class MapAdapter extends RecyclerView.Adapter<RutasFragment.MapAdapter.ViewHolder> implements View.OnClickListener{
+    private class MapAdapter extends RecyclerView.Adapter<RoutesFragment.MapAdapter.ViewHolder> implements View.OnClickListener{
 
         private ArrayList<Ruta> namedLocations;
         private View.OnClickListener listener;
@@ -138,13 +138,13 @@ public class RutasFragment extends Fragment {
 
         @NonNull
         @Override
-        public RutasFragment.MapAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RoutesFragment.MapAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.maps_list_row, parent, false);
 
             view.setOnClickListener(this);
 
-            return new RutasFragment.MapAdapter.ViewHolder(view);
+            return new RoutesFragment.MapAdapter.ViewHolder(view);
         }
 
         /**
@@ -214,7 +214,7 @@ public class RutasFragment extends Fragment {
                         .build();
                 String imageUrl = map.url().toString();
 
-                Glide.with(RutasFragment.this)
+                Glide.with(RoutesFragment.this)
                         .load(imageUrl)
                         .centerCrop()
                         .into(mapView);
