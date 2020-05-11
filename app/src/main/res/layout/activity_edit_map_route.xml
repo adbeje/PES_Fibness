@@ -69,38 +69,41 @@
         android:id="@+id/panel_inferior"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:layout_marginTop="651dp"
         android:background="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
 
     <Button
-        android:id="@+id/btn_edit_route"
+        android:id="@+id/dest_point_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="683dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginBottom="35dp"
+        android:backgroundTint="@color/claro"
+        android:contextClickable="false"
+        android:text="destino"
+        app:layout_constraintBottom_toBottomOf="@+id/panel_inferior"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.97" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/startButton"
+        android:id="@+id/orig_point_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/c_let_dark_bkg"
-        android:enabled="false"
-        android:text="Start navigation"
-        android:textColor="@color/c_let_light_bkg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="683dp"
+        android:layout_marginBottom="35dp"
+        android:backgroundTint="@color/claro"
+        android:contextClickable="false"
+        android:text="origen"
+        app:layout_constraintBottom_toBottomOf="@+id/panel_inferior"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.97" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

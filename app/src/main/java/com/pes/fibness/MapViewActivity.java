@@ -1,5 +1,6 @@
 package com.pes.fibness;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
@@ -103,6 +104,20 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
                     @Override
                     public void onClick(View v) {
                         locationComponent.setCameraMode(CameraMode.TRACKING_GPS);
+                    }
+                });
+
+                Button editBtn = findViewById(R.id.btn_edit_route);
+                editBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent editRoute = new Intent(MapViewActivity.this, MapEditActivity.class);
+                        editRoute.putExtra("new", false);
+                        editRoute.putExtra("originPoint", originPoint);
+                        editRoute.putExtra("destinationPoint", destinationPoint);
+                        editRoute.putExtra("routeTitle", rTitle);
+                        editRoute.putExtra("routeDescription", rDescription);
+                        startActivity(editRoute);
                     }
                 });
 

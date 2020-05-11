@@ -1,5 +1,6 @@
 package com.pes.fibness;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.MapboxDirections;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
+import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
@@ -47,7 +49,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 
-public class MapEditActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener {
+public class MapEditActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener, MapboxMap.OnMapClickListener {
 
     private MapView mapView;
     private DirectionsRoute currentRoute;
@@ -55,6 +57,8 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
     private String rTitle;
     private String rDescription;
     private boolean newRoute;
+    private Button orgEditBtn;
+    private Button destEditBtn;
 
     // variables for adding location layer
     private MapboxMap mapboxMap;
@@ -62,21 +66,20 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
     private PermissionsManager permissionsManager;
     private LocationComponent locationComponent;
     // variables for calculating and drawing a route
+    Boolean editOrigin = false;
+    Boolean editDestination = false;
     Point originPoint = null;
     Point destinationPoint = null;
     private static final String TAG = "DirectionsActivity";
     private NavigationMapRoute navigationMapRoute;
     // variables needed to initialize navigation
-    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.mapBox_ACCESS_TOKEN));
 
-
-
-        setContentView(R.layout.activity_view_map_route);
+        setContentView(R.layout.activity_edit_map_route);
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
@@ -93,6 +96,30 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
             @Override
             public void onStyleLoaded(@NonNull Style style) {
 
+                mapboxMap.addOnMapClickListener(MapEditActivity.this);
+
+
+                orgEditBtn = findViewById(R.id.orig_point_btn);
+                destEditBtn = findViewById(R.id.dest_point_btn);
+                orgEditBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        orgEditBtn.setBackgroundColor(getResources().getColor(R.color.white));
+                        destEditBtn.setBackgroundColor(getResources().getColor(R.color.c_icon_bkg_unsel));
+                        editOrigin = true;
+                        editDestination = false;
+                    }
+                });
+
+                destEditBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        destEditBtn.setBackgroundResource(R.color.white);
+                        orgEditBtn.setBackgroundColor(getResources().getColor(R.color.c_icon_bkg_unsel));
+                        editOrigin = false;
+                        editDestination = true;
+                    }
+                });
 
                 enableLocationComponent(style);
 
@@ -106,28 +133,8 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
                     }
                 });
 
-                button = findViewById(R.id.startButton);
                 getRoute(originPoint, destinationPoint);
 
-                button.setEnabled(true);
-                button.setBackgroundResource(R.color.c_icon_bkg_sel);
-
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        boolean simulateRoute = true;
-                        Point locationPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),locationComponent.getLastKnownLocation().getLatitude());
-                        /*if (originPoint != locationPoint) {
-                            getRoute(locationPoint, destinationPoint);
-                        }*/
-                        NavigationLauncherOptions options = NavigationLauncherOptions.builder()
-                                .directionsRoute(currentRoute)
-                                .shouldSimulateRoute(simulateRoute)
-                                .build();
-                        // Call this method with Context from within an Activity
-                        NavigationLauncher.startNavigation(MapEditActivity.this, options);
-                    }
-                });
             }
         });
     }
@@ -300,4 +307,24 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
+    @Override
+    public boolean onMapClick(@NonNull LatLng point) {
+        if (editOrigin) {
+            originPoint = Point.fromLngLat(point.getLongitude(), point.getLatitude());
+            GeoJsonSource source = mapboxMap.getStyle().getSourceAs("destination-source-id");
+            if (source != null) {
+                source.setGeoJson(Feature.fromGeometry(originPoint));
+            }
+        }
+        else if (editDestination) {
+            destinationPoint = Point.fromLngLat(point.getLongitude(), point.getLatitude());
+            GeoJsonSource source = mapboxMap.getStyle().getSourceAs("destination-source-id");
+            if (source != null) {
+                source.setGeoJson(Feature.fromGeometry(destinationPoint));
+            }
+        }
+
+        getRoute(originPoint, destinationPoint);
+        return true;
+    }
 }

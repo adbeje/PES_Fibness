@@ -115,7 +115,7 @@ public class RoutesFragment extends Fragment {
 
                     dialog.dismiss();
 
-                    Intent mapPage = new Intent(getActivity(), MapViewActivity.class);
+                    Intent mapPage = new Intent(getActivity(), MapEditActivity.class);
                     mapPage.putExtra("new", true);
                     mapPage.putExtra("origen", Point.fromLngLat(0, 0));
                     mapPage.putExtra("destino", Point.fromLngLat(0, 0));
