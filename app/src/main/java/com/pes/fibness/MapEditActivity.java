@@ -47,7 +47,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 
-public class MapViewActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener {
+public class MapEditActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener {
 
     private MapView mapView;
     private DirectionsRoute currentRoute;
@@ -125,7 +125,7 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
                                 .shouldSimulateRoute(simulateRoute)
                                 .build();
                         // Call this method with Context from within an Activity
-                        NavigationLauncher.startNavigation(MapViewActivity.this, options);
+                        NavigationLauncher.startNavigation(MapEditActivity.this, options);
                     }
                 });
             }
