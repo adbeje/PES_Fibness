@@ -769,9 +769,9 @@ public class ConnetionAPI {
         String destino = r.destino.longitude() +";"+ r.destino.latitude();
         final String data = "{"+
                 "\"nombre\": " + "\"" + r.name + "\"," +
-                "\"descripcion\": " + "\"" + r.description + "\"" +
-                "\"origin\": " + "\"" + origen + "\"" +
-                "\"destino\": " + "\"" + destino + "\"" +
+                "\"descripcion\": " + "\"" + r.description + "\"," +
+                "\"origin\": " + "\"" + origen + "\"," +
+                "\"destino\": " + "\"" + destino + "\"," +
                 "\"distancia\": " + "\"" + r.distance + "\"" +
                 "}";
         request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
@@ -811,10 +811,10 @@ public class ConnetionAPI {
         final String data = "{"+
                 "\"nombre\": " + "\"" + r.name + "\"," +
                 "\"descripcion\": " + "\"" + r.description + "\"," +
-                "\"idUser\": " + userID +
+                "\"idUser\": " + userID + "," +
                 "\"origin\": " + "\"" + origen + "\"," +
                 "\"destino\": " + "\"" + destino + "\"," +
-                "\"distancia\": " + "\"" + r.distance + "\"," +
+                "\"distancia\": " + "\"" + r.distance + "\"" +
                 "}";
 
         request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
@@ -823,7 +823,7 @@ public class ConnetionAPI {
                 try {
                     JSONObject obj = new JSONObject(response);
                     if (obj.has("idRoute")) {
-                        int id = (Integer) obj.get("idRoute");
+                        int id = (Integer) obj.getInt("idRoute");
                         User.getInstance().setRutaID(name, id);
                     }
                 } catch (JSONException e) {
