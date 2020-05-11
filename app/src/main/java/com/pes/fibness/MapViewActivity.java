@@ -55,7 +55,7 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
     private MapboxDirections client;
     private String rTitle;
     private String rDescription;
-    private boolean newRoute;
+    private int rPosition;
 
     // variables for adding location layer
     private MapboxMap mapboxMap;
@@ -74,8 +74,6 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.mapBox_ACCESS_TOKEN));
-
-
 
         setContentView(R.layout.activity_view_map_route);
         mapView = findViewById(R.id.mapView);
@@ -117,7 +115,22 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
                         editRoute.putExtra("destinationPoint", destinationPoint);
                         editRoute.putExtra("routeTitle", rTitle);
                         editRoute.putExtra("routeDescription", rDescription);
+                        editRoute.putExtra("routePosition", rPosition);
+                        editRoute.putExtra("routeID", User.getInstance().getRutaID(rPosition));
                         startActivity(editRoute);
+                    }
+                });
+
+                Button delete = findViewById(R.id.btn_delete_route);
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/route/" + User.getInstance().getRutaID(rPosition));
+                        c.deleteUserRoute();
+
+                        User.getInstance().deleteRuta(rPosition);
+
+                        finish();
                     }
                 });
 
@@ -303,10 +316,9 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
         if (extras != null) {
             originPoint = (Point) extras.get("originPoint");
             destinationPoint = (Point)extras.get("destinationPoint");
-            newRoute = extras.getBoolean("new");
             rTitle = extras.getString("routeTitle");
             rDescription = extras.getString("routeDescription");
-
+            rPosition = extras.getInt("routePosition");
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarM);
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle(rTitle);

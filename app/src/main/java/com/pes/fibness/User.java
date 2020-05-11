@@ -43,16 +43,6 @@ public class User {
     private static User instance = null;
     private User(){
         imageByteArray = null; recoveryCode = "";
-
-        for(int i = 0; i < 10; ++i){
-            Ruta r = new Ruta();
-            r.name = "Ruta " + i;
-            r.description = "Descripcion " + i;
-            r.id = i;
-            r.origen = Point.fromLngLat(2.093580 + i, 41.322220 + i);
-            r.destino = Point.fromLngLat(2.102213 + i, 41.330124 + i);
-            addRuta(r);
-        }
     }
 
     public static User getInstance(){
@@ -326,8 +316,8 @@ public class User {
     /** Rutas **/
     public ArrayList<String> getRutasNames(){
         ArrayList<String> lista = new ArrayList<>();
-        for(int i = 0; i < trainingList.size(); ++i) {
-            lista.add(trainingList.get(i).name);
+        for(int i = 0; i < rutasList.size(); ++i) {
+            lista.add(rutasList.get(i).name);
         }
         return lista;
     }
@@ -354,6 +344,15 @@ public class User {
 
     public int getRutaID(int pos){
         return rutasList.get(pos).id;
+    }
+
+    public void setRutaID(String name, int newID){
+        for(int i = 0; i < rutasList.size(); ++i){
+            if(rutasList.get(i).name.equals(name)){
+                rutasList.get(i).id = newID;
+                break;
+            }
+        }
     }
 
 }

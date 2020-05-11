@@ -27,6 +27,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/trainings");
         c.getUserTrainings();
+        c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/routes");
+        c.getUserRoutes();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_layout, perfil);
         ft.commit();
@@ -60,13 +62,12 @@ public class HomeActivity extends AppCompatActivity {
     public void onBackPressed() {
         if(backPressedTime+2000 > System.currentTimeMillis()){ //compare first click time with second
             Intent homePage = new Intent(HomeActivity.this, MainActivity.class);
-            startActivity(homePage);;
+            startActivity(homePage);
         }
         else Toast.makeText( getBaseContext(), "Press back again", Toast.LENGTH_SHORT).show();
 
         backPressedTime = System.currentTimeMillis();
 
     }
-
 
 }

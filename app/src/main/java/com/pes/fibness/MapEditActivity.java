@@ -1,10 +1,13 @@
 package com.pes.fibness;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,11 +35,10 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -53,9 +55,11 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
 
     private MapView mapView;
     private DirectionsRoute currentRoute;
-    private MapboxDirections client;
     private String rTitle;
     private String rDescription;
+    private int rDistance;
+    private int rPosition;
+    private int rID;
     private boolean newRoute;
     private Button orgEditBtn;
     private Button destEditBtn;
@@ -70,7 +74,6 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
     Boolean editDestination = false;
     Point originPoint = null;
     Point destinationPoint = null;
-    private static final String TAG = "DirectionsActivity";
     private NavigationMapRoute navigationMapRoute;
     // variables needed to initialize navigation
 
@@ -99,6 +102,7 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
                 mapboxMap.addOnMapClickListener(MapEditActivity.this);
 
 
+                Button save = findViewById(R.id.save);
                 orgEditBtn = findViewById(R.id.orig_point_btn);
                 destEditBtn = findViewById(R.id.dest_point_btn);
                 orgEditBtn.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +122,41 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
                         orgEditBtn.setBackgroundColor(getResources().getColor(R.color.c_icon_bkg_unsel));
                         editOrigin = false;
                         editDestination = true;
+                    }
+                });
+
+                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarM);
+                toolbar.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        showEditBox();
+                    }
+                });
+
+                save.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Ruta r = new Ruta();
+                        r.name = rTitle;
+                        r.description = rDescription;
+                        r.distance = rDistance;
+                        r.origen = originPoint;
+                        r.destino = destinationPoint;
+                        if(newRoute) {
+                            r.id = -1;
+                            User.getInstance().addRuta(r);
+
+                            ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/route");
+                            c.postUserRoute(r, User.getInstance().getId());
+                        }
+                        else{
+                            r.id = rID;
+                            User.getInstance().updateRuta(rPosition, r);
+
+                            ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/route/" + rID);
+                            c.updateUserRoute(r);
+                        }
+                        finish();
                     }
                 });
 
@@ -200,8 +239,10 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
                             navigationMapRoute = new NavigationMapRoute(null, mapView, mapboxMap, R.style.NavigationMapRoute);
                         }
                         navigationMapRoute.addRoute(currentRoute);
+                        rDistance = currentRoute.distance().intValue();
                         TextView dist = findViewById(R.id.map_dist);
-                        dist.setText("Distancia: " + currentRoute.distance().intValue() + " m");
+                        dist.setText("Distancia: " + rDistance + " m");
+
                     }
 
                     @Override
@@ -298,13 +339,51 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
             newRoute = extras.getBoolean("new");
             rTitle = extras.getString("routeTitle");
             rDescription = extras.getString("routeDescription");
-
+            rPosition = extras.getInt("routePosition");
+            rID = extras.getInt("routeID");
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarM);
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle(rTitle);
             getSupportActionBar().setSubtitle(rDescription);
         }
 
+    }
+
+    private void showEditBox(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(R.layout.input_new_ruta);
+        builder.setTitle("Edit " + rTitle);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+        TextView txt = (TextView) dialog.findViewById(R.id.inputboxTitleRuta);
+        txt.setText("Add a name");
+        final EditText nameText = (EditText) dialog.findViewById(R.id.titleRutaInput);
+        final EditText descText = (EditText) dialog.findViewById(R.id.descRutaInput);
+        nameText.setText(rTitle);
+        descText.setText(rDescription);
+        Button bt = (Button) dialog.findViewById(R.id.btdone);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<String> rutasList = User.getInstance().getRutasNames();
+                if (nameText.getText().toString().trim().length() == 0) {
+                    nameText.setError("Please, add a name");
+                }
+                else if (rutasList.contains(nameText.getText().toString()) &&
+                        !rutasList.get(rPosition).equals(nameText.getText().toString())){
+                    nameText.setError("This name is already used");
+                }
+                else {
+                    rTitle = nameText.getText().toString();
+                    rDescription = descText.getText().toString();
+                    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarM);
+                    setSupportActionBar(toolbar);
+                    getSupportActionBar().setTitle(rTitle);
+                    getSupportActionBar().setSubtitle(rDescription);
+                    dialog.dismiss();
+                }
+            }
+        });
     }
 
     @Override

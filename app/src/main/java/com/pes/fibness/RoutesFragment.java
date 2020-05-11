@@ -3,6 +3,7 @@ package com.pes.fibness;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.mapbox.api.staticmap.v1.MapboxStaticMap;
 import com.mapbox.api.staticmap.v1.StaticMapCriteria;
 import com.mapbox.geojson.Point;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class RoutesFragment extends Fragment {
@@ -33,6 +35,7 @@ public class RoutesFragment extends Fragment {
     private LinearLayoutManager mLinearLayoutManager;
     private GridLayoutManager mGridLayoutManager;
     private ArrayList<Ruta> routesList;
+    private RoutesFragment.MapAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +50,7 @@ public class RoutesFragment extends Fragment {
         mRecyclerView = root.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        RoutesFragment.MapAdapter adapter = new RoutesFragment.MapAdapter(routesList);
+        adapter = new RoutesFragment.MapAdapter(routesList);
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,6 +77,7 @@ public class RoutesFragment extends Fragment {
 
         return root;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -117,15 +121,25 @@ public class RoutesFragment extends Fragment {
 
                     Intent mapPage = new Intent(getActivity(), MapEditActivity.class);
                     mapPage.putExtra("new", true);
-                    mapPage.putExtra("origen", Point.fromLngLat(0, 0));
-                    mapPage.putExtra("destino", Point.fromLngLat(0, 0));
-                    mapPage.putExtra("tituloRuta", title);
-                    mapPage.putExtra("descripcion", desc);
+                    mapPage.putExtra("originPoint", Point.fromLngLat(0, 0));
+                    mapPage.putExtra("destinationPoint", Point.fromLngLat(0, 0));
+                    mapPage.putExtra("routeTitle", title);
+                    mapPage.putExtra("routeDescription", desc);
+                    mapPage.putExtra("routeID", -1);
+                    mapPage.putExtra("routePosition", -1);
                     startActivity(mapPage);
                 }
             }
         });
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        routesList = User.getInstance().getRutasList();
+        adapter.notifyDataSetChanged();
+    }
+
 
     private class MapAdapter extends RecyclerView.Adapter<RoutesFragment.MapAdapter.ViewHolder> implements View.OnClickListener{
 

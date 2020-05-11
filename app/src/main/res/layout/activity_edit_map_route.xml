@@ -39,9 +39,10 @@
         android:id="@+id/map_dist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapView"
@@ -68,13 +69,11 @@
     <FrameLayout
         android:id="@+id/panel_inferior"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="651dp"
+        android:layout_height="60dp"
         android:background="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
     </FrameLayout>
 
@@ -82,7 +81,7 @@
         android:id="@+id/dest_point_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="683dp"
+        android:layout_marginTop="705dp"
         android:layout_marginEnd="70dp"
         android:layout_marginBottom="35dp"
         android:backgroundTint="@color/claro"
@@ -97,13 +96,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="683dp"
+        android:layout_marginTop="705dp"
         android:layout_marginBottom="35dp"
         android:backgroundTint="@color/claro"
         android:contextClickable="false"
         android:text="origen"
         app:layout_constraintBottom_toBottomOf="@+id/panel_inferior"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="@color/claro"
+        android:contextClickable="false"
+        android:text="SAVE"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

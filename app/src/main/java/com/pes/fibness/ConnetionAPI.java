@@ -11,6 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.mapbox.geojson.Point;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -724,6 +725,150 @@ public class ConnetionAPI {
     }
 
 
+    /** RUTAS **/
+    public void getUserRoutes() {
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray rutas = new JSONArray(response);
+                    ArrayList<Ruta> rutasList = new ArrayList<>();
+                    for(int i = 0; i < rutas.length(); i++){
+                        JSONObject ruta = rutas.getJSONObject(i);
+                        String[] origen;
+                        String[] destino;
+                        Ruta r = new Ruta();
+                        r.name = (String) ruta.getString("nombre");
+                        r.description = (String) ruta.getString("descripcion");
+                        r.id = (Integer) ruta.getInt("idelemento");
+                        r.distance = Integer.parseInt(ruta.getString("distancia"));
+                        origen = ruta.getString("origen").split(";");
+                        destino = ruta.getString("destino").split(";");
+                        r.origen = Point.fromLngLat(Double.parseDouble(origen[0]), Double.parseDouble(origen[1]));
+                        r.destino = Point.fromLngLat(Double.parseDouble(destino[0]), Double.parseDouble(destino[1]));
+                        rutasList.add(r);
+                    }
+                    User.getInstance().setRutasList(rutasList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HOLA" + error);
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
+    }
+
+    public void updateUserRoute(Ruta r) {
+        String origen = r.origen.longitude() +";"+ r.origen.latitude();
+        String destino = r.destino.longitude() +";"+ r.destino.latitude();
+        final String data = "{"+
+                "\"nombre\": " + "\"" + r.name + "\"," +
+                "\"descripcion\": " + "\"" + r.description + "\"" +
+                "\"origin\": " + "\"" + origen + "\"" +
+                "\"destino\": " + "\"" + destino + "\"" +
+                "\"distancia\": " + "\"" + r.distance + "\"" +
+                "}";
+        request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your route has not been modified. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+
+
+        };
+
+        enqueue();
+    }
+
+    public void postUserRoute(Ruta r, int userID) {
+        String origen = r.origen.longitude() +";"+ r.origen.latitude();
+        String destino = r.destino.longitude() +";"+ r.destino.latitude();
+        final String name = r.name;
+        final String data = "{"+
+                "\"nombre\": " + "\"" + r.name + "\"," +
+                "\"descripcion\": " + "\"" + r.description + "\"," +
+                "\"idUser\": " + userID +
+                "\"origin\": " + "\"" + origen + "\"," +
+                "\"destino\": " + "\"" + destino + "\"," +
+                "\"distancia\": " + "\"" + r.distance + "\"," +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.has("idRoute")) {
+                        int id = (Integer) obj.get("idRoute");
+                        User.getInstance().setRutaID(name, id);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+        };
+        enqueue();
+    }
+
+    public void deleteUserRoute() {
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your route has not been deleted. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
+    }
+
+
 
     //to go HomePage
     private void homeActivity() {
@@ -736,7 +881,5 @@ public class ConnetionAPI {
     private void enqueue(){
         requestQueue.add(request);
     }
-
-
 
 }
