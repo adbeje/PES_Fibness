@@ -183,9 +183,8 @@ public class EditProfileActivity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
         byte[] imageInByte = baos.toByteArray();
         u.setImage(imageInByte);
-
         String response = baos.toString();
-        System.out.println("Respuesta Imagen: "+ response);
+        //System.out.println("Respuesta Imagen: "+ response);
     }
 
 
@@ -258,8 +257,6 @@ public class EditProfileActivity extends AppCompatActivity {
         u.setCountry(String.valueOf(sCountry.getSelectedItemPosition()));
         saveProfilePicture();
 
-
-
         String route = "http://10.4.41.146:3001/user/"+u.getId()+"/info";
         ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), route);
         connection.postUserInfo();
@@ -267,10 +264,5 @@ public class EditProfileActivity extends AppCompatActivity {
         route = "http://10.4.41.146:3001/user/"+u.getId()+"/profile";
         connection = new ConnetionAPI(getApplicationContext(), route);
         connection.setUserProfilePicture();
-
     }
-
-
-
-
 }

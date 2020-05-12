@@ -433,9 +433,9 @@ public class ConnetionAPI {
         request = new StringRequest(Request.Method.GET, s, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println("Respuesta imagen: " + response);
+               // System.out.println("Respuesta imagen: " + response);
                 byte[] pic = Base64.decode(response, Base64.DEFAULT);
-                System.out.println("Respuesta imagen: " + Arrays.toString(pic));
+              //  System.out.println("Respuesta imagen: " + Arrays.toString(pic));
                 User u = User.getInstance();
                 u.setImage(pic);
             }
@@ -459,7 +459,7 @@ public class ConnetionAPI {
 
         System.out.println("Dentro de User information");
 
-        getUserProfile("http://10.4.41.146:3001/user/10/profile");
+        getUserProfile("http://10.4.41.146:3001/user/23/profile");
 
         request = new StringRequest(Request.Method.GET, route, new Response.Listener<String>() {
             @Override
@@ -658,23 +658,33 @@ public class ConnetionAPI {
 
         User u = User.getInstance();
         byte[] pic = u.getImage();
-        String data = Base64.encodeToString(pic, Base64.DEFAULT);
+        final String data = Base64.encodeToString(pic, Base64.DEFAULT);
 
-        System.out.println("post response image: " + data);
+        //System.out.println("post response image: " + data);
 
         request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
+                @Override
+                public void onResponse(String response) {
 
-                System.out.println("post response: " + response);
-                Toast.makeText(getApplicationContext(), "Your information has been modified", Toast.LENGTH_SHORT).show();
-            }
+                    System.out.println("post response: " + response);
+                    Toast.makeText(getApplicationContext(), "Your information has been modified", Toast.LENGTH_SHORT).show();
+                }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(context, "Server Response error", Toast.LENGTH_LONG).show();
                 }
-            });
+            }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "image/jpeg; charset=utf-8";
+            }
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+            };
 
         enqueue();
     }
@@ -713,19 +723,9 @@ public class ConnetionAPI {
             public byte[] getBody(){
                 return data.getBytes(StandardCharsets.UTF_8);
             }
-
-
         };
-
         enqueue();
-
-
     }
-
-
-
-
-
 
     /*para dietas*/
     public void getUserDiets(){
