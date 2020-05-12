@@ -205,7 +205,7 @@ public class User {
 
     public int getExerciseID(int position){ return exerciseList.get(position).id;  }
 
-    public String getExerciseDesc(int position){ return exerciseList.get(position).Desc;  }
+    public int getExerciseNamePos(int position){ return exerciseList.get(position).Pos;  }
 
     /** Diets **/
     public void setDietList(ArrayList<Diet> d){
@@ -373,7 +373,7 @@ class Exercise{
     String NumRepet;
     String NumSerie;
     String NumRest;
-    String Desc;
+    int  Pos;
 }
 
 class Diet{

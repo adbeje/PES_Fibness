@@ -482,7 +482,6 @@ public class ConnetionAPI {
         request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println("ENTRA???");
                 try {
                     JSONArray exercises = new JSONArray(response);
                     ArrayList<Exercise> exerciseList = new ArrayList<>();
@@ -490,7 +489,7 @@ public class ConnetionAPI {
                         JSONObject exercise = exercises.getJSONObject(i);
                         Exercise e = new Exercise();
                         e.TitleEx = (String) exercise.getString("nombre");
-                        e.Desc = (String) exercise.getString("descripcion");
+                        e.Pos = (Integer) exercise.getInt("posicion");
                         int numRest = (Integer) exercise.getInt("tiempodescanso");
                         e.NumRest = String.valueOf(numRest);
                         int numSerie = (Integer) exercise.getInt("numsets");
@@ -522,16 +521,17 @@ public class ConnetionAPI {
 
     }
 
-    public void postTrainingExercises(int idT, final String nameE, String desc, final int numRest, final int numSerie, final int numRept,
+    public void postTrainingExercises(int idT, final String nameE, final int pos, final int numRest, final int numSerie, final int numRept,
                                       final int Position){
         final String data = "{"+
                 "\"idEntrenamiento\": " + idT +"," +
                 "\"nombre\": " + "\"" + nameE + "\"," +
-                "\"descripcion\": " + "\"" + desc + "\"," +
+                "\"descripcion\": " + "\"" + "" + "\"," +
                 "\"tiempoEjecucion\": " + 0 + "," +
                 "\"numSets\": " + numSerie + "," +
                 "\"numRepeticiones\": " + numRept + "," +
-                "\"tiempoDescanso\": " + numRest +
+                "\"tiempoDescanso\": " + numRest + "," +
+                "\"posicion\": " + pos +
                 "}";
 
 
@@ -541,13 +541,14 @@ public class ConnetionAPI {
                 System.out.println("Resgister user response: " + response);
                 try {
                     JSONObject obj = new JSONObject(response);
-                    if (obj.has("idexercise")) {
-                        int id = (Integer) obj.get("idexercise");
+                    if (obj.has("idExercise")) {
+                        int id = (Integer) obj.get("idExercise");
                         Exercise e = new Exercise();
                         e.TitleEx = nameE;
                         e.NumSerie = String.valueOf(numSerie);
                         e.NumRest = String.valueOf(numRest);
                         e.NumRepet = String.valueOf(numRept);
+                        e.Pos = pos;
                         e.id = id;
                         User.getInstance().updateExercise(Position, e);
                     }
@@ -584,15 +585,15 @@ public class ConnetionAPI {
         enqueue();
     }
 
-    public void updateTrainingExercises(final String nameE, String desc, final int numRest, final int numSerie, final int numRept){
-        System.out.println("AQUI " + nameE);
+    public void updateTrainingExercises(final String nameE, int pos, final int numRest, final int numSerie, final int numRept){
         final String data = "{"+
                 "\"nombre\": " + "\"" + nameE + "\"," +
-                "\"descripcion\": " + "\"" + desc + "\"," +
+                "\"descripcion\": " + "\"" + "" + "\"," +
                 "\"tiempoEjecucion\": " + 0 + "," +
                 "\"numSets\": " + numSerie + "," +
                 "\"numRepeticiones\": " + numRept + "," +
-                "\"tiempoDescanso\": " + numRest +
+                "\"tiempoDescanso\": " + numRest + "," +
+                "\"posicion\": " + pos +
                 "}";
         request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
             @Override
