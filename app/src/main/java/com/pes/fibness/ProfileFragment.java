@@ -16,8 +16,6 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.io.File;
-
 import static com.pes.fibness.R.id.iv_user;
 
 public class ProfileFragment extends Fragment {
@@ -90,7 +88,7 @@ public class ProfileFragment extends Fragment {
 
     private void showUserInfo() {
         boolean validImage = false;
-        File userImage = null;
+        byte[] userImage = null;
         if (u.getImage() != null) {
             validImage = true;
             userImage = u.getImage();

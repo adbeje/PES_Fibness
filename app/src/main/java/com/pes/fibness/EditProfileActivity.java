@@ -5,7 +5,12 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -18,14 +23,22 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.mikephil.charting.utils.FileUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -38,6 +51,7 @@ import static com.pes.fibness.R.id.et_Description;
 import static com.pes.fibness.R.id.et_Name;
 import static com.pes.fibness.R.id.et_mostrar_fecha_picker;
 import static com.pes.fibness.R.id.ib_obtener_fecha;
+import static com.pes.fibness.R.id.image;
 import static com.pes.fibness.R.id.iv_user;
 import static com.pes.fibness.R.id.s_Country;
 import static com.pes.fibness.R.id.tB_fem;
@@ -162,13 +176,26 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
+    protected void saveProfilePicture() {
+        // Reading a Image file from file system
+        Bitmap bitmap = ((BitmapDrawable) ivUser.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+        byte[] imageInByte = baos.toByteArray();
+        u.setImage(imageInByte);
+
+        String response = baos.toString();
+        System.out.println("Respuesta Imagen: "+ response);
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         EasyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onImagesPicked(@NonNull List<File> imageFiles, EasyImage.ImageSource source, int type) {
-                u.setImage(imageFiles.get(0));
                 Glide.with(EditProfileActivity.this)
                         .load(imageFiles.get(0))
                         .centerCrop()
@@ -197,7 +224,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private void showUserInfo() {
         etName.setText(u.getName());
         boolean validImage = false;
-        File userImage = null;
+        byte[] userImage = null;
         if (u.getImage() != null) {
             validImage = true;
             userImage = u.getImage();
@@ -229,12 +256,18 @@ public class EditProfileActivity extends AppCompatActivity {
         u.setDescription(etDescription.getText().toString());
         u.setBirthDate(etDate.getText().toString());
         u.setCountry(String.valueOf(sCountry.getSelectedItemPosition()));
+        saveProfilePicture();
 
 
 
         String route = "http://10.4.41.146:3001/user/"+u.getId()+"/info";
         ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), route);
         connection.postUserInfo();
+
+        route = "http://10.4.41.146:3001/user/"+u.getId()+"/profile";
+        connection = new ConnetionAPI(getApplicationContext(), route);
+        connection.setUserProfilePicture();
+
     }
 
 

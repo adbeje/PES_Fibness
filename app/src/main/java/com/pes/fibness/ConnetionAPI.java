@@ -2,6 +2,7 @@ package com.pes.fibness;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Base64;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -11,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.sun.mail.iap.ByteArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,6 +21,8 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.BitSet;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -424,9 +428,38 @@ public class ConnetionAPI {
 
     }
 
+    private void getUserProfile(String s) {
+        System.out.println("--------------------------------------------------------------------");
+        request = new StringRequest(Request.Method.GET, s, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Respuesta imagen: " + response);
+                byte[] pic = Base64.decode(response, Base64.DEFAULT);
+                System.out.println("Respuesta imagen: " + Arrays.toString(pic));
+                User u = User.getInstance();
+                u.setImage(pic);
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+    }
+
+
+
+
     private void getUserInfo(String route) {
 
+        final User u = User.getInstance();
+
         System.out.println("Dentro de User information");
+
+        getUserProfile("http://10.4.41.146:3001/user/10/profile");
 
         request = new StringRequest(Request.Method.GET, route, new Response.Listener<String>() {
             @Override
@@ -438,7 +471,7 @@ public class ConnetionAPI {
                     System.out.println("Estoy dentro de User info para recoger datos de json");
                     System.out.println("Resultado: " + obj);
 
-                    User u = User.getInstance();
+
 
                     u.setName(obj.get("nombre").toString());
                     u.setEmail(obj.get("email").toString());
@@ -468,10 +501,6 @@ public class ConnetionAPI {
         });
 
         enqueue();
-
-
-
-
     }
 
 
@@ -620,6 +649,33 @@ public class ConnetionAPI {
                 Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
             }
         });
+        enqueue();
+    }
+
+
+    public void setUserProfilePicture() {
+        System.out.println("--------------------------------------------------------------------");
+
+        User u = User.getInstance();
+        byte[] pic = u.getImage();
+        String data = Base64.encodeToString(pic, Base64.DEFAULT);
+
+        System.out.println("post response image: " + data);
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("post response: " + response);
+                Toast.makeText(getApplicationContext(), "Your information has been modified", Toast.LENGTH_SHORT).show();
+            }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, "Server Response error", Toast.LENGTH_LONG).show();
+                }
+            });
+
         enqueue();
     }
 

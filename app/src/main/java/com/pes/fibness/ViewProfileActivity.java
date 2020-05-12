@@ -74,7 +74,7 @@ public class ViewProfileActivity extends AppCompatActivity {
         String[] planets = res.getStringArray(R.array.countries);
 
         boolean validImage = false;
-        File userImage = null;
+        byte[] userImage = null;
         if (u.getImage() != null) {
             validImage = true;
             userImage = u.getImage();
@@ -99,6 +99,7 @@ public class ViewProfileActivity extends AppCompatActivity {
             Glide.with(ViewProfileActivity.this)
                     .load(userImage)
                     .centerCrop()
+                    .circleCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(ivUser);
         }
