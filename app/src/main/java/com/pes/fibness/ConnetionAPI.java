@@ -757,7 +757,6 @@ public class ConnetionAPI {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("HOLA" + error);
                 Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
             }
         });
@@ -770,7 +769,7 @@ public class ConnetionAPI {
         final String data = "{"+
                 "\"nombre\": " + "\"" + r.name + "\"," +
                 "\"descripcion\": " + "\"" + r.description + "\"," +
-                "\"origin\": " + "\"" + origen + "\"," +
+                "\"origen\": " + "\"" + origen + "\"," +
                 "\"destino\": " + "\"" + destino + "\"," +
                 "\"distancia\": " + "\"" + r.distance + "\"" +
                 "}";
@@ -812,7 +811,7 @@ public class ConnetionAPI {
                 "\"nombre\": " + "\"" + r.name + "\"," +
                 "\"descripcion\": " + "\"" + r.description + "\"," +
                 "\"idUser\": " + userID + "," +
-                "\"origin\": " + "\"" + origen + "\"," +
+                "\"origen\": " + "\"" + origen + "\"," +
                 "\"destino\": " + "\"" + destino + "\"," +
                 "\"distancia\": " + "\"" + r.distance + "\"" +
                 "}";
@@ -822,8 +821,8 @@ public class ConnetionAPI {
             public void onResponse(String response) {
                 try {
                     JSONObject obj = new JSONObject(response);
-                    if (obj.has("idRoute")) {
-                        int id = (Integer) obj.getInt("idRoute");
+                    if (obj.has("idElemento")) {
+                        int id = (Integer) obj.getInt("idElemento");
                         User.getInstance().setRutaID(name, id);
                     }
                 } catch (JSONException e) {
