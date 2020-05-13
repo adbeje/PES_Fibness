@@ -83,7 +83,7 @@ public class ViewProfileActivity extends AppCompatActivity {
 
         username.setText(u.getName());
 
-        if(u.getBirthDate() == null)
+        if(u.getBirthDate() == "null")
             age.setText("-");
         else age.setText(howManyYears(u.getBirthDate()));
 

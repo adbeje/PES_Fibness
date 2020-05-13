@@ -104,7 +104,7 @@ public class ProfileFragment extends Fragment {
                         startActivity(i);
                     }
                 };
-                h.sendEmptyMessageDelayed(0, 50);
+                h.sendEmptyMessageDelayed(0, 200);
 
             }
         });

@@ -178,13 +178,14 @@ public class EditProfileActivity extends AppCompatActivity {
 
     protected void saveProfilePicture() {
         // Reading a Image file from file system
-        Bitmap bitmap = ((BitmapDrawable) ivUser.getDrawable()).getBitmap();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
-        byte[] imageInByte = baos.toByteArray();
-        u.setImage(imageInByte);
-        String response = baos.toString();
-        //System.out.println("Respuesta Imagen: "+ response);
+        //mirar que el bitmap no sea nulo
+            Bitmap bitmap = ((BitmapDrawable) ivUser.getDrawable()).getBitmap();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
+            byte[] imageInByte = baos.toByteArray();
+            u.setImage(imageInByte);
+            String response = baos.toString();
+            //System.out.println("Respuesta Imagen: "+ response);
     }
 
 
@@ -255,14 +256,17 @@ public class EditProfileActivity extends AppCompatActivity {
         u.setDescription(etDescription.getText().toString());
         u.setBirthDate(etDate.getText().toString());
         u.setCountry(String.valueOf(sCountry.getSelectedItemPosition()));
+
         saveProfilePicture();
 
         String route = "http://10.4.41.146:3001/user/"+u.getId()+"/info";
         ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), route);
         connection.postUserInfo();
 
-        route = "http://10.4.41.146:3001/user/"+u.getId()+"/profile";
-        connection = new ConnetionAPI(getApplicationContext(), route);
-        connection.setUserProfilePicture();
+        if (u.getImage() != null) {
+            route = "http://10.4.41.146:3001/user/" + u.getId() + "/profile";
+            connection = new ConnetionAPI(getApplicationContext(), route);
+            connection.setUserProfilePicture();
+        }
     }
 }

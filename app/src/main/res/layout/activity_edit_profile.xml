@@ -100,7 +100,7 @@
                         android:id="@+id/iv_user"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
-                        android:src="@drawable/ic_account_frame"
+                        app:srcCompat="@drawable/ic_account_frame"
                         android:layout_gravity="center_horizontal"/>
 
                     <LinearLayout

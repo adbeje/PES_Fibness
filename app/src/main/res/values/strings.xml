@@ -90,7 +90,6 @@
     <string name="cancel">Cancel</string>
     <string name="bkMsg">Are you sure you want to block this user? The user will not be able to see your profile or send you messages</string>
     <string name="bkAccounts">Blocked Accounts</string>
-    <string name="title_activity_maps" tools:ignore="MissingTranslation">Map</string>
     <string name="directions_activity_toast_message" tools:ignore="MissingTranslation">La distancia de la ruta es:</string>
 
     <string name="Rest">REST: </string>

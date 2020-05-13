@@ -86,7 +86,7 @@ public class ConnetionAPI {
                                 homeActivity();
                             }
                         };
-                        h.sendEmptyMessageDelayed(0, 10);
+                        h.sendEmptyMessageDelayed(0, 100);
 
 
                     }
@@ -157,7 +157,7 @@ public class ConnetionAPI {
                             homeActivity();
                         }
                     };
-                    h.sendEmptyMessageDelayed(0, 10);
+                    h.sendEmptyMessageDelayed(0, 100);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -229,7 +229,7 @@ public class ConnetionAPI {
                                 homeActivity();
                             }
                         };
-                        h.sendEmptyMessageDelayed(0, 10);
+                        h.sendEmptyMessageDelayed(0, 100);
                     }
                     else Toast.makeText(getApplicationContext(), "Invalid Login Credentials", Toast.LENGTH_SHORT).show();
 
@@ -465,7 +465,7 @@ public class ConnetionAPI {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
             }
         });
 
