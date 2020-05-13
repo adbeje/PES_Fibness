@@ -459,7 +459,7 @@ public class ConnetionAPI {
 
         System.out.println("Dentro de User information");
 
-        getUserProfile("http://10.4.41.146:3001/user/23/profile");
+        getUserProfile("http://10.4.41.146:3001/user/" + u.getId() + "/profile");
 
         request = new StringRequest(Request.Method.GET, route, new Response.Listener<String>() {
             @Override

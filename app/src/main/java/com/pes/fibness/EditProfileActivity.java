@@ -180,7 +180,7 @@ public class EditProfileActivity extends AppCompatActivity {
         // Reading a Image file from file system
         Bitmap bitmap = ((BitmapDrawable) ivUser.getDrawable()).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
         byte[] imageInByte = baos.toByteArray();
         u.setImage(imageInByte);
         String response = baos.toString();
