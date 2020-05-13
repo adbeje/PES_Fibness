@@ -7,13 +7,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -26,14 +29,17 @@ public class AchievementsActivity extends AppCompatActivity {
     private Dialog dialog;
     private Button btnLetGo, btShare;
     private ImageView btnBack, closePopup;
-    private SeekBar seekBar;
 
     private ViewPager viewPager;
     private AdapterViewPager adapterViewPager;
     private List<MyModel> models;
     private Integer [] colors = null;
     private ArgbEvaluator argbEvaluator = new ArgbEvaluator();
-    private TextView textNum;
+    private TextView textNum, meterTraveled, message;
+    private ProgressBar progressBar;
+
+    private ArrayList<Achievement> achieves = User.getInstance().getAchievements();
+    private int userDistance = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +51,9 @@ public class AchievementsActivity extends AppCompatActivity {
         textNum = findViewById(R.id.textNum);
         btnBack = findViewById(R.id.backImgButton);
         btShare = findViewById(R.id.btn_share);
-        seekBar = (SeekBar) findViewById(R.id.seekBar);
-
-        //System.out.println("seekBar x value: " + seekBar.getX());
+        progressBar = findViewById(R.id.progressBar);
+        meterTraveled = findViewById(R.id.meterTraveled);
+        message = findViewById(R.id.message);
 
         achievements.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,13 +72,25 @@ public class AchievementsActivity extends AppCompatActivity {
         });
 
 
+        /*TEST*/
+        ArrayList<Achievement> a = new ArrayList<>();
+        Achievement a1;
+        for(int i=0; i<4; ++i){
+            a1 = new Achievement();
+            a1.id = i;
+            a1.active = false;
+            a1.distance = i * 20;
+            a.add(a1);
+        }
+        User.getInstance().setAchievements(a);
+
 
         models = new ArrayList<>();
-        models.add(new MyModel(R.drawable.basecamp, "BASE CAMP", "START", "You started the adventure on" + "-User register date"));
+        models.add(new MyModel(R.drawable.basecamp, "BASE CAMP", "START", "You started the adventure on " + User.getInstance().getRegisterDate().substring(0,10)));
         models.add(new MyModel(R.drawable.kirkjufell, "KIRKJUFELL", "463 M", ""));
-        models.add(new MyModel(R.drawable.elcapitan, "EL CAPITAN", "2 307 M", "The best views are achieved after a hard climb."));
-        models.add(new MyModel(R.drawable.mountolympus, "MOUNT OLYMPUS", "2 918 M", "The best views are achieved after a hard climb."));
-        models.add(new MyModel(R.drawable.fitzroy, "FITZ ROY", "3 359 M", "The best views are achieved after a hard climb."));
+        models.add(new MyModel(R.drawable.elcapitan, "EL CAPITAN", "2 307 M", ""));
+        models.add(new MyModel(R.drawable.mountolympus, "MOUNT OLYMPUS", "2 918 M", ""));
+        models.add(new MyModel(R.drawable.fitzroy, "FITZ ROY", "3 359 M", ""));
 
         adapterViewPager = new AdapterViewPager(models, this);
 
@@ -95,40 +113,77 @@ public class AchievementsActivity extends AppCompatActivity {
                     if(position == 0) {
                         textNum.setText("01");
                         btShare.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.INVISIBLE);
+                        meterTraveled.setVisibility(View.INVISIBLE);
+                        message.setVisibility(View.INVISIBLE);
                     }
                     else if(position == 1) {
                         textNum.setText("02");
                         btShare.setVisibility(View.VISIBLE);
-                        //seekBar.setVisibility(View.INVISIBLE); no se porque el seekbar es nulo
+                        progressBar.setVisibility(View.VISIBLE);
+                        meterTraveled.setVisibility(View.VISIBLE);
+                        achieves = User.getInstance().getAchievements();
+                        message.setVisibility(View.INVISIBLE);
+                        /*
+                        System.out.println("userDistance: " + userDistance);
+                        System.out.println("size: " + achieves.size() );
+                        System.out.println("acheive distances: " + achieves.get(0).distance);
+                        */
+                        progressBar.setProgress((userDistance*100)/433);
+                        meterTraveled.setText(""+ achieves.get(0).distance + "M");
+
                     }
                     else if(position == 2){
                         textNum.setText("03");
-                        //falta comprobar, esto es un ejemplo
-                        if (true)
+                        if (achieves.get(1).active) {
                             btShare.setVisibility(View.VISIBLE);
-                        else
+                            progressBar.setVisibility(View.VISIBLE);
+                            meterTraveled.setVisibility(View.VISIBLE);
+                            progressBar.setProgress((userDistance*100)/2307);
+                            meterTraveled.setText(""+ achieves.get(1).distance + "M");
+                        }
+                        else{
                             btShare.setVisibility(View.INVISIBLE);
+                            progressBar.setVisibility(View.INVISIBLE);
+                            meterTraveled.setVisibility(View.INVISIBLE);
+                            message.setVisibility(View.VISIBLE);
+                        }
                     }
                     else if(position == 3) {
                         textNum.setText("04");
-                        if (true)
+                        if (achieves.get(2).active) {
                             btShare.setVisibility(View.VISIBLE);
-                        else
+                            progressBar.setVisibility(View.VISIBLE);
+                            meterTraveled.setVisibility(View.VISIBLE);
+                            progressBar.setProgress((userDistance*100)/2918);
+                            meterTraveled.setText(""+ achieves.get(2).distance + "M");
+                        }
+                        else{
                             btShare.setVisibility(View.INVISIBLE);
+                            progressBar.setVisibility(View.INVISIBLE);
+                            meterTraveled.setVisibility(View.INVISIBLE);
+                            message.setVisibility(View.VISIBLE);
+                        }
                     }
-                    System.out.println("text num: " + textNum.getText());
 
                 }
                 else {
                     viewPager.setBackgroundColor(colors[colors.length-1]);
                     textNum.setText("05"); //the last one
-                    if (true)
+                    if (achieves.get(3).active) {
                         btShare.setVisibility(View.VISIBLE);
-                    else
+                        progressBar.setVisibility(View.VISIBLE);
+                        meterTraveled.setVisibility(View.VISIBLE);
+                        progressBar.setProgress((userDistance*100)/3359);
+                        meterTraveled.setText(""+ achieves.get(3).distance + "M");
+                    }
+                    else{
                         btShare.setVisibility(View.INVISIBLE);
+                        progressBar.setVisibility(View.INVISIBLE);
+                        meterTraveled.setVisibility(View.INVISIBLE);
+                        message.setVisibility(View.VISIBLE);
+                    }
                 }
-
-
 
 
             }
@@ -143,6 +198,13 @@ public class AchievementsActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+
+
+
+
 
 
     }

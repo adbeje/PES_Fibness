@@ -3,6 +3,9 @@ package com.pes.fibness;
 
 import com.mapbox.geojson.Point;
 import java.util.Date;
+import android.util.Pair;
+
+import java.io.File;
 import java.util.ArrayList;
 
 public class User {
@@ -27,11 +30,17 @@ public class User {
 
     private static ArrayList<Ruta> rutasList = new ArrayList<>();
 
+    private ArrayList<Achievement> achievements = new ArrayList<>(4);
+    private ArrayList<Pair<Integer, String>> shortUsersInfo = new ArrayList<>();
+    private UsersInfo selectedUser = new UsersInfo();
+    private ArrayList<Pair<Integer, String>> userFollowers = new ArrayList<>();
+    private ArrayList<Pair<Integer, String>> userFollowing = new ArrayList<>();
 
     /*we are applying singleton because we will have an instance for each aplication user*/
     private static User instance = null;
     private User(){
         image = null; recoveryCode = "";
+        System.out.println("achievements size: " +  achievements.size());
 
     }
 
@@ -94,6 +103,26 @@ public class User {
 
     public String getImageRoute() { return imageRoute; }
     public void setImageRoute(String imageRoute) { this.imageRoute = imageRoute; }
+
+    /** Achievements **/
+    public ArrayList<Achievement> getAchievements() { return achievements; }
+    public void setAchievements(ArrayList<Achievement> achievements) { this.achievements = achievements; }
+
+    /** Serach Users **/
+    public ArrayList<Pair<Integer, String>> getShortUsersInfo() { return shortUsersInfo; }
+    public void setShortUsersInfo(ArrayList<Pair<Integer, String>> shortUsersInfo) { this.shortUsersInfo = shortUsersInfo; }
+
+    /*Selected Users*/
+    public UsersInfo getSelectedUser() { return selectedUser; }
+    public void setSelectedUser(UsersInfo selectedUser) { this.selectedUser = selectedUser; }
+
+    /*User Followers*/
+    public ArrayList<Pair<Integer, String>> getUserFollowers() { return userFollowers; }
+    public void setUserFollowers(ArrayList<Pair<Integer, String>> userFollowers) { this.userFollowers = userFollowers; }
+
+    /*User Following*/
+    public ArrayList<Pair<Integer, String>> getUserFollowing() { return userFollowing; }
+    public void setUserFollowing(ArrayList<Pair<Integer, String>> userFollowing) { this.userFollowing = userFollowing; }
 
 
     /***************************************************************************/
@@ -432,4 +461,25 @@ class Ruta{
     Integer distance;
     Point origen;
     Point destino;
+}
+
+class Achievement{
+    int id;
+    Boolean active;
+    int distance;
+
+}
+
+class UsersInfo{
+    Integer id;
+    String username;
+    String description;
+    String birthDate;
+    String country;
+    Integer nFollower;
+    Integer nFollowing;
+    Boolean sAge;
+    Boolean sFollower;
+    Boolean sMessage;
+    Boolean follow;
 }

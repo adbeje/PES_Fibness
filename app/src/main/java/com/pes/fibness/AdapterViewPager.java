@@ -50,7 +50,7 @@ public class AdapterViewPager extends PagerAdapter {
 
         imageView.setImageResource(models.get(position).getImage());
         title.setText(models.get(position).getTitle());
-        title.setText(models.get(position).getMetre());
+        metre.setText(models.get(position).getMetre());
         desc.setText(models.get(position).getDescription());
 
         container.addView(view, 0);

@@ -56,7 +56,7 @@
     <string name="achievements">Logros</string>
     <string name="editProfile">Editar perfil</string>
     <string name="titleAch">"Empieza la aventura "</string>
-    <string name="descriptionAch">Por cada entrenamiento completado se añade una cierta cantidad de metros a tu progresión. ¿Cuántos cimas puedes coronar?</string>
+    <string name="descriptionAch">Por cada ruta recorrida se añade una cierta cantidad de metros a tu progresión. ¿Cuántos cimas puedes coronar?</string>
     <string name="letGo">¡Allá vamos!</string>
     <string name="share">Compartir</string>
     <string name="done">Hecho</string>
@@ -67,7 +67,7 @@
     <string name="notifications">Notificaciones</string>
     <string name="newFollower">Nuevo Seguidor</string>
     <string name="newMsg">Nuevo Mensaje</string>
-    <string name="contact">Contacto</string>
+    <string name="others">Otros</string>
     <string name="sendEmail">Envianos un Email</string>
     <string name="changeLang">Cambiar Idioma</string>
     <string name="logOut">Cerrar Sesión</string>
@@ -75,6 +75,22 @@
     <string name="followers">Seguidores</string>
     <string name="following">Seguidos</string>
     <string name="post">Post</string>
+    <string name="title_activity_maps">Mapa</string>
+    <string name="message">Las mejores vistas se logran tras una escalada dura.</string>
+    <string name="chat">CHAT</string>
+    <string name="users">USUARIOS</string>
+    <string name="blockUser">Bloquear usuario</string>
+    <string name="sayHello">Di hola</string>
+    <string name="Send">Enviar</string>
+    <string name="Users">Usuarios</string>
+    <string name="Follow">Seguir</string>
+    <string name="Following">Siguiendo</string>
+    <string name="msgFollow">Estas siguiendo</string>
+    <string name="bkUser">Bloquear usuario</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="bkMsg">¿Estás seguro de que quieres bloquear a este usuario? El usuario no podrá ver tu perfil ni enviarte mensajes</string>
+    <string name="bkAccounts">Cuentas bloqueadas</string>
 
     <string name="Rest">DESCANSO: </string>
     <string name="Series">SERIES: </string>

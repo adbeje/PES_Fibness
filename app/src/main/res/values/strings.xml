@@ -55,7 +55,7 @@
     <string name="achievements">Achievements</string>
     <string name="editProfile">Edit Profile</string>
     <string name="titleAch">"Start the adventure "</string>
-    <string name="descriptionAch">For each completed workout is added a certain amount of meters to your progression. How many peaks can you crown?</string>
+    <string name="descriptionAch">For each route traveled is added a certain amount of meters to your progression. How many peaks can you crown?</string>
     <string name="letGo">Here we go!</string>
     <string name="share">Share</string>
     <string name="done">Done</string>
@@ -66,7 +66,7 @@
     <string name="notifications">Notifications</string>
     <string name="newFollower">New Follower</string>
     <string name="newMsg">New Message</string>
-    <string name="contact">Contact</string>
+    <string name="others">Others</string>
     <string name="sendEmail">Send us an email</string>
     <string name="changeLang">Change Language</string>
     <string name="logOut">Log Out</string>
@@ -74,6 +74,22 @@
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="post">Post</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="message">The best views are achieved after a hard climb.</string>
+    <string name="chat">CHAT</string>
+    <string name="users">USERS</string>
+    <string name="blockUser">Block user</string>
+    <string name="sayHello">Say hello</string>
+    <string name="Send">Send</string>
+    <string name="Users">Users</string>
+    <string name="Follow">Follow</string>
+    <string name="Following">Following</string>
+    <string name="msgFollow">You are following</string>
+    <string name="bkUser">Block user</string>
+    <string name="accept">Accept</string>
+    <string name="cancel">Cancel</string>
+    <string name="bkMsg">Are you sure you want to block this user? The user will not be able to see your profile or send you messages</string>
+    <string name="bkAccounts">Blocked Accounts</string>
     <string name="title_activity_maps" tools:ignore="MissingTranslation">Map</string>
     <string name="directions_activity_toast_message" tools:ignore="MissingTranslation">La distancia de la ruta es:</string>
 

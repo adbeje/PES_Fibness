@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -131,11 +132,11 @@ public class ViewProfileActivity extends AppCompatActivity {
 
 
     private void showChart() {
-        /*
+
         Description d = new Description();
-        d.setEnabled(true);
+        d.setEnabled(false);
         barChart.setDescription(d);
-        */
+
 
         final String[] week = new String[] {"Monday", "Tuesday", "Wednesday", "Thrusday", "Friday", "Saturday", "Sunday"};
         XAxis xAxis = barChart.getXAxis();

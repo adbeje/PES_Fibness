@@ -1,8 +1,13 @@
 package com.pes.fibness;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Base64;
+import android.graphics.Paint;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Pair;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -10,6 +15,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.sun.mail.iap.ByteArray;
@@ -43,21 +49,6 @@ public class ConnetionAPI {
         this.urlAPI = url;
     }
 
-    /*test to sure that database work*/
-    public void getTest(){
-        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                System.out.println("INFO: "+ response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("INFO: ERROR");
-            }
-        });
-        enqueue();
-    }
 
     /*to register an user in database*/
     public void postUser(String userName, String password, String emailAddress){
@@ -88,7 +79,16 @@ public class ConnetionAPI {
                         /*nedd to load user information & setting*/
                         getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
                         getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
-                        homeActivity();
+
+                        @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                            @Override
+                            public void handleMessage(Message msg) {
+                                homeActivity();
+                            }
+                        };
+                        h.sendEmptyMessageDelayed(0, 10);
+
+
                     }
                     else Toast.makeText(getApplicationContext(), "Register response error", Toast.LENGTH_SHORT).show();
 
@@ -151,8 +151,13 @@ public class ConnetionAPI {
 
                     getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
                     getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
-                    homeActivity();
-
+                    @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                        @Override
+                        public void handleMessage(Message msg) {
+                            homeActivity();
+                        }
+                    };
+                    h.sendEmptyMessageDelayed(0, 10);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -218,7 +223,13 @@ public class ConnetionAPI {
                         getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
                         getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
 
-                        homeActivity();
+                        @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                            @Override
+                            public void handleMessage(Message msg) {
+                                homeActivity();
+                            }
+                        };
+                        h.sendEmptyMessageDelayed(0, 10);
                     }
                     else Toast.makeText(getApplicationContext(), "Invalid Login Credentials", Toast.LENGTH_SHORT).show();
 
@@ -299,11 +310,19 @@ public class ConnetionAPI {
             public void onResponse(String response) {
 
                 System.out.println("Respuesta: "+ response);
-                if(response.equals("OK")){
-                    Toast.makeText(getApplicationContext(), "Your password has been reset successfully", Toast.LENGTH_SHORT).show();
-                    homeActivity();
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    Boolean b = (Boolean)obj.get("result");
+                    if(b){
+                        Toast.makeText(getApplicationContext(), "Your password has been reset successfully", Toast.LENGTH_SHORT).show();
+                        homeActivity();
+                    }
+                    else Toast.makeText(getApplicationContext(), "Your password has not been reset successfully", Toast.LENGTH_SHORT).show();
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                else Toast.makeText(getApplicationContext(), "Your password has not been reset successfully", Toast.LENGTH_SHORT).show();
 
             }
         }, new Response.ErrorListener() {
@@ -1432,6 +1451,278 @@ public class ConnetionAPI {
         });
         enqueue();
     }
+
+
+    /*load id & username to show in SearchUsers activity*/
+    public void getShortUserInfo(Integer id) {
+        System.out.println("Dentro de getShortUserInfo");
+
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Respuesta: "+ response);
+
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    ArrayList<Pair<Integer,String>> users = new ArrayList<>();
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            JSONObject obj = jsonArray.getJSONObject(i);
+                            users.add(i, new Pair<Integer, String>((Integer) obj.get("id"), (String) obj.get("nombre")));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    User.getInstance().setShortUsersInfo(users);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+    }
+
+
+    public void getSelectedUserInfo() {
+        System.out.println("Dentro de getShortUserInfo");
+
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("------------------________________________________----------------------");
+                System.out.println("Respuesta: "+ response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    UsersInfo ui = new UsersInfo();
+                    ui.id = (Integer) obj.get("id");
+                    ui.username = obj.get("nombre").toString();
+                    ui.description = obj.get("descripcion").toString();
+                    ui.birthDate = obj.get("fechadenacimiento").toString();
+                    ui.country = obj.get("pais").toString();
+                    ui.nFollower = (Integer) obj.get("nseguidores");
+                    ui.nFollowing = (Integer) obj.get("nseguidos");
+                    ui.sAge = (Boolean) obj.get("sedad");
+                    ui.sFollower = (Boolean) obj.get("sseguidor");
+                    ui.sMessage = (Boolean) obj.get("nmensaje");
+                    ui.follow = (Boolean) obj.get("seguir");
+                    User.getInstance().setSelectedUser(ui);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+
+    }
+
+    /*post to follow*/
+    public void followUser(int currentUser, int anotherUser) {
+        System.out.println("DENTRO DE followUser");
+
+        final String data = "{"+
+                "\"idFollower\": " + "\"" + currentUser + "\"," +
+                "\"idFollowed\": " + "\"" + anotherUser+ "\"" +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Follow response: " + response);
+                if(response.equals("Created"))
+                    Toast.makeText(context, "You are following", Toast.LENGTH_LONG).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Message error: " + error);
+                Toast.makeText(context, "You are already following", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+            }
+
+        };
+        enqueue();
+
+
+    }
+
+
+    public void deleteFollowing() {
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Respuesta: "+ response);
+                Toast.makeText(getApplicationContext(), "You have unfollowed", Toast.LENGTH_SHORT).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
+
+    }
+
+
+    public void getUserFollowers() {
+        System.out.println("Dentro de getUserFollowers");
+
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Respuesta: "+ response);
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    ArrayList<Pair<Integer,String>> userFollowers = new ArrayList<>();
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            JSONObject obj = jsonArray.getJSONObject(i);
+                            userFollowers.add(i, new Pair<Integer, String>((Integer) obj.get("id"), (String) obj.get("nombre")));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    User.getInstance().setUserFollowers(userFollowers);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+
+    }
+
+    public void getUserFollowing() {
+        System.out.println("Dentro de getUserFollowing");
+
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Respuesta: "+ response);
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    ArrayList<Pair<Integer,String>> userFollowing = new ArrayList<>();
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            JSONObject obj = jsonArray.getJSONObject(i);
+                            userFollowing.add(i, new Pair<Integer, String>((Integer) obj.get("id"), (String) obj.get("nombre")));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    User.getInstance().setUserFollowing(userFollowing);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+
+    }
+
+    public void blockUser(int currentUser, int anotherUser) {
+        System.out.println("DENTRO DE followUser");
+
+        final String data = "{"+
+                "\"idBlocker\": " + "\"" + currentUser + "\"," +
+                "\"idBlocked\": " + "\"" + anotherUser+ "\"" +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Block response: " + response);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Message error: " + error);
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+            }
+
+        };
+        enqueue();
+
+
+    }
+
+
+
+
+
+
 
 
 
