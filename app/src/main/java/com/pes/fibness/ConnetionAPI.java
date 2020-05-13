@@ -21,6 +21,8 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLOutput;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
@@ -507,22 +509,176 @@ public class ConnetionAPI {
 
 
     /*para trainings*/
-    public void getTrainingExercises(){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void getTrainingExercises(final String title){
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray exercises = new JSONArray(response);
+                    ArrayList<Exercise> exerciseList = new ArrayList<>();
+                    for(int i = 0; i < exercises.length(); i++){
+                        JSONObject exercise = exercises.getJSONObject(i);
+                        Exercise e = new Exercise();
+                        e.TitleEx = (String) exercise.getString("nombre");
+                        e.Pos = (Integer) exercise.getInt("posicion");
+                        int numRest = (Integer) exercise.getInt("tiempodescanso");
+                        e.NumRest = String.valueOf(numRest);
+                        int numSerie = (Integer) exercise.getInt("numsets");
+                        e.NumSerie = String.valueOf(numSerie);
+                        int numRept = (Integer) exercise.getInt("numrepeticiones");
+                        e.NumRepet = String.valueOf(numRept);
+                        e.id = (Integer) exercise.getInt("idactividad");
+                        exerciseList.add(e);
+                    }
+                    User.getInstance().setExerciseList(exerciseList);
+                    Intent TrainingPage = new Intent(context, CreateTrainingActivity.class);
+                    TrainingPage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    TrainingPage.putExtra("new", false);
+                    TrainingPage.putExtra("title", title);
+                    context.startActivity(TrainingPage);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HOLA" + error);
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
+
     }
 
-    public void postTrainingExercises(){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void postTrainingExercises(int idT, final String nameE, final int pos, final int numRest, final int numSerie, final int numRept,
+                                      final int Position){
+        final String data = "{"+
+                "\"idEntrenamiento\": " + idT +"," +
+                "\"nombre\": " + "\"" + nameE + "\"," +
+                "\"descripcion\": " + "\"" + "" + "\"," +
+                "\"tiempoEjecucion\": " + 0 + "," +
+                "\"numSets\": " + numSerie + "," +
+                "\"numRepeticiones\": " + numRept + "," +
+                "\"tiempoDescanso\": " + numRest + "," +
+                "\"posicion\": " + pos +
+                "}";
 
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Resgister user response: " + response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.has("idExercise")) {
+                        int id = (Integer) obj.get("idExercise");
+                        Exercise e = new Exercise();
+                        e.TitleEx = nameE;
+                        e.NumSerie = String.valueOf(numSerie);
+                        e.NumRest = String.valueOf(numRest);
+                        e.NumRepet = String.valueOf(numRept);
+                        e.Pos = pos;
+                        e.id = id;
+                        User.getInstance().updateExercise(Position, e);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HIII " + error);
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+            }
+
+
+        };
+
+        enqueue();
     }
 
-    public void updateTrainingExercises(){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void updateTrainingExercises(final String nameE, int pos, final int numRest, final int numSerie, final int numRept){
+        final String data = "{"+
+                "\"nombre\": " + "\"" + nameE + "\"," +
+                "\"descripcion\": " + "\"" + "" + "\"," +
+                "\"tiempoEjecucion\": " + 0 + "," +
+                "\"numSets\": " + numSerie + "," +
+                "\"numRepeticiones\": " + numRept + "," +
+                "\"tiempoDescanso\": " + numRest + "," +
+                "\"posicion\": " + pos +
+                "}";
+        request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("NANIIII "  + response);
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your exercise has not been modified. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HIII " + error);
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+            }
+
+
+        };
+
+        enqueue();
 
     }
 
     public void deleteTrainingExercises(){
-        //cuando este la ruta de api definida se añadira el codigo
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your exercise has not been deleted. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HIII " + error);
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
 
     }
 
@@ -731,53 +887,406 @@ public class ConnetionAPI {
 
     /*para dietas*/
     public void getUserDiets(){
-        //cuando este la ruta de api definida se añadira el codigo
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray diets = new JSONArray(response);
+                    ArrayList<Diet> dietList = new ArrayList<>();
+                    for(int i = 0; i < diets.length(); i++){
+                        JSONObject diet = diets.getJSONObject(i);
+                        Diet d = new Diet();
+                        d.name = (String) diet.getString("nombre");
+                        d.desc = (String) diet.getString("descripcion");
+                        d.id = (Integer) diet.getInt("idelemento");
+                        dietList.add(d);
+                    }
+                    User.getInstance().setDietList(dietList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HOLA" + error);
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
     }
-    public void postUserDiets(){
-        //cuando este la ruta de api definida se añadira el codigo
+
+    public void postUserDiets(int userID, String name, String desc){
+        final String nombre = name;
+        final String data = "{"+
+                "\"nombre\": " + "\"" + name + "\"," +
+                "\"descripcion\": " + "\"" + desc + "\"," +
+                "\"idUser\": " + userID +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.has("idElemento")) {
+                        int id = (Integer) obj.get("idElemento");
+                        User.getInstance().setDietID(nombre, id);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+        };
+        enqueue();
 
     }
-    public void updateUserDiets(){
-        //cuando este la ruta de api definida se añadira el codigo
+
+    public void updateUserDiets(String name, String desc){
+        final String data = "{"+
+                "\"nombre\": " + "\"" + name + "\"," +
+                "\"descripcion\": " + "\"" + desc + "\"" +
+                "}";
+        System.out.println("HOLA " + name + " " + desc);
+        request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your diet has not been modified. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+
+
+        };
+
+        enqueue();
     }
+
     public void deleteUserDiets(){
-        //cuando este la ruta de api definida se añadira el codigo
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your diet has not been deleted. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
 
     }
-    public void getDietMeal(){
-        //cuando este la ruta de api definida se añadira el codigo
+
+    public void getDietMeal(final String title, final String dia){
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray meals = new JSONArray(response);
+                    ArrayList<Meal> mealList = new ArrayList<>();
+                    for(int i = 0; i < meals.length(); i++){
+                        JSONObject meal = meals.getJSONObject(i);
+                        Meal m = new Meal();
+                        m.id = (Integer) meal.getInt("idcomida");
+                        m.name = (String) meal.getString("nombre");
+                        m.time = (String) meal.getString("horacomida");
+                        mealList.add(m);
+                    }
+                    User.getInstance().setMealList(mealList);
+                    Intent MealPage = new Intent(context, MealActivity.class);
+                    MealPage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    MealPage.putExtra("dia", dia);
+                    MealPage.putExtra("title", title);
+                    context.startActivity(MealPage);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HOLA" + error);
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
     }
 
-    public void postDietMeal(){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void postDietMeal(int idDiet, String name, String time, String day){
+        final String nombre = name;
+        System.out.println(time);
+        final String data = "{"+
+                "\"nombre\": " + "\"" + name + "\"," +
+                "\"horaComida\": " + "\"" + time + "\"," +
+                "\"idElemento\": " + idDiet + "," +
+                "\"tipoDia\": " + "\"" + day + "\"" +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.has("idcomida")) {
+                        int id = (Integer) obj.get("idcomida");
+                        User.getInstance().setMealID(nombre, id);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("ERROR " + error);
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+        };
+        enqueue();
 
     }
 
-    public void updateDietMeal(){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void updateDietMeal(String name, String time){
+        final String data = "{"+
+                "\"nombre\": " + "\"" + name + "\"," +
+                "\"horaComida\": " + "\"" + time + "\"" +
+                "}";
+        request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your meal has not been modified. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+
+
+        };
+
+        enqueue();
 
     }
 
     public void deleteDietMeal(){
-        //cuando este la ruta de api definida se añadira el codigo
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your meal has not been deleted. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
 
     }
-    public void getMealAliment(){
-        //cuando este la ruta de api definida se añadira el codigo
+
+    public void getMealAliment(final String dieta, final String dia, final String comida, final boolean New){
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray food = new JSONArray(response);
+                    ArrayList<Aliment> foodList = new ArrayList<>();
+                    for(int i = 0; i < food.length(); i++){
+                        JSONObject aliment = food.getJSONObject(i);
+                        Aliment a = new Aliment();
+                        a.id = (Integer) aliment.getInt("idalimento");
+                        a.name = (String) aliment.getString("nombre");
+                        int cal = (Integer) aliment.getInt("calorias");
+                        a.calories = String.valueOf(cal);
+                        foodList.add(a);
+                    }
+                    User.getInstance().setAlimentList(foodList);
+                    Intent FoodPage = new Intent(context, CreateDietActivity.class);
+                    FoodPage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    FoodPage.putExtra("dia", dia);
+                    FoodPage.putExtra("title", dieta);
+                    FoodPage.putExtra("comida", comida);
+                    FoodPage.putExtra("new", New);
+                    context.startActivity(FoodPage);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HOLA" + error);
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
     }
 
-    public void postMealAliment(){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void postMealAliment(int idMeal, String name, String calories, final int pos){
+        final String nombre = name;
+        int cal = Integer.parseInt(calories);
+        final String data = "{"+
+                "\"nombre\": " + "\"" + name + "\"," +
+                "\"descripcion\": " + "\"" + "" + "\"," +
+                "\"calorias\": " +  cal + "," +
+                "\"idComida\": " + idMeal +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.has("idalimento")) {
+                        int id = (Integer) obj.get("idalimento");
+                        User.getInstance().setAlimentID(pos, id);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+        };
+        enqueue();
 
     }
 
-    public void updateMealAliment(){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void updateMealAliment(String name, String calories){
+        int cal = Integer.parseInt(calories);
+        final String data = "{"+
+                "\"nombre\": " + "\"" + name + "\"," +
+                "\"descripcion\": " + "\"" + "" + "\"," +
+                "\"calorias\": " + cal +
+                "}";
+        request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your aliment has not been modified. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+
+
+        };
+
+        enqueue();
 
     }
 
     public void deleteMealAliment(){
-        //cuando este la ruta de api definida se añadira el codigo
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your aliment has not been deleted. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
 
     }
 

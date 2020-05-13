@@ -77,4 +77,23 @@
     <string name="title_activity_maps" tools:ignore="MissingTranslation">Map</string>
     <string name="directions_activity_toast_message" tools:ignore="MissingTranslation">La distancia de la ruta es:</string>
 
+    <string name="Rest">REST: </string>
+    <string name="Series">SERIES: </string>
+    <string name="Repetitions">REPETITIONS: </string>
+    <string name="Custom">Custom</string>
+    <string name="Simple">Simple</string>
+
+    <string name="AddEx">Add an Exercise</string>
+
+    <string name="AddMeal">Add a Meal</string>
+    <string name="Time">Hour</string>
+    <string name="Min">Minutes</string>
+
+    <string name="Delete">Delete</string>
+
+    <string name="Description">Description</string>
+    <string name="Name">Name</string>
+
+    <string name="Calories">Calories</string>
+
 </resources>

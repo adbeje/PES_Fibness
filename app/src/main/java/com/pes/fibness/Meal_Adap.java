@@ -9,17 +9,17 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class Food_Adap extends BaseAdapter {
+public class Meal_Adap extends BaseAdapter {
 
     private static LayoutInflater inflater = null;
 
     private Context context;
-    private ArrayList<Aliment> dades;
+    private ArrayList<Meal> dades;
     private boolean New;
 
-    public Food_Adap(Context c, ArrayList<Aliment> d, boolean IsNew){
+    public Meal_Adap(Context c, ArrayList<Meal> m, boolean IsNew){
         context = c;
-        dades = d;
+        dades = m;
         New = IsNew;
         inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
     }
@@ -41,12 +41,14 @@ public class Food_Adap extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final View vista = inflater.inflate(R.layout.aliment_element, null);
+        final View vista = inflater.inflate(R.layout.meal_element, null);
         if(!New) {
-            TextView titulo = (TextView) vista.findViewById(R.id.txtNameAliment);
-            TextView calorias = (TextView) vista.findViewById(R.id.txtSetCalories);
+            TextView titulo = (TextView) vista.findViewById(R.id.txtNameMeal);
+            TextView hora = (TextView) vista.findViewById(R.id.txtSetHour);
             titulo.setText(dades.get(position).name);
-            calorias.setText(dades.get(position).calories);
+            String time = dades.get(position).time;
+            String[] time2 = time.split(":");
+            hora.setText(time2[0] + ":" + time2[1]);
         }
 
         return vista;

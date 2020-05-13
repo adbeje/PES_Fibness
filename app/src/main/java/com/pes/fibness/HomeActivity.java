@@ -29,6 +29,8 @@ public class HomeActivity extends AppCompatActivity {
         c.getUserTrainings();
         c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/routes");
         c.getUserRoutes();
+        ConnetionAPI d = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/diets");
+        d.getUserDiets();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_layout, perfil);
         ft.commit();
@@ -69,5 +71,6 @@ public class HomeActivity extends AppCompatActivity {
         backPressedTime = System.currentTimeMillis();
 
     }
+
 
 }
