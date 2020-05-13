@@ -1104,7 +1104,8 @@ public class ConnetionAPI {
                         Aliment a = new Aliment();
                         a.id = (Integer) aliment.getInt("idalimento");
                         a.name = (String) aliment.getString("nombre");
-                        a.calories = (String) aliment.getString("calorias");
+                        int cal = (Integer) aliment.getInt("calorias");
+                        a.calories = String.valueOf(cal);
                         foodList.add(a);
                     }
                     User.getInstance().setAlimentList(foodList);
@@ -1145,8 +1146,8 @@ public class ConnetionAPI {
             public void onResponse(String response) {
                 try {
                     JSONObject obj = new JSONObject(response);
-                    if (obj.has("idcomida")) {
-                        int id = (Integer) obj.get("idcomida");
+                    if (obj.has("idalimento")) {
+                        int id = (Integer) obj.get("idalimento");
                         User.getInstance().setAlimentID(pos, id);
                     }
                 } catch (JSONException e) {
@@ -1179,7 +1180,7 @@ public class ConnetionAPI {
         int cal = Integer.parseInt(calories);
         final String data = "{"+
                 "\"nombre\": " + "\"" + name + "\"," +
-                "\"descripcion\": " + "\"" + " " + "\"," +
+                "\"descripcion\": " + "\"" + "" + "\"," +
                 "\"calorias\": " + cal +
                 "}";
         request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
