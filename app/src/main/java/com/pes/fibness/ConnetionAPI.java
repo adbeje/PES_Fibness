@@ -986,7 +986,6 @@ public class ConnetionAPI {
                 "\"nombre\": " + "\"" + name + "\"," +
                 "\"descripcion\": " + "\"" + desc + "\"" +
                 "}";
-        System.out.println("HOLA " + name + " " + desc);
         request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -1073,7 +1072,6 @@ public class ConnetionAPI {
 
     public void postDietMeal(int idDiet, String name, String time, String day){
         final String nombre = name;
-        System.out.println(time);
         final String data = "{"+
                 "\"nombre\": " + "\"" + name + "\"," +
                 "\"horaComida\": " + "\"" + time + "\"," +
@@ -1088,7 +1086,6 @@ public class ConnetionAPI {
                     JSONObject obj = new JSONObject(response);
                     if (obj.has("idComida")) {
                         int id = (Integer) obj.get("idComida");
-                        System.out.println("ya");
                         User.getInstance().setMealID(nombre, id);
                     }
                 } catch (JSONException e) {
@@ -1212,10 +1209,8 @@ public class ConnetionAPI {
     }
 
     public void postMealAliment(int idMeal, String name, String calories, final int pos){
-        System.out.println("Entra???");
         final String nombre = name;
         int cal = Integer.parseInt(calories);
-        System.out.println(name + " " + cal + " " + idMeal + " " + pos);
         final String data = "{"+
                 "\"nombre\": " + "\"" + name + "\"," +
                 "\"descripcion\": " + "\"" + "" + "\"," +
