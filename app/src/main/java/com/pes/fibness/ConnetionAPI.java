@@ -546,6 +546,7 @@ public class ConnetionAPI {
                         e.NumSerie = String.valueOf(numSerie);
                         int numRept = (Integer) exercise.getInt("numrepeticiones");
                         e.NumRepet = String.valueOf(numRept);
+                        e.Desc = (String) exercise.getString("descripcion");
                         e.id = (Integer) exercise.getInt("idactividad");
                         exerciseList.add(e);
                     }
@@ -571,12 +572,12 @@ public class ConnetionAPI {
 
     }
 
-    public void postTrainingExercises(int idT, final String nameE, final int pos, final int numRest, final int numSerie, final int numRept,
+    public void postTrainingExercises(int idT, final String nameE, final String desc, final int pos, final int numRest, final int numSerie, final int numRept,
                                       final int Position){
         final String data = "{"+
                 "\"idEntrenamiento\": " + idT +"," +
                 "\"nombre\": " + "\"" + nameE + "\"," +
-                "\"descripcion\": " + "\"" + "" + "\"," +
+                "\"descripcion\": " + "\"" + desc + "\"," +
                 "\"tiempoEjecucion\": " + 0 + "," +
                 "\"numSets\": " + numSerie + "," +
                 "\"numRepeticiones\": " + numRept + "," +
@@ -598,6 +599,7 @@ public class ConnetionAPI {
                         e.NumSerie = String.valueOf(numSerie);
                         e.NumRest = String.valueOf(numRest);
                         e.NumRepet = String.valueOf(numRept);
+                        e.Desc = desc;
                         e.Pos = pos;
                         e.id = id;
                         User.getInstance().updateExercise(Position, e);
@@ -635,10 +637,10 @@ public class ConnetionAPI {
         enqueue();
     }
 
-    public void updateTrainingExercises(final String nameE, int pos, final int numRest, final int numSerie, final int numRept){
+    public void updateTrainingExercises(final String nameE, String desc, int pos, final int numRest, final int numSerie, final int numRept){
         final String data = "{"+
                 "\"nombre\": " + "\"" + nameE + "\"," +
-                "\"descripcion\": " + "\"" + "" + "\"," +
+                "\"descripcion\": " + "\"" + desc + "\"," +
                 "\"tiempoEjecucion\": " + 0 + "," +
                 "\"numSets\": " + numSerie + "," +
                 "\"numRepeticiones\": " + numRept + "," +
@@ -1084,8 +1086,9 @@ public class ConnetionAPI {
             public void onResponse(String response) {
                 try {
                     JSONObject obj = new JSONObject(response);
-                    if (obj.has("idcomida")) {
-                        int id = (Integer) obj.get("idcomida");
+                    if (obj.has("idComida")) {
+                        int id = (Integer) obj.get("idComida");
+                        System.out.println("ya");
                         User.getInstance().setMealID(nombre, id);
                     }
                 } catch (JSONException e) {
@@ -1209,8 +1212,10 @@ public class ConnetionAPI {
     }
 
     public void postMealAliment(int idMeal, String name, String calories, final int pos){
+        System.out.println("Entra???");
         final String nombre = name;
         int cal = Integer.parseInt(calories);
+        System.out.println(name + " " + cal + " " + idMeal + " " + pos);
         final String data = "{"+
                 "\"nombre\": " + "\"" + name + "\"," +
                 "\"descripcion\": " + "\"" + "" + "\"," +
@@ -1223,8 +1228,8 @@ public class ConnetionAPI {
             public void onResponse(String response) {
                 try {
                     JSONObject obj = new JSONObject(response);
-                    if (obj.has("idalimento")) {
-                        int id = (Integer) obj.get("idalimento");
+                    if (obj.has("idAlimento")) {
+                        int id = (Integer) obj.get("idAlimento");
                         User.getInstance().setAlimentID(pos, id);
                     }
                 } catch (JSONException e) {
@@ -1235,6 +1240,7 @@ public class ConnetionAPI {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                System.out.println("ERROR: " + error);
                 Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
             }
         }) {

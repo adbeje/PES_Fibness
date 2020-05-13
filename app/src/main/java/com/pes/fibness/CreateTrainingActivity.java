@@ -139,7 +139,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
                     User.getInstance().updateExercise(position, t2);
 
                     ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/exercise/" + idExercise );
-                    c.updateTrainingExercises(t2.TitleEx, t2.Pos, Integer.parseInt(t2.NumRest), Integer.parseInt(t2.NumSerie), Integer.parseInt(t2.NumRepet));
+                    c.updateTrainingExercises(t2.TitleEx, "", t2.Pos, Integer.parseInt(t2.NumRest), Integer.parseInt(t2.NumSerie), Integer.parseInt(t2.NumRepet));
 
                     refreshList();
                     dialog.dismiss();
@@ -177,6 +177,8 @@ public class CreateTrainingActivity extends AppCompatActivity {
         numSeries.setText(exercise.get(position).NumSerie);
         final EditText numRepet = (EditText) dialog.findViewById(R.id.num_Repet_edit);
         numRepet.setText(exercise.get(position).NumRepet);
+        final EditText txtDesc = (EditText) dialog.findViewById(R.id.editDescEx);
+        txtDesc.setText(exercise.get(position).Desc);
         Button btndone = (Button) dialog.findViewById(R.id.btn_done_edit);
         Button btndelete = (Button) dialog.findViewById(R.id.btn_delete_edit);
         btndone.setOnClickListener(new View.OnClickListener() {
@@ -205,6 +207,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
                     t2.NumSerie = numSeries.getText().toString();
                     t2.NumRest = numRest.getText().toString();
                     t2.NumRepet = numRepet.getText().toString();
+                    t2.Desc = txtDesc.getText().toString();
                     t2.Pos = User.getInstance().getExerciseNamePos(position);
                     int idExercise = User.getInstance().getExerciseID(position);
                     t2.id = idExercise;
@@ -212,7 +215,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
                     User.getInstance().updateExercise(position, t2);
 
                     ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/exercise/" + idExercise );
-                    c.updateTrainingExercises(t2.TitleEx, t2.Pos, Integer.parseInt(t2.NumRest), Integer.parseInt(t2.NumSerie), Integer.parseInt(t2.NumRepet));
+                    c.updateTrainingExercises(t2.TitleEx, t2.Desc, t2.Pos, Integer.parseInt(t2.NumRest), Integer.parseInt(t2.NumSerie), Integer.parseInt(t2.NumRepet));
 
                     refreshList();
                     dialog.dismiss();
@@ -251,6 +254,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
         final EditText numRest = (EditText) dialog.findViewById(R.id.num_Rest);
         final EditText numSeries = (EditText) dialog.findViewById(R.id.num_Series);
         final EditText numRepet = (EditText) dialog.findViewById(R.id.num_Rept);
+        final EditText txtDesc = (EditText) dialog.findViewById(R.id.newDescEx);
         Button bt = (Button) dialog.findViewById(R.id.btn_done);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -278,6 +282,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
                     t2.NumSerie = numSeries.getText().toString();
                     t2.NumRest = numRest.getText().toString();
                     t2.NumRepet = numRepet.getText().toString();
+                    t2.Desc = txtDesc.getText().toString();
                     t2.Pos = -1;
                     t2.id = -1;
 
@@ -287,7 +292,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
 
                     int idTraining = User.getInstance().getTrainingID(titleTraining);
                     ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/exercise");
-                    c.postTrainingExercises(idTraining, t2.TitleEx, t2.Pos, Integer.parseInt(t2.NumRest), Integer.parseInt(t2.NumSerie), Integer.parseInt(t2.NumRepet), pos-1);
+                    c.postTrainingExercises(idTraining, t2.TitleEx, t2.Desc, t2.Pos, Integer.parseInt(t2.NumRest), Integer.parseInt(t2.NumSerie), Integer.parseInt(t2.NumRepet), pos-1);
 
                     refreshList();
                     dialog.dismiss();
@@ -342,7 +347,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
 
                     int idTraining = User.getInstance().getTrainingID(titleTraining);
                     ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/exercise");
-                    c.postTrainingExercises(idTraining, t2.TitleEx, t2.Pos, Integer.parseInt(t2.NumRest), Integer.parseInt(t2.NumSerie), Integer.parseInt(t2.NumRepet), pos-1);
+                    c.postTrainingExercises(idTraining, t2.TitleEx, "", t2.Pos, Integer.parseInt(t2.NumRest), Integer.parseInt(t2.NumSerie), Integer.parseInt(t2.NumRepet), pos-1);
 
                     refreshList();
                     dialog.dismiss();

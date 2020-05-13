@@ -49,10 +49,14 @@ public class Exercise_Adap extends BaseAdapter {
             TextView rest = (TextView) vista.findViewById(R.id.txtRest);
             TextView series = (TextView) vista.findViewById(R.id.txtSeries);
             ImageView image = (ImageView) vista.findViewById(R.id.photo_ex);
+            TextView Desc = (TextView) vista.findViewById(R.id.txtDesc);
             titulo.setText(dades.get(position).TitleEx);
             int id = getImageID (dades.get(position).TitleEx);
             if(id != -1) image.setImageResource(id);
-            else image.setImageResource(R.drawable.logo_blanco);
+            else{
+                image.setImageResource(R.drawable.logo_blanco);
+                Desc.setText(dades.get(position).Desc);
+            }
             series.setText("SERIES: " + dades.get(position).NumSerie);
             rest.setText("REST: " + dades.get(position).NumRest + "s");
             repet.setText("REPETITIONS: " + dades.get(position).NumRepet);

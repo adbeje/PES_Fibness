@@ -434,6 +434,7 @@ class Exercise{
     String NumSerie;
     String NumRest;
     int  Pos;
+    String Desc;
 }
 
 class Diet{
