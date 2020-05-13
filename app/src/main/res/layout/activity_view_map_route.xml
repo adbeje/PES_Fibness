@@ -58,8 +58,10 @@
         android:id="@+id/set_location_tracked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/seleccion"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@+id/mapView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -86,32 +88,37 @@
         app:layout_constraintHorizontal_bias="0.92"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.99" />
+        app:layout_constraintVertical_bias="0.99"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_bg"/>
 
     <Button
         android:id="@+id/startButton"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:background="@color/c_let_dark_bkg"
         android:enabled="false"
         android:text="Start navigation"
-        android:textColor="@color/c_let_light_bkg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.99" />
+        app:layout_constraintVertical_bias="0.99"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_bg_sel"/>
 
     <Button
         android:id="@+id/btn_delete_route"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Delete"
+        android:backgroundTint="#89E85A5A"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.99"/>
+        app:layout_constraintVertical_bias="0.99"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_bg"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

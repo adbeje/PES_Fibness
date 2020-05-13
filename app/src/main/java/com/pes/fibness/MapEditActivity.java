@@ -108,8 +108,8 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
                 orgEditBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        orgEditBtn.setBackgroundColor(getResources().getColor(R.color.white));
-                        destEditBtn.setBackgroundColor(getResources().getColor(R.color.c_icon_bkg_unsel));
+                        orgEditBtn.setBackgroundResource(R.drawable.btn_bg_sel);
+                        destEditBtn.setBackgroundResource(R.drawable.btn_bg);
                         editOrigin = true;
                         editDestination = false;
                     }
@@ -118,8 +118,8 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
                 destEditBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        destEditBtn.setBackgroundResource(R.color.white);
-                        orgEditBtn.setBackgroundColor(getResources().getColor(R.color.c_icon_bkg_unsel));
+                        destEditBtn.setBackgroundResource(R.drawable.btn_bg_sel);
+                        orgEditBtn.setBackgroundResource(R.drawable.btn_bg);
                         editOrigin = false;
                         editDestination = true;
                     }

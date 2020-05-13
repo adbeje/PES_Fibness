@@ -10,6 +10,7 @@
         android:id="@+id/num_Series_edit"
         android:layout_width="80dp"
         android:layout_height="46dp"
+        android:layout_marginEnd="16dp"
         android:layout_weight="2"
         android:inputType="number"
         android:textColor="#000000"
@@ -17,7 +18,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/txtRepet"
-        app:layout_constraintTop_toTopOf="@+id/guideline5"></EditText>
+        app:layout_constraintTop_toTopOf="@+id/guideline5"
+        app:layout_constraintVertical_bias="0.125"></EditText>
 
     <EditText
         android:id="@+id/num_Repet_edit"
@@ -29,9 +31,10 @@
         android:textColor="#000000"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.741"
         app:layout_constraintStart_toEndOf="@+id/text_Repet_edit"
-        app:layout_constraintTop_toBottomOf="@+id/num_Series_edit"></EditText>
+        app:layout_constraintTop_toBottomOf="@+id/num_Series_edit"
+        app:layout_constraintVertical_bias="0.666"></EditText>
 
     <TextView
         android:id="@+id/txtRest_edit"
@@ -111,6 +114,7 @@
         android:id="@+id/num_Rest_edit"
         android:layout_width="80dp"
         android:layout_height="43dp"
+        android:layout_marginEnd="16dp"
         android:layout_weight="2"
         android:inputType="number"
         android:textColor="#000000"
@@ -119,7 +123,7 @@
         app:layout_constraintHorizontal_bias="0.099"
         app:layout_constraintStart_toEndOf="@+id/txtRest"
         app:layout_constraintTop_toTopOf="@+id/guideline6"
-        app:layout_constraintVertical_bias="1.0"></EditText>
+        app:layout_constraintVertical_bias="0.687"></EditText>
 
     <Button
         android:id="@+id/btn_done_edit"
@@ -129,20 +133,22 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="@+id/guideline17" />
+        app:layout_constraintTop_toTopOf="@+id/guideline17"
+        android:background="@drawable/btn_black"/>
 
     <Button
         android:id="@+id/btn_delete_edit"
         android:layout_width="89dp"
         android:layout_height="36dp"
         android:layout_marginEnd="116dp"
-        android:backgroundTint="#E85A5A"
+        android:backgroundTint="#89E85A5A"
         android:text="DELETE"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toStartOf="@+id/btn_done_edit"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline17" />
+        app:layout_constraintTop_toTopOf="@+id/guideline17"
+        android:background="@drawable/btn_black"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
@@ -166,10 +172,10 @@
         android:textColor="#000000"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.562"
+        app:layout_constraintHorizontal_bias="0.56"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline10"
-        app:layout_constraintVertical_bias="0.595" />
+        app:layout_constraintVertical_bias="0.617" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline17"

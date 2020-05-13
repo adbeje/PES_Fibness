@@ -16,6 +16,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 
 public class DietasFragment extends Fragment {
@@ -52,7 +54,7 @@ public class DietasFragment extends Fragment {
             }
         } );
 
-        Button button = (Button) view.findViewById(R.id.FakeFloatingButton2);
+        FloatingActionButton button = view.findViewById(R.id.fb_new_dieta);
 
         button.setOnClickListener( new AdapterView.OnClickListener() {
             public void onClick(View v){

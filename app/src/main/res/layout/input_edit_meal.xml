@@ -79,7 +79,8 @@
         app:layout_constraintHorizontal_bias="0.686"
         app:layout_constraintStart_toStartOf="@+id/guideline11"
         app:layout_constraintTop_toTopOf="@+id/guideline12"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:background="@drawable/btn_black"/>
 
     <TextView
         android:id="@+id/txtDosPunts"
@@ -110,11 +111,12 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/Delete"
-        android:backgroundTint="#E85A5A"
+        android:backgroundTint="#89E85A5A"
         app:layout_constraintBottom_toTopOf="@+id/guideline13"
         app:layout_constraintEnd_toStartOf="@+id/guideline11"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline12"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:background="@drawable/btn_black"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

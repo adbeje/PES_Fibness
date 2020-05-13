@@ -138,7 +138,6 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
                 getRoute(originPoint, destinationPoint);
 
                 button.setEnabled(true);
-                button.setBackgroundResource(R.color.c_icon_bkg_sel);
 
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override

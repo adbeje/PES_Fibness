@@ -30,14 +30,15 @@
     <Button
         android:id="@+id/btdone"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="4dp"
         android:layout_weight="1"
+        android:background="@drawable/btn_black"
         android:text="DONE"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.916"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/descRutaInput"

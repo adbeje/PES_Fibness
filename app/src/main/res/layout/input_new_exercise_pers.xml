@@ -19,6 +19,7 @@
         android:textColor="#000000"
         app:layout_constraintBottom_toTopOf="@+id/num_Rept"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.626"
         app:layout_constraintStart_toEndOf="@+id/txtSeries"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
         app:layout_constraintVertical_bias="1.0"></EditText>
@@ -34,10 +35,10 @@
         android:textColor="#000000"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.561"
         app:layout_constraintStart_toEndOf="@+id/txtRepet"
         app:layout_constraintTop_toTopOf="@+id/guideline5"
-        app:layout_constraintVertical_bias="0.724"></EditText>
+        app:layout_constraintVertical_bias="1.0"></EditText>
 
     <TextView
         android:id="@+id/txtRest"
@@ -48,10 +49,10 @@
         android:textColor="#000000"
         app:layout_constraintBottom_toTopOf="@+id/guideline8"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.106"
+        app:layout_constraintHorizontal_bias="0.079"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/guideline6"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintVertical_bias="0.575" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -101,10 +102,10 @@
         android:textColor="#000000"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.574"
+        app:layout_constraintHorizontal_bias="0.535"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline5"
-        app:layout_constraintVertical_bias="0.518" />
+        app:layout_constraintVertical_bias="0.555" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline8"
@@ -123,10 +124,10 @@
         android:textColor="#000000"
         app:layout_constraintBottom_toTopOf="@+id/guideline8"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.413"
+        app:layout_constraintHorizontal_bias="0.688"
         app:layout_constraintStart_toEndOf="@+id/txtRest"
         app:layout_constraintTop_toBottomOf="@+id/num_Rept"
-        app:layout_constraintVertical_bias="0.777"></EditText>
+        app:layout_constraintVertical_bias="1.0"></EditText>
 
     <Button
         android:id="@+id/btn_done"
@@ -139,7 +140,8 @@
         app:layout_constraintHorizontal_bias="0.654"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/guideline16"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:background="@drawable/btn_black"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
