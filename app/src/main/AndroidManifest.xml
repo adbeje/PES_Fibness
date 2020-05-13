@@ -55,6 +55,12 @@
             android:name=".CreateDietActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ChooseDayActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".MealActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
             android:name=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -70,9 +76,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateDietActivity" />
-        <activity android:name=".ChooseDayActivity" />
-        <activity android:name=".MealActivity"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
