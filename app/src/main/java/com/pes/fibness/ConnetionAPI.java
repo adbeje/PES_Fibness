@@ -451,10 +451,6 @@ public class ConnetionAPI {
         enqueue();
     }
 
-
-
-    }
-
     private void getUserInfo(String route) {
 
         final User u = User.getInstance();

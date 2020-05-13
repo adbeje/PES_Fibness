@@ -195,7 +195,6 @@ public class EditProfileActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onImagesPicked(@NonNull List<File> imageFiles, EasyImage.ImageSource source, int type) {
-                u.setImage(imageFiles.get(0));
                 Glide.with(EditProfileActivity.this)
                         .load(imageFiles.get(0))
                         .centerCrop()

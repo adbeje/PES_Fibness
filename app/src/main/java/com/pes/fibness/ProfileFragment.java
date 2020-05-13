@@ -91,7 +91,7 @@ public class ProfileFragment extends Fragment {
         byte[] userImage = null;
         if (u.getImage() != null) {
             validImage = true;
-            //userImage = u.getImage();
+            userImage = u.getImage();
         }
         username.setText(u.getName());
         nFollowers.setText(String.valueOf(User.getInstance().getnFollower()));
