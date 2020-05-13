@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="8"
-    android:background="@color/c_bkg"
     tools:context=".FollowersActivity">
 
     <LinearLayout

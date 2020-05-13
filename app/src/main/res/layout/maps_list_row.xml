@@ -25,18 +25,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp">
+        android:layout_marginEnd="5dp"
+        map:cardCornerRadius="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/lite_listrow_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+            <ImageView
+                android:id="@+id/lite_listrow_map"
+                android:layout_width="fill_parent"
+                android:layout_height="150dp"/>
+
 
             <!-- MapView in lite mode. Note that it needs to be initialised
                  programmatically before it can be used. -->
@@ -45,10 +46,12 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/lite_listrow_map"
-                    android:layout_width="fill_parent"
-                    android:layout_height="150dp" />
+                <TextView
+                    android:id="@+id/lite_listrow_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="5dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -59,12 +62,14 @@
                         android:id="@+id/textView_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
                         android:layout_weight="1" />
 
                     <TextView
                         android:id="@+id/textView_dist"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
                         android:layout_weight="1" />
                 </LinearLayout>
 

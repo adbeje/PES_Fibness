@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/oscuro"
+    android:background="@color/seleccion"
     android:orientation="vertical"
     tools:context=".ChooseDayActivity">
 
@@ -30,6 +30,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarDay"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:background="@drawable/recyclerview_dark_blue"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
