@@ -67,7 +67,7 @@
     <string name="notifications">Notificaciones</string>
     <string name="newFollower">Nuevo Seguidor</string>
     <string name="newMsg">Nuevo Mensaje</string>
-    <string name="contact">Contacto</string>
+    <string name="others">Otros</string>
     <string name="sendEmail">Envianos un Email</string>
     <string name="changeLang">Cambiar Idioma</string>
     <string name="logOut">Cerrar Sesión</string>
@@ -86,6 +86,11 @@
     <string name="Follow">Seguir</string>
     <string name="Following">Siguiendo</string>
     <string name="msgFollow">Estas siguiendo</string>
+    <string name="bkUser">Bloquear usuario</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="bkMsg">¿Estás seguro de que quieres bloquear a este usuario? El usuario no podrá ver tu perfil ni enviarte mensajes</string>
+    <string name="bkAccounts">Cuentas bloqueadas</string>
 
 
 </resources>

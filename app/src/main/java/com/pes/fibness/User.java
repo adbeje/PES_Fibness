@@ -369,12 +369,14 @@ class Achievement{
 
 class UsersInfo{
     Integer id;
-    String image;
     String username;
     String description;
-    String BirthDate;
+    String birthDate;
     String country;
     Integer nFollower;
     Integer nFollowing;
+    Boolean sAge;
+    Boolean sFollower;
+    Boolean sMessage;
     Boolean follow;
 }

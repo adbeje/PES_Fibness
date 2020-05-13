@@ -1,9 +1,13 @@
 package com.pes.fibness;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.view.ViewCompat;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -11,6 +15,8 @@ import android.graphics.ColorSpace;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +26,10 @@ import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+
 public class SelectedUserActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     private ImageView backImgButton, blockImgButton;
@@ -27,8 +37,11 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
     private FloatingActionButton follow;
     private UserModel userModel;
     private UsersInfo ui = User.getInstance().getSelectedUser();
-    private Boolean ImFolloing = false; /* ui.follow necesito por si el usuario en la misma pagina quiere seguir y dejar de seguir*/
+    private Boolean ImFolloing = ui.follow; /* ui.follow necesito por si el usuario en la misma pagina quiere seguir y dejar de seguir*/
 
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,18 +58,33 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
         description = findViewById(R.id.description);
         follow = findViewById(R.id.follow);
 
-
-        /*
-        falta hacer set los valores de UI
-        Boolean sigo = ui.follow;
-        if(sigue){
+        if(ImFolloing){
             follow.setBackgroundTintList(ColorStateList.valueOf(-2818048)); //-2818048 = red color
         }
         else{
             System.out.println("NADA");;
             follow.setBackgroundTintList(ColorStateList.valueOf(-16021062)); //-16021062 = @color/c_icon_bkg_unsel
         }
-        */
+
+        /*falta cargar imagen*/
+        nFollowers.setText(""+ ui.nFollower);
+        nFollowing.setText(""+ui.nFollowing);
+        username.setText(ui.username);
+        if(ui.birthDate == null)
+            coma.setText("");
+        else {
+            if(ui.sAge)
+                age.setText(howManyYears(ui.birthDate));
+            else coma.setText("");
+        }
+        String[] planets = getResources().getStringArray(R.array.countries);
+        if(ui.country.equals("null"))
+            country.setText("");
+        else country.setText(planets[Integer.parseInt(ui.country)]);
+        if(ui.description.equals("null"))
+            description.setText("");
+        else description.setText(ui.description);
+
 
 
         Intent intent = getIntent();
@@ -116,8 +144,21 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
             }
         });
 
-
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String howManyYears(String birthDate){
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate fechaNac = LocalDate.parse(birthDate, fmt);
+        LocalDate ahora = LocalDate.now();
+
+        Period periodo = Period.between(fechaNac, ahora);
+        System.out.printf("Tu edad es: %s años, %s meses y %s días",
+                periodo.getYears(), periodo.getMonths(), periodo.getDays());
+        return String.valueOf(periodo.getYears());
+    }
+
+
 
 
     /*blockImgButton onClick*/
@@ -127,14 +168,40 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
         popupMenu.inflate(R.menu.popup_block_menu);
         popupMenu.show();
     }
+
+
+
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
-        if(menuItem.getItemId() == R.id.item){
+        if(menuItem.getItemId() == R.id.bk_item){
             Toast.makeText(this, "Inform a block message", Toast.LENGTH_SHORT).show();
-            /*HACER UNA ADVERTENCIA, SI ACEPTA, BLOQUEA AL USUARIO*/
+            showMessage();
             return true;
         }
         return false;
+    }
+
+    private void showMessage() {
+        AlertDialog.Builder message = new AlertDialog.Builder(this);
+        message.setTitle(getResources().getString(R.string.bkUser));
+        message.setMessage(getResources().getString(R.string.bkMsg))
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.accept), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/block");
+                        connetionAPI.blockUser(User.getInstance().getId(), userModel.getId());
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        AlertDialog alertDialog = message.create();
+        alertDialog.show();
+
     }
 
     @Override
@@ -155,6 +222,12 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
         startActivity(intent);
 
     }
+
+
+
+
+
+
 
 
 }

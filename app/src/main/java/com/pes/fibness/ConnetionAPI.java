@@ -790,13 +790,22 @@ public class ConnetionAPI {
         request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
+                System.out.println("------------------________________________________----------------------");
                 System.out.println("Respuesta: "+ response);
                 try {
                     JSONObject obj = new JSONObject(response);
                     UsersInfo ui = new UsersInfo();
                     ui.id = (Integer) obj.get("id");
-                    /**coger otros parametros*/
+                    ui.username = obj.get("nombre").toString();
+                    ui.description = obj.get("descripcion").toString();
+                    ui.birthDate = obj.get("fechadenacimiento").toString();
+                    ui.country = obj.get("pais").toString();
+                    ui.nFollower = (Integer) obj.get("nseguidores");
+                    ui.nFollowing = (Integer) obj.get("nseguidos");
+                    ui.sAge = (Boolean) obj.get("sedad");
+                    ui.sFollower = (Boolean) obj.get("sseguidor");
+                    ui.sMessage = (Boolean) obj.get("nmensaje");
+                    ui.follow = (Boolean) obj.get("seguir");
                     User.getInstance().setSelectedUser(ui);
 
                 } catch (JSONException e) {
@@ -957,6 +966,52 @@ public class ConnetionAPI {
         enqueue();
 
     }
+
+    public void blockUser(int currentUser, int anotherUser) {
+        System.out.println("DENTRO DE followUser");
+
+        final String data = "{"+
+                "\"idBlocker\": " + "\"" + currentUser + "\"," +
+                "\"idBlocked\": " + "\"" + anotherUser+ "\"" +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Block response: " + response);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Message error: " + error);
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+            }
+
+        };
+        enqueue();
+
+
+    }
+
+
+
+
+
 
 
 

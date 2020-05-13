@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -22,7 +24,7 @@ import static android.view.View.OnClickListener;
 public class SettingsActivity extends AppCompatActivity {
 
     private Switch switchAge, switchDistance, switchInvitation, switchFollower,switchMessage;
-    private TextView textContact, logOut, done, changeLanguage, delete;
+    private TextView textContact, logOut, done, changeLanguage, delete, bkAccounts;
     private ImageView backButton;
     private boolean switchOn1, switchOn2, switchOn3, switchOn4, switchOn5, switchOn6;
 
@@ -47,6 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
         logOut = findViewById(R.id.logOut);
         changeLanguage = findViewById(R.id.changeLanguage);
         delete = findViewById(R.id.deleteAccount);
+        bkAccounts = findViewById(R.id.bkAccounts);
 
         /*to go back*/
         backButton.setOnClickListener(new OnClickListener() {
@@ -77,6 +80,24 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        /*blocked account list*/
+        bkAccounts.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*
+                ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/"+User.getInstance().getId()+ "/blockedAccounts");
+                connetionAPI.getBlockedAccounts();
+                */
+                @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                    @Override
+                    public void handleMessage(Message msg) {
+                        Intent i = new Intent(getApplicationContext(), BlockUserActivity.class);
+                        startActivity(i);
+                    }
+                };
+                h.sendEmptyMessageDelayed(0, 50);
+            }
+        });
 
 
         /*change language*/
@@ -224,6 +245,14 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
+        startActivity(intent);
+
+    }
+
 
 
 }

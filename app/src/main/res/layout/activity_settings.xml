@@ -198,14 +198,14 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!--CONTACT PART -->
+        <!--Other PART -->
         <TextView
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="10dp"
-            android:text="@string/contact"
+            android:text="@string/others"
             android:textColor="@color/c_let_light_bkg"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -217,11 +217,38 @@
             android:layout_width="375dp"
             android:layout_height="35dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView9">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/bkAccounts"
+                    android:layout_width="355dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/bkAccounts"
+                    android:textColor="@color/colorPrimaryDark"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView5"
+            android:layout_width="375dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView4">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -234,9 +261,11 @@
                     android:layout_height="25dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="5dp"
-                    android:text="@string/sendEmail" />
+                    android:text="@string/sendEmail"
+                    android:textColor="@color/colorPrimaryDark"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -256,6 +285,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginBottom="15dp"
             android:text="@string/changeLang"
             android:textColor="@color/c_icon_bkg_unsel"
