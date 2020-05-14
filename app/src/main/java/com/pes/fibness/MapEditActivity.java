@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -92,7 +93,7 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
         getExtras();
-        addCameraPosition();
+        if (!newRoute) addCameraPosition();
 
 
         mapboxMap.setStyle(getString(R.string.navigation_guidance_day), new Style.OnStyleLoaded() {
@@ -136,27 +137,31 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
                 save.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Ruta r = new Ruta();
-                        r.name = rTitle;
-                        r.description = rDescription;
-                        r.distance = rDistance;
-                        r.origen = originPoint;
-                        r.destino = destinationPoint;
-                        if(newRoute) {
-                            r.id = -1;
-                            User.getInstance().addRuta(r);
+                        if(originPoint != null && destinationPoint != null) {
+                            Ruta r = new Ruta();
+                            r.name = rTitle;
+                            r.description = rDescription;
+                            r.distance = rDistance;
+                            r.origen = originPoint;
+                            r.destino = destinationPoint;
+                            if (newRoute) {
+                                r.id = -1;
+                                User.getInstance().addRuta(r);
 
-                            ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/route");
-                            c.postUserRoute(r, User.getInstance().getId());
-                        }
-                        else{
-                            r.id = rID;
-                            User.getInstance().updateRuta(rPosition, r);
+                                ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/route");
+                                c.postUserRoute(r, User.getInstance().getId());
+                            } else {
+                                r.id = rID;
+                                User.getInstance().updateRuta(rPosition, r);
 
-                            ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/route/" + rID);
-                            c.updateUserRoute(r);
+                                ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/route/" + rID);
+                                c.updateUserRoute(r);
+                            }
+                            finish();
                         }
-                        finish();
+                        if (originPoint == null && destinationPoint == null) Toast.makeText(getApplicationContext(), "Route points haven't been selected", Toast.LENGTH_LONG).show();
+                        else if (originPoint == null) Toast.makeText(getApplicationContext(), "Origin point hasn't been selected", Toast.LENGTH_LONG).show();
+                        else if (destinationPoint == null) Toast.makeText(getApplicationContext(), "Destination point hasn't been selected", Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -172,7 +177,7 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
                     }
                 });
 
-                getRoute(originPoint, destinationPoint);
+                if (!newRoute) getRoute(originPoint, destinationPoint);
 
             }
         });
@@ -262,7 +267,7 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
             locationComponent.activateLocationComponent(this, loadedMapStyle);
             locationComponent.setLocationComponentEnabled(true);
             // Set the component's camera mode
-            //locationComponent.setCameraMode(CameraMode.TRACKING);
+            if (newRoute)locationComponent.setCameraMode(CameraMode.TRACKING);
         } else {
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(this);
@@ -403,7 +408,7 @@ public class MapEditActivity extends AppCompatActivity implements OnMapReadyCall
             }
         }
 
-        getRoute(originPoint, destinationPoint);
+        if (originPoint != null && destinationPoint != null)getRoute(originPoint, destinationPoint);
         return true;
     }
 }

@@ -1560,7 +1560,7 @@ public class ConnetionAPI {
                 if(response.contains("false"))
                     Toast.makeText(context, "You are following", Toast.LENGTH_LONG).show();
                 else
-                    Toast.makeText(context, "You cannot follow the user because you have blocked", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "You cannot follow a blocked user", Toast.LENGTH_LONG).show();
             }
         }, new Response.ErrorListener() {
             @Override

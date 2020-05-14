@@ -81,7 +81,7 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
                         startActivity(i);
                     }
                 };
-                h.sendEmptyMessageDelayed(0, 50);
+                h.sendEmptyMessageDelayed(0, 150);
 
             }
         });
@@ -101,7 +101,7 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
                         startActivity(i);
                     }
                 };
-                h.sendEmptyMessageDelayed(0, 50);
+                h.sendEmptyMessageDelayed(0, 150);
 
             }
         });

@@ -122,8 +122,8 @@ public class RoutesFragment extends Fragment {
 
                     Intent mapPage = new Intent(getActivity(), MapEditActivity.class);
                     mapPage.putExtra("new", true);
-                    mapPage.putExtra("originPoint", Point.fromLngLat(0, 0));
-                    mapPage.putExtra("destinationPoint", Point.fromLngLat(0, 0));
+                    //mapPage.putExtra("originPoint", Point.fromLngLat(0, 0));
+                    //mapPage.putExtra("destinationPoint", Point.fromLngLat(0, 0));
                     mapPage.putExtra("routeTitle", title);
                     mapPage.putExtra("routeDescription", desc);
                     mapPage.putExtra("routeID", -1);

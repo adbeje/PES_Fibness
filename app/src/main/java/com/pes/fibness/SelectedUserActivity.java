@@ -139,7 +139,7 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
                         nFollowers.setText(""+n);
                         ImFolloing = true;
                     }
-                    else Toast.makeText(getApplicationContext(), "You cannot follow the user because you have blocked", Toast.LENGTH_LONG).show();
+                    else Toast.makeText(getApplicationContext(), "You cannot follow a blocked user", Toast.LENGTH_LONG).show();
 
                 }
                 else{
@@ -154,7 +154,7 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
                         nFollowers.setText(""+n);
                         ImFolloing = false;
                     }
-                    else Toast.makeText(getApplicationContext(), "You cannot follow the user because you have blocked", Toast.LENGTH_LONG).show();
+                    else Toast.makeText(getApplicationContext(), "You cannot follow a blocked user", Toast.LENGTH_LONG).show();
 
                 }
 

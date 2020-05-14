@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewProfileActivity">
+    tools:context=".SelectedUserActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -251,21 +251,22 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="376dp"
+                android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginTop="70dp"
+                android:layout_marginBottom="32dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
-                tools:ignore="MissingConstraints">
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
                 <EditText
                     android:id="@+id/editText"
                     android:layout_width="286dp"
                     android:layout_height="40dp"
                     android:hint="@string/sayHello"
-                    android:paddingLeft="16dp" />
+                    android:paddingLeft="16dp"
+                    tools:ignore="MissingConstraints" />
 
                 <Button
                     android:id="@+id/send"
@@ -275,7 +276,8 @@
                     android:text="@string/Send"
                     android:textColor="#FFF"
                     app:layout_constraintStart_toEndOf="@+id/editText"
-                    tools:layout_editor_absoluteY="0dp" />
+                    tools:layout_editor_absoluteY="0dp"
+                    tools:ignore="MissingConstraints" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
