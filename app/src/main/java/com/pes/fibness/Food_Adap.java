@@ -42,11 +42,7 @@ public class Food_Adap extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final View vista = inflater.inflate(R.layout.aliment_element, null);
-        if(New) {
-            TextView txtCal = (TextView) vista.findViewById(R.id.txtCalories);
-            txtCal.setText("");
-        }
-        else {
+        if(!New) {
             TextView titulo = (TextView) vista.findViewById(R.id.txtNameAliment);
             TextView calorias = (TextView) vista.findViewById(R.id.txtSetCalories);
             titulo.setText(dades.get(position).name);
