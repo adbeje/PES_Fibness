@@ -1524,6 +1524,7 @@ public class ConnetionAPI {
                     ui.sFollower = (Boolean) obj.get("sseguidor");
                     ui.sMessage = (Boolean) obj.get("nmensaje");
                     ui.follow = (Boolean) obj.get("seguir");
+                    ui.blocked = (Boolean) obj.get("bloqueado");
                     User.getInstance().setSelectedUser(ui);
 
                 } catch (JSONException e) {

@@ -490,5 +490,6 @@ class UsersInfo{
     Boolean sFollower;
     Boolean sMessage;
     Boolean follow;
+    Boolean blocked;
 
 }

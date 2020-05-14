@@ -39,7 +39,7 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
     private UsersInfo ui = User.getInstance().getSelectedUser();
     private Boolean ImFolloing = ui.follow; /* ui.follow necesito por si el usuario en la misma pagina quiere seguir y dejar de seguir*/
     private int n = ui.nFollower;
-    private int bkUnlk = -1; /*bk=0, unblock=1*/
+    private Boolean bkUser= ui.blocked;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -131,7 +131,7 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
                 System.out.println("My backgroud: " + view.getBackgroundTintList());
                 if(!ImFolloing){
                     //follow user
-                    if(!userModel.getBlocked()){
+                    if(!bkUser){
                         ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/follow");
                         connetionAPI.followUser(User.getInstance().getId(), userModel.getId());
                         follow.setBackgroundTintList(ColorStateList.valueOf(-2818048)); //-2818048 = red color
@@ -144,7 +144,7 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
                 }
                 else{
                     //delete follow
-                    if(!userModel.getBlocked()){
+                    if(!bkUser){
                         ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/follow/" + User.getInstance().getId() + "/" + userModel.getId());
                         connetionAPI.deleteFollowing();
 
@@ -184,7 +184,7 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
         popupMenu.setOnMenuItemClickListener(this);
         popupMenu.inflate(R.menu.popup_block_menu);
         System.out.println("my usermodel block: " + userModel.getBlocked());
-        if(userModel.getBlocked())
+        if(bkUser)
             popupMenu.getMenu().getItem(0).setTitle(getResources().getString(R.string.unlockUser));
         else popupMenu.getMenu().getItem(0).setTitle(getResources().getString(R.string.blockUser));
         popupMenu.show();
@@ -198,11 +198,11 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
             String s = (String) menuItem.getTitle();
             if(s.equals("Block user") || s.equals("Bloquear usuario")){
                 showBlockMessage();
-                if(userModel.getBlocked()) menuItem.setTitle(getResources().getString(R.string.unlockUser));
+                if(bkUser) menuItem.setTitle(getResources().getString(R.string.unlockUser));
             }
             else{
                 showUnlockMessage();
-                if(!userModel.getBlocked()) menuItem.setTitle(getResources().getString(R.string.blockUser));
+                if(!bkUser) menuItem.setTitle(getResources().getString(R.string.blockUser));
             }
 
             return true;
@@ -221,7 +221,15 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
                     public void onClick(DialogInterface dialogInterface, int i) {
                         ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/block");
                         connetionAPI.blockUser(User.getInstance().getId(), userModel.getId());
-                        userModel.setBlocked(true);
+                        if(ImFolloing){
+                            follow.setBackgroundTintList(ColorStateList.valueOf(-16021062));
+                            --n;
+                            if(n < 0) n=0;
+                            nFollowers.setText(""+n);
+                            ImFolloing = false;
+                        }
+
+                        bkUser = true;
                         System.out.println("my usermodel block true: " + userModel.getBlocked());
                     }
                 })
@@ -246,7 +254,7 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
                     public void onClick(DialogInterface dialogInterface, int i) {
                         ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/block/"+ User.getInstance().getId() +"/"+userModel.getId());
                         connetionAPI.unlockkUser();
-                        userModel.setBlocked(false);
+                        bkUser = false;
                         System.out.println("my usermodel block false: " + userModel.getBlocked());
                     }
                 })
