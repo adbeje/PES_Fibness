@@ -118,6 +118,7 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
                         editRoute.putExtra("routePosition", rPosition);
                         editRoute.putExtra("routeID", User.getInstance().getRutaID(rPosition));
                         startActivity(editRoute);
+                        finish();
                     }
                 });
 

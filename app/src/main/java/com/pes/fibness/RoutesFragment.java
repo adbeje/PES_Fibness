@@ -61,6 +61,7 @@ public class RoutesFragment extends Fragment {
                 mapPage.putExtra("destinationPoint", routesList.get(pos).destino);
                 mapPage.putExtra("routeTitle", routesList.get(pos).name);
                 mapPage.putExtra("routeDescription", routesList.get(pos).description);
+                mapPage.putExtra("routePosition", pos);
                 startActivity(mapPage);
             }
         });
