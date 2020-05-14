@@ -190,7 +190,7 @@ public class MealActivity extends AppCompatActivity {
                     txtHour.setError("Please, add an Hour");
                     correct = false;
                 }
-                if (Integer.valueOf(txtHour.getText().toString()) > 23 || txtHour.getText().toString().length() > 2) {
+                else if (Integer.valueOf(txtHour.getText().toString()) > 23 || txtHour.getText().toString().length() > 2) {
                     txtHour.setError("Please, add a valid Hour");
                     correct = false;
                 }
@@ -198,7 +198,7 @@ public class MealActivity extends AppCompatActivity {
                     txtMin.setError("Please, add Minutes");
                     correct = false;
                 }
-                if (Integer.valueOf(txtMin.getText().toString()) > 59 || txtMin.getText().toString().length() > 2) {
+                else if (Integer.valueOf(txtMin.getText().toString()) > 59 || txtMin.getText().toString().length() > 2) {
                     txtMin.setError("Please, add valid Minutes");
                     correct = false;
                 }

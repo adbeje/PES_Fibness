@@ -1228,6 +1228,7 @@ public class ConnetionAPI {
                     if (obj.has("idAlimento")) {
                         int id = (Integer) obj.get("idAlimento");
                         User.getInstance().setAlimentID(pos, id);
+                        User.getInstance().setAlimentList(new ArrayList<Aliment>());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
