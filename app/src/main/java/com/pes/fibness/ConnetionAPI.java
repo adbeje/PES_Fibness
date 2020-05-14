@@ -1,8 +1,13 @@
 package com.pes.fibness;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Base64;
+import android.graphics.Paint;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Pair;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -10,9 +15,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.sun.mail.iap.ByteArray;
+import com.mapbox.geojson.Point;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +29,8 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLOutput;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
@@ -40,21 +51,6 @@ public class ConnetionAPI {
         this.urlAPI = url;
     }
 
-    /*test to sure that database work*/
-    public void getTest(){
-        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                System.out.println("INFO: "+ response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("INFO: ERROR");
-            }
-        });
-        enqueue();
-    }
 
     /*to register an user in database*/
     public void postUser(String userName, String password, String emailAddress){
@@ -85,7 +81,16 @@ public class ConnetionAPI {
                         /*nedd to load user information & setting*/
                         getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
                         getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
-                        homeActivity();
+
+                        @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                            @Override
+                            public void handleMessage(Message msg) {
+                                homeActivity();
+                            }
+                        };
+                        h.sendEmptyMessageDelayed(0, 100);
+
+
                     }
                     else Toast.makeText(getApplicationContext(), "Register response error", Toast.LENGTH_SHORT).show();
 
@@ -148,8 +153,13 @@ public class ConnetionAPI {
 
                     getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
                     getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
-                    homeActivity();
-
+                    @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                        @Override
+                        public void handleMessage(Message msg) {
+                            homeActivity();
+                        }
+                    };
+                    h.sendEmptyMessageDelayed(0, 100);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -215,7 +225,13 @@ public class ConnetionAPI {
                         getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
                         getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
 
-                        homeActivity();
+                        @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                            @Override
+                            public void handleMessage(Message msg) {
+                                homeActivity();
+                            }
+                        };
+                        h.sendEmptyMessageDelayed(0, 100);
                     }
                     else Toast.makeText(getApplicationContext(), "Invalid Login Credentials", Toast.LENGTH_SHORT).show();
 
@@ -296,11 +312,19 @@ public class ConnetionAPI {
             public void onResponse(String response) {
 
                 System.out.println("Respuesta: "+ response);
-                if(response.equals("OK")){
-                    Toast.makeText(getApplicationContext(), "Your password has been reset successfully", Toast.LENGTH_SHORT).show();
-                    homeActivity();
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    Boolean b = (Boolean)obj.get("result");
+                    if(b){
+                        Toast.makeText(getApplicationContext(), "Your password has been reset successfully", Toast.LENGTH_SHORT).show();
+                        homeActivity();
+                    }
+                    else Toast.makeText(getApplicationContext(), "Your password has not been reset successfully", Toast.LENGTH_SHORT).show();
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                else Toast.makeText(getApplicationContext(), "Your password has not been reset successfully", Toast.LENGTH_SHORT).show();
 
             }
         }, new Response.ErrorListener() {
@@ -443,15 +467,12 @@ public class ConnetionAPI {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
             }
         });
 
         enqueue();
     }
-
-
-
 
     private void getUserInfo(String route) {
 
@@ -471,7 +492,7 @@ public class ConnetionAPI {
                     System.out.println("Estoy dentro de User info para recoger datos de json");
                     System.out.println("Resultado: " + obj);
 
-
+                    User u = User.getInstance();
 
                     u.setName(obj.get("nombre").toString());
                     u.setEmail(obj.get("email").toString());
@@ -501,26 +522,186 @@ public class ConnetionAPI {
         });
 
         enqueue();
+
+
+
+
     }
 
 
     /*para trainings*/
-    public void getTrainingExercises(){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void getTrainingExercises(final String title){
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray exercises = new JSONArray(response);
+                    ArrayList<Exercise> exerciseList = new ArrayList<>();
+                    for(int i = 0; i < exercises.length(); i++){
+                        JSONObject exercise = exercises.getJSONObject(i);
+                        Exercise e = new Exercise();
+                        e.TitleEx = (String) exercise.getString("nombre");
+                        e.Pos = (Integer) exercise.getInt("posicion");
+                        int numRest = (Integer) exercise.getInt("tiempodescanso");
+                        e.NumRest = String.valueOf(numRest);
+                        int numSerie = (Integer) exercise.getInt("numsets");
+                        e.NumSerie = String.valueOf(numSerie);
+                        int numRept = (Integer) exercise.getInt("numrepeticiones");
+                        e.NumRepet = String.valueOf(numRept);
+                        e.Desc = (String) exercise.getString("descripcion");
+                        e.id = (Integer) exercise.getInt("idactividad");
+                        exerciseList.add(e);
+                    }
+                    User.getInstance().setExerciseList(exerciseList);
+                    Intent TrainingPage = new Intent(context, CreateTrainingActivity.class);
+                    TrainingPage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    TrainingPage.putExtra("new", false);
+                    TrainingPage.putExtra("title", title);
+                    context.startActivity(TrainingPage);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HOLA" + error);
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
+
     }
 
-    public void postTrainingExercises(){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void postTrainingExercises(int idT, final String nameE, final String desc, final int pos, final int numRest, final int numSerie, final int numRept,
+                                      final int Position){
+        final String data = "{"+
+                "\"idEntrenamiento\": " + idT +"," +
+                "\"nombre\": " + "\"" + nameE + "\"," +
+                "\"descripcion\": " + "\"" + desc + "\"," +
+                "\"tiempoEjecucion\": " + 0 + "," +
+                "\"numSets\": " + numSerie + "," +
+                "\"numRepeticiones\": " + numRept + "," +
+                "\"tiempoDescanso\": " + numRest + "," +
+                "\"posicion\": " + pos +
+                "}";
 
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Resgister user response: " + response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.has("idExercise")) {
+                        int id = (Integer) obj.get("idExercise");
+                        Exercise e = new Exercise();
+                        e.TitleEx = nameE;
+                        e.NumSerie = String.valueOf(numSerie);
+                        e.NumRest = String.valueOf(numRest);
+                        e.NumRepet = String.valueOf(numRept);
+                        e.Desc = desc;
+                        e.Pos = pos;
+                        e.id = id;
+                        User.getInstance().updateExercise(Position, e);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HIII " + error);
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+            }
+
+
+        };
+
+        enqueue();
     }
 
-    public void updateTrainingExercises(){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void updateTrainingExercises(final String nameE, String desc, int pos, final int numRest, final int numSerie, final int numRept){
+        final String data = "{"+
+                "\"nombre\": " + "\"" + nameE + "\"," +
+                "\"descripcion\": " + "\"" + desc + "\"," +
+                "\"tiempoEjecucion\": " + 0 + "," +
+                "\"numSets\": " + numSerie + "," +
+                "\"numRepeticiones\": " + numRept + "," +
+                "\"tiempoDescanso\": " + numRest + "," +
+                "\"posicion\": " + pos +
+                "}";
+        request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("NANIIII "  + response);
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your exercise has not been modified. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HIII " + error);
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+            }
+
+
+        };
+
+        enqueue();
 
     }
 
     public void deleteTrainingExercises(){
-        //cuando este la ruta de api definida se añadira el codigo
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your exercise has not been deleted. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HIII " + error);
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
 
     }
 
@@ -729,55 +910,846 @@ public class ConnetionAPI {
 
     /*para dietas*/
     public void getUserDiets(){
-        //cuando este la ruta de api definida se añadira el codigo
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray diets = new JSONArray(response);
+                    ArrayList<Diet> dietList = new ArrayList<>();
+                    for(int i = 0; i < diets.length(); i++){
+                        JSONObject diet = diets.getJSONObject(i);
+                        Diet d = new Diet();
+                        d.name = (String) diet.getString("nombre");
+                        d.desc = (String) diet.getString("descripcion");
+                        d.id = (Integer) diet.getInt("idelemento");
+                        dietList.add(d);
+                    }
+                    User.getInstance().setDietList(dietList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HOLA" + error);
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
     }
-    public void postUserDiets(){
-        //cuando este la ruta de api definida se añadira el codigo
+
+    public void postUserDiets(int userID, String name, String desc){
+        final String nombre = name;
+        final String data = "{"+
+                "\"nombre\": " + "\"" + name + "\"," +
+                "\"descripcion\": " + "\"" + desc + "\"," +
+                "\"idUser\": " + userID +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.has("idElemento")) {
+                        int id = (Integer) obj.get("idElemento");
+                        User.getInstance().setDietID(nombre, id);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+        };
+        enqueue();
 
     }
-    public void updateUserDiets(){
-        //cuando este la ruta de api definida se añadira el codigo
+
+    public void updateUserDiets(String name, String desc){
+        final String data = "{"+
+                "\"nombre\": " + "\"" + name + "\"," +
+                "\"descripcion\": " + "\"" + desc + "\"" +
+                "}";
+        request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your diet has not been modified. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+
+
+        };
+
+        enqueue();
     }
+
     public void deleteUserDiets(){
-        //cuando este la ruta de api definida se añadira el codigo
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your diet has not been deleted. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
 
     }
-    public void getDietMeal(){
-        //cuando este la ruta de api definida se añadira el codigo
+
+    public void getDietMeal(final String title, final String dia){
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray meals = new JSONArray(response);
+                    ArrayList<Meal> mealList = new ArrayList<>();
+                    for(int i = 0; i < meals.length(); i++){
+                        JSONObject meal = meals.getJSONObject(i);
+                        Meal m = new Meal();
+                        m.id = (Integer) meal.getInt("idcomida");
+                        m.name = (String) meal.getString("nombre");
+                        m.time = (String) meal.getString("horacomida");
+                        mealList.add(m);
+                    }
+                    User.getInstance().setMealList(mealList);
+                    Intent MealPage = new Intent(context, MealActivity.class);
+                    MealPage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    MealPage.putExtra("dia", dia);
+                    MealPage.putExtra("title", title);
+                    context.startActivity(MealPage);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HOLA" + error);
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
     }
 
-    public void postDietMeal(){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void postDietMeal(int idDiet, String name, String time, String day){
+        final String nombre = name;
+        final String data = "{"+
+                "\"nombre\": " + "\"" + name + "\"," +
+                "\"horaComida\": " + "\"" + time + "\"," +
+                "\"idElemento\": " + idDiet + "," +
+                "\"tipoDia\": " + "\"" + day + "\"" +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.has("idComida")) {
+                        int id = (Integer) obj.get("idComida");
+                        User.getInstance().setMealID(nombre, id);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("ERROR " + error);
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+        };
+        enqueue();
 
     }
 
-    public void updateDietMeal(){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void updateDietMeal(String name, String time){
+        final String data = "{"+
+                "\"nombre\": " + "\"" + name + "\"," +
+                "\"horaComida\": " + "\"" + time + "\"" +
+                "}";
+        request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your meal has not been modified. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+
+
+        };
+
+        enqueue();
 
     }
 
     public void deleteDietMeal(){
-        //cuando este la ruta de api definida se añadira el codigo
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your meal has not been deleted. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
 
     }
-    public void getMealAliment(){
-        //cuando este la ruta de api definida se añadira el codigo
+
+    public void getMealAliment(final String dieta, final String dia, final String comida, final boolean New){
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray food = new JSONArray(response);
+                    ArrayList<Aliment> foodList = new ArrayList<>();
+                    for(int i = 0; i < food.length(); i++){
+                        JSONObject aliment = food.getJSONObject(i);
+                        Aliment a = new Aliment();
+                        a.id = (Integer) aliment.getInt("idalimento");
+                        a.name = (String) aliment.getString("nombre");
+                        int cal = (Integer) aliment.getInt("calorias");
+                        a.calories = String.valueOf(cal);
+                        foodList.add(a);
+                    }
+                    User.getInstance().setAlimentList(foodList);
+                    Intent FoodPage = new Intent(context, CreateDietActivity.class);
+                    FoodPage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    FoodPage.putExtra("dia", dia);
+                    FoodPage.putExtra("title", dieta);
+                    FoodPage.putExtra("comida", comida);
+                    FoodPage.putExtra("new", New);
+                    context.startActivity(FoodPage);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HOLA" + error);
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
     }
 
-    public void postMealAliment(){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void postMealAliment(int idMeal, String name, String calories, final int pos){
+        final String nombre = name;
+        int cal = Integer.parseInt(calories);
+        final String data = "{"+
+                "\"nombre\": " + "\"" + name + "\"," +
+                "\"descripcion\": " + "\"" + "" + "\"," +
+                "\"calorias\": " +  cal + "," +
+                "\"idComida\": " + idMeal +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.has("idAlimento")) {
+                        int id = (Integer) obj.get("idAlimento");
+                        User.getInstance().setAlimentID(pos, id);
+                        User.getInstance().setAlimentList(new ArrayList<Aliment>());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("ERROR: " + error);
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+        };
+        enqueue();
 
     }
 
-    public void updateMealAliment(){
-        //cuando este la ruta de api definida se añadira el codigo
+    public void updateMealAliment(String name, String calories){
+        int cal = Integer.parseInt(calories);
+        final String data = "{"+
+                "\"nombre\": " + "\"" + name + "\"," +
+                "\"descripcion\": " + "\"" + "" + "\"," +
+                "\"calorias\": " + cal +
+                "}";
+        request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your aliment has not been modified. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+
+
+        };
+
+        enqueue();
 
     }
 
     public void deleteMealAliment(){
-        //cuando este la ruta de api definida se añadira el codigo
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your aliment has not been deleted. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
 
     }
+
+
+    /** RUTAS **/
+    public void getUserRoutes() {
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray rutas = new JSONArray(response);
+                    ArrayList<Ruta> rutasList = new ArrayList<>();
+                    for(int i = 0; i < rutas.length(); i++){
+                        JSONObject ruta = rutas.getJSONObject(i);
+                        String[] origen;
+                        String[] destino;
+                        Ruta r = new Ruta();
+                        r.name = (String) ruta.getString("nombre");
+                        r.description = (String) ruta.getString("descripcion");
+                        r.id = (Integer) ruta.getInt("idelemento");
+                        r.distance = Integer.parseInt(ruta.getString("distancia"));
+                        origen = ruta.getString("origen").split(";");
+                        destino = ruta.getString("destino").split(";");
+                        r.origen = Point.fromLngLat(Double.parseDouble(origen[0]), Double.parseDouble(origen[1]));
+                        r.destino = Point.fromLngLat(Double.parseDouble(destino[0]), Double.parseDouble(destino[1]));
+                        rutasList.add(r);
+                    }
+                    User.getInstance().setRutasList(rutasList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
+    }
+
+    public void updateUserRoute(Ruta r) {
+        String origen = r.origen.longitude() +";"+ r.origen.latitude();
+        String destino = r.destino.longitude() +";"+ r.destino.latitude();
+        final String data = "{"+
+                "\"nombre\": " + "\"" + r.name + "\"," +
+                "\"descripcion\": " + "\"" + r.description + "\"," +
+                "\"origen\": " + "\"" + origen + "\"," +
+                "\"destino\": " + "\"" + destino + "\"," +
+                "\"distancia\": " + "\"" + r.distance + "\"" +
+                "}";
+        request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your route has not been modified. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+
+
+        };
+
+        enqueue();
+    }
+
+    public void postUserRoute(Ruta r, int userID) {
+        String origen = r.origen.longitude() +";"+ r.origen.latitude();
+        String destino = r.destino.longitude() +";"+ r.destino.latitude();
+        final String name = r.name;
+        final String data = "{"+
+                "\"nombre\": " + "\"" + r.name + "\"," +
+                "\"descripcion\": " + "\"" + r.description + "\"," +
+                "\"idUser\": " + userID + "," +
+                "\"origen\": " + "\"" + origen + "\"," +
+                "\"destino\": " + "\"" + destino + "\"," +
+                "\"distancia\": " + "\"" + r.distance + "\"" +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.has("idElemento")) {
+                        int id = (Integer) obj.getInt("idElemento");
+                        User.getInstance().setRutaID(name, id);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+        };
+        enqueue();
+    }
+
+    public void deleteUserRoute() {
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your route has not been deleted. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
+    }
+
+
+    /*load id & username to show in SearchUsers activity*/
+    public void getShortUserInfo(Integer id) {
+        System.out.println("Dentro de getShortUserInfo");
+
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Respuesta: "+ response);
+
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    ArrayList<UserShortInfo> users = new ArrayList<>();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            JSONObject obj = jsonArray.getJSONObject(i);
+                            UserShortInfo ui = new UserShortInfo();
+                            ui.id = (Integer) obj.get("id");
+                            ui.username= obj.get("nombre").toString();
+                            ui.blocked = (Boolean) obj.get("bloqueado");
+                            users.add(i, ui);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    User.getInstance().setShortUsersInfo(users);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+    }
+
+
+    public void getSelectedUserInfo() {
+        System.out.println("Dentro de getShortUserInfo");
+
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("------------------________________________________----------------------");
+                System.out.println("Respuesta: "+ response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    UsersInfo ui = new UsersInfo();
+                    ui.id = (Integer) obj.get("id");
+                    ui.username = obj.get("nombre").toString();
+                    ui.description = obj.get("descripcion").toString();
+                    ui.birthDate = obj.get("fechadenacimiento").toString();
+                    ui.country = obj.get("pais").toString();
+                    ui.nFollower = (Integer) obj.get("nseguidores");
+                    ui.nFollowing = (Integer) obj.get("nseguidos");
+                    ui.sAge = (Boolean) obj.get("sedad");
+                    ui.sFollower = (Boolean) obj.get("sseguidor");
+                    ui.sMessage = (Boolean) obj.get("nmensaje");
+                    ui.follow = (Boolean) obj.get("seguir");
+                    ui.blocked = (Boolean) obj.get("bloqueado");
+                    User.getInstance().setSelectedUser(ui);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+
+    }
+
+    /*post to follow*/
+    public void followUser(int currentUser, int anotherUser) {
+        System.out.println("DENTRO DE followUser");
+
+        final String data = "{"+
+                "\"idFollower\": " + "\"" + currentUser + "\"," +
+                "\"idFollowed\": " + "\"" + anotherUser+ "\"" +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Follow response: " + response);
+                if(response.contains("false"))
+                    Toast.makeText(context, "You are following", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(context, "You cannot follow a blocked user", Toast.LENGTH_LONG).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Message error: " + error);
+                Toast.makeText(context, "You are already following", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+            }
+
+        };
+        enqueue();
+
+
+    }
+
+
+    public void deleteFollowing() {
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Respuesta: "+ response);
+                Toast.makeText(getApplicationContext(), "You have unfollowed", Toast.LENGTH_SHORT).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
+
+    }
+
+
+    public void getUserFollowers() {
+        System.out.println("Dentro de getUserFollowers");
+
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Respuesta: "+ response);
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    ArrayList<Pair<Integer,String>> userFollowers = new ArrayList<>();
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            JSONObject obj = jsonArray.getJSONObject(i);
+                            userFollowers.add(i, new Pair<Integer, String>((Integer) obj.get("id"), (String) obj.get("nombre")));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    User.getInstance().setUserFollowers(userFollowers);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+
+    }
+
+    public void getUserFollowing() {
+        System.out.println("Dentro de getUserFollowing");
+
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Respuesta: "+ response);
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    ArrayList<Pair<Integer,String>> userFollowing = new ArrayList<>();
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            JSONObject obj = jsonArray.getJSONObject(i);
+                            userFollowing.add(i, new Pair<Integer, String>((Integer) obj.get("id"), (String) obj.get("nombre")));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    User.getInstance().setUserFollowing(userFollowing);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+
+    }
+
+    public void blockUser(int currentUser, int anotherUser) {
+        System.out.println("DENTRO DE followUser");
+
+        final String data = "{"+
+                "\"idBlocker\": " + "\"" + currentUser + "\"," +
+                "\"idBlocked\": " + "\"" + anotherUser+ "\"" +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Block response: " + response);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Message error: " + error);
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+            }
+
+        };
+        enqueue();
+
+
+    }
+
+    public void unlockkUser() {
+        System.out.println("DENTRO DE unlockkUser");
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Respuesta unlock: "+ response);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
+
+    }
+
+
+
+
 
 
 

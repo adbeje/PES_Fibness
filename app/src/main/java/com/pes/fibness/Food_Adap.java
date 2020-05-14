@@ -14,10 +14,10 @@ public class Food_Adap extends BaseAdapter {
     private static LayoutInflater inflater = null;
 
     private Context context;
-    private ArrayList<Meal> dades;
+    private ArrayList<Aliment> dades;
     private boolean New;
 
-    public Food_Adap(Context c, ArrayList<Meal> d, boolean IsNew){
+    public Food_Adap(Context c, ArrayList<Aliment> d, boolean IsNew){
         context = c;
         dades = d;
         New = IsNew;
@@ -41,14 +41,12 @@ public class Food_Adap extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final View vista = inflater.inflate(R.layout.exerciselist_element, null);
+        final View vista = inflater.inflate(R.layout.aliment_element, null);
         if(!New) {
-            TextView titulo = (TextView) vista.findViewById(R.id.ExerciseTitle);
-            TextView calorias = (TextView) vista.findViewById(R.id.txtRepet);
-            TextView hora = (TextView) vista.findViewById(R.id.txtRest);
+            TextView titulo = (TextView) vista.findViewById(R.id.txtNameAliment);
+            TextView calorias = (TextView) vista.findViewById(R.id.txtSetCalories);
             titulo.setText(dades.get(position).name);
-            calorias.setText("CALORIES: " + dades.get(position).id);
-            hora.setText("HOUR: " + dades.get(position).time);
+            calorias.setText(dades.get(position).calories);
         }
 
         return vista;

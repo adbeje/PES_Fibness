@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Pre: email has to be belong google proveider*/
+                /*Pre: email has to be belong google provider*/
                 showRecoverPasswordDialog();
             }
         });

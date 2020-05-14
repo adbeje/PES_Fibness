@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -82,16 +83,16 @@ public class ViewProfileActivity extends AppCompatActivity {
 
         username.setText(u.getName());
 
-        if(u.getBirthDate() == null)
+        if((u.getBirthDate().equals("null")|| u.getBirthDate().equals("")))
             age.setText("-");
         else age.setText(howManyYears(u.getBirthDate()));
 
-        if(u.getCountry().equals("null"))
+        if((u.getCountry().equals("null")|| u.getCountry().equals("")))
             country.setText("-");
         else country.setText(planets[Integer.parseInt(u.getCountry())]);
 
         System.out.println("segundo");
-        if(u.getDescription().equals("null"))
+        if((u.getDescription().equals("null")|| u.getDescription().equals("")))
             description.setText("");
         else description.setText(u.getDescription());
 
@@ -131,11 +132,11 @@ public class ViewProfileActivity extends AppCompatActivity {
 
 
     private void showChart() {
-        /*
+
         Description d = new Description();
-        d.setEnabled(true);
+        d.setEnabled(false);
         barChart.setDescription(d);
-        */
+
 
         final String[] week = new String[] {"Monday", "Tuesday", "Wednesday", "Thrusday", "Friday", "Saturday", "Sunday"};
         XAxis xAxis = barChart.getXAxis();

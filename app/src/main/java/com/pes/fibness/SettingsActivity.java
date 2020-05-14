@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -76,7 +78,6 @@ public class SettingsActivity extends AppCompatActivity {
                 sendMail();
             }
         });
-
 
 
         /*change language*/
@@ -224,6 +225,14 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
+        startActivity(intent);
+
+    }
+
 
 
 }

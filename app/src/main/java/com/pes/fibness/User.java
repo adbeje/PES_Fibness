@@ -1,24 +1,16 @@
 package com.pes.fibness;
 
 
+import com.mapbox.geojson.Point;
+import java.util.Date;
+import android.util.Pair;
+
+import java.io.File;
 import java.util.ArrayList;
 
 public class User {
 
     private Integer user_id;
-    /*obj.get("nombre").toString(),
-                            obj.get("email").toString(),
-                            obj.get("rutaimagen").toString(),
-                            obj.get("descripcion").toString(),
-                            obj.get("fechadenacimiento").toString(),
-                            obj.get("fechaderegistro").toString(),
-                            obj.get("tipousuario").toString(),
-                            obj.get("tipoperfil").toString(),
-                            obj.get("nseguidores").toString(),
-                            obj.get("nseguidos").toString(),
-                            obj.get("npost").toString(),
-                            obj.get("pais").toString(),
-                            obj.get("genero").toString()};*/
 
     /*User profile*/
     private String name, email, userType, profileType, gender, description, birthDate, registerDate, country, imageRoute;
@@ -27,6 +19,8 @@ public class User {
     private boolean[] settings = new boolean[5]; /*0 = Age, 1 = Distance, 2 = Invitation , 3 = Follower, 4 = Message*/
     private String recoveryCode;
 
+    private String[] dias = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"};
+
     /*User fitness*/
     private static ArrayList<Training> trainingList = new ArrayList<>();
     private static ArrayList<Exercise> exerciseList = new ArrayList<>();
@@ -34,11 +28,19 @@ public class User {
     private static ArrayList<Meal> mealList = new ArrayList<>();
     private static ArrayList<Aliment> alimentList = new ArrayList<>();
 
+    private static ArrayList<Ruta> rutasList = new ArrayList<>();
+
+    private ArrayList<Achievement> achievements = new ArrayList<>(4);
+    private ArrayList<UserShortInfo> shortUsersInfo = new ArrayList<>();
+    private UsersInfo selectedUser = new UsersInfo();
+    private ArrayList<Pair<Integer, String>> userFollowers = new ArrayList<>();
+    private ArrayList<Pair<Integer, String>> userFollowing = new ArrayList<>();
 
     /*we are applying singleton because we will have an instance for each aplication user*/
     private static User instance = null;
     private User(){
         image = null; recoveryCode = "";
+        System.out.println("achievements size: " +  achievements.size());
 
     }
 
@@ -101,6 +103,26 @@ public class User {
 
     public String getImageRoute() { return imageRoute; }
     public void setImageRoute(String imageRoute) { this.imageRoute = imageRoute; }
+
+    /** Achievements **/
+    public ArrayList<Achievement> getAchievements() { return achievements; }
+    public void setAchievements(ArrayList<Achievement> achievements) { this.achievements = achievements; }
+
+    /** Serach Users **/
+    public ArrayList<UserShortInfo> getShortUsersInfo() { return shortUsersInfo; }
+    public void setShortUsersInfo(ArrayList<UserShortInfo> shortUsersInfo) { this.shortUsersInfo = shortUsersInfo; }
+
+    /*Selected Users*/
+    public UsersInfo getSelectedUser() { return selectedUser; }
+    public void setSelectedUser(UsersInfo selectedUser) { this.selectedUser = selectedUser; }
+
+    /*User Followers*/
+    public ArrayList<Pair<Integer, String>> getUserFollowers() { return userFollowers; }
+    public void setUserFollowers(ArrayList<Pair<Integer, String>> userFollowers) { this.userFollowers = userFollowers; }
+
+    /*User Following*/
+    public ArrayList<Pair<Integer, String>> getUserFollowing() { return userFollowing; }
+    public void setUserFollowing(ArrayList<Pair<Integer, String>> userFollowing) { this.userFollowing = userFollowing; }
 
 
     /***************************************************************************/
@@ -196,6 +218,12 @@ public class User {
         exerciseList.set(pos, e);
     }
 
+    public int sizeExerciseList(){return exerciseList.size();}
+
+    public int getExerciseID(int position){ return exerciseList.get(position).id;  }
+
+    public int getExerciseNamePos(int position){ return exerciseList.get(position).Pos;  }
+
     /** Diets **/
     public void setDietList(ArrayList<Diet> d){
         dietList = d;
@@ -267,6 +295,15 @@ public class User {
         return -1;
     }
 
+    /**Dias**/
+    public ArrayList<String> getDias(){
+        ArrayList<String> ListaDias = new ArrayList<>();
+        for(int i = 0; i < dias.length; i++){
+            ListaDias.add(dias[i]);
+        }
+        return ListaDias;
+    }
+
     /** Meals **/
     public ArrayList<Meal> getMealList(){
         return mealList;
@@ -286,6 +323,26 @@ public class User {
 
     public void updateMeal(int pos, Meal m){
         mealList.set(pos, m);
+    }
+
+    public int sizeMealList(){return mealList.size();}
+
+    public void setMealID(String name, int newID) {
+        for(int i = 0; i < mealList.size(); ++i){
+            if(mealList.get(i).name.equals(name)){
+                mealList.get(i).id = newID;
+                break;
+            }
+        }
+    }
+
+    public int getMealID(String name) {
+        for (int i = 0; i < mealList.size(); ++i) {
+            if (mealList.get(i).name.equals(name)) {
+                return mealList.get(i).id;
+            }
+        }
+        return -1;
     }
 
     /** Aliments **/
@@ -309,6 +366,57 @@ public class User {
         alimentList.set(pos, a);
     }
 
+
+    /** Rutas **/
+    public ArrayList<String> getRutasNames(){
+        ArrayList<String> lista = new ArrayList<>();
+        for(int i = 0; i < rutasList.size(); ++i) {
+            lista.add(rutasList.get(i).name);
+        }
+        return lista;
+    }
+
+    public ArrayList<Ruta> getRutasList(){
+        return rutasList;
+    }
+
+    public void setRutasList(ArrayList<Ruta> rutas){
+        rutasList = rutas;
+    }
+
+    public void addRuta(Ruta r){
+        rutasList.add(r);
+    }
+
+    public void deleteRuta(int pos){
+        rutasList.remove(pos);
+    }
+
+    public void updateRuta(int pos, Ruta r){
+        rutasList.set(pos, r);
+    }
+
+    public int getRutaID(int pos){
+        return rutasList.get(pos).id;
+    }
+
+    public void setRutaID(String name, int newID){
+        for(int i = 0; i < rutasList.size(); ++i){
+            if(rutasList.get(i).name.equals(name)){
+                rutasList.get(i).id = newID;
+                break;
+            }
+        }
+    }
+
+    public int getAlimentID(int position){ return alimentList.get(position).id;  }
+
+    public int getSizeAlimentList(){ return alimentList.size(); }
+
+    public void setAlimentID(int pos, int newID){
+        alimentList.get(pos).id = newID;
+    }
+
 }
 
 
@@ -322,9 +430,11 @@ class Training{
 class Exercise{
     int id;
     String TitleEx;
+    String NumRepet;
     String NumSerie;
     String NumRest;
-    //Image image;
+    int  Pos;
+    String Desc;
 }
 
 class Diet{
@@ -343,4 +453,43 @@ class Aliment{
     int id;
     String name;
     String calories;
+}
+
+class Ruta{
+    int id;
+    String name;
+    String description;
+    Integer distance;
+    Point origen;
+    Point destino;
+}
+
+class Achievement{
+    int id;
+    Boolean active;
+    int distance;
+
+}
+
+class UserShortInfo{
+    Integer id;
+    String username;
+    Boolean blocked;
+}
+
+
+class UsersInfo{
+    Integer id;
+    String username;
+    String description;
+    String birthDate;
+    String country;
+    Integer nFollower;
+    Integer nFollowing;
+    Boolean sAge;
+    Boolean sFollower;
+    Boolean sMessage;
+    Boolean follow;
+    Boolean blocked;
+
 }

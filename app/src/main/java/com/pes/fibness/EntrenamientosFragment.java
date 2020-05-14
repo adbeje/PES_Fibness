@@ -16,6 +16,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 
 public class EntrenamientosFragment extends Fragment {
@@ -39,10 +41,10 @@ public class EntrenamientosFragment extends Fragment {
         listViewT.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent TrainingPage = new Intent(getActivity(), CreateTrainingActivity.class);
-                TrainingPage.putExtra("new", false);
-                TrainingPage.putExtra("title", trainingList.get(position));
-                startActivity(TrainingPage);
+                String nameT = trainingList.get(position);
+                int idT = User.getInstance().getTrainingID(nameT);
+                ConnetionAPI c = new ConnetionAPI(getContext(), "http://10.4.41.146:3001/training/" + idT + "/activities");
+                c.getTrainingExercises(nameT);
             }
         } );
 
@@ -54,7 +56,7 @@ public class EntrenamientosFragment extends Fragment {
             }
         } );
 
-        Button button = (Button) view.findViewById(R.id.FakeFloatingButton);
+        FloatingActionButton button = view.findViewById(R.id.fb_new_entrenamiento);
 
         button.setOnClickListener( new AdapterView.OnClickListener() {
             public void onClick(View v){
@@ -66,7 +68,7 @@ public class EntrenamientosFragment extends Fragment {
     }
 
     private void refreshList() {
-        listViewT.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.row, trainingList));
+        listViewT.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.row_white, trainingList));
     }
 
     private void showEditBox(final int position) {

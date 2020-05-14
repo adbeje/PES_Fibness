@@ -178,13 +178,14 @@ public class EditProfileActivity extends AppCompatActivity {
 
     protected void saveProfilePicture() {
         // Reading a Image file from file system
-        Bitmap bitmap = ((BitmapDrawable) ivUser.getDrawable()).getBitmap();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
-        byte[] imageInByte = baos.toByteArray();
-        u.setImage(imageInByte);
-        String response = baos.toString();
-        //System.out.println("Respuesta Imagen: "+ response);
+        //mirar que el bitmap no sea nulo
+            Bitmap bitmap = ((BitmapDrawable) ivUser.getDrawable()).getBitmap();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
+            byte[] imageInByte = baos.toByteArray();
+            u.setImage(imageInByte);
+            String response = baos.toString();
+            //System.out.println("Respuesta Imagen: "+ response);
     }
 
 
@@ -228,13 +229,13 @@ public class EditProfileActivity extends AppCompatActivity {
             validImage = true;
             userImage = u.getImage();
         }
-        if(!u.getDescription().equals("null")) etDescription.setText(u.getDescription());
-        if(!u.getBirthDate().equals("null")) etDate.setText(u.getBirthDate());
-        if (!u.getGender().equals("null")) {
+        if(!(u.getDescription().equals("null")|| u.getDescription().equals(""))) etDescription.setText(u.getDescription());
+        if(!(u.getBirthDate().equals("null") || u.getBirthDate().equals(""))) etDate.setText(u.getBirthDate());
+        if (!(u.getGender().equals("null") || u.getGender().equals(""))) {
             if (u.getGender().equals("1")) tbFem.setChecked(true);
             else tbMale.setChecked(true);
         }
-        if(!u.getCountry().equals("null")) sCountry.setSelection(Integer.parseInt(u.getCountry()));
+        if(!(u.getCountry().equals("null") || u.getCountry().equals(""))) sCountry.setSelection(Integer.parseInt(u.getCountry()));
         if (validImage) {
             Glide.with(EditProfileActivity.this)
                     .load(userImage)
@@ -248,21 +249,24 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void saveEditData() {
 
-        u.setName(etName.getText().toString());
+        if (etName.getText().toString().trim().length() != 0) u.setName(etName.getText().toString());
         if(tbFem.isChecked())
             u.setGender("1");
         else u.setGender("0");
-        u.setDescription(etDescription.getText().toString());
-        u.setBirthDate(etDate.getText().toString());
+        if (etDescription.getText().toString().trim().length() != 0) u.setDescription(etDescription.getText().toString());
+        if (etDate.getText().toString().trim().length() != 0) u.setBirthDate(etDate.getText().toString());
         u.setCountry(String.valueOf(sCountry.getSelectedItemPosition()));
+
         saveProfilePicture();
 
         String route = "http://10.4.41.146:3001/user/"+u.getId()+"/info";
         ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), route);
         connection.postUserInfo();
 
-        route = "http://10.4.41.146:3001/user/"+u.getId()+"/profile";
-        connection = new ConnetionAPI(getApplicationContext(), route);
-        connection.setUserProfilePicture();
+        if (u.getImage() != null) {
+            route = "http://10.4.41.146:3001/user/" + u.getId() + "/profile";
+            connection = new ConnetionAPI(getApplicationContext(), route);
+            connection.setUserProfilePicture();
+        }
     }
 }

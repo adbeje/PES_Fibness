@@ -1,13 +1,13 @@
 package com.pes.fibness;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Toast;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
@@ -16,7 +16,7 @@ public class HomeActivity extends AppCompatActivity {
 
     Fragment perfil = new ProfileFragment();
     Fragment entrenamientos = new EntrenamientosFragment();
-    Fragment rutas = new RutasFragment();
+    Fragment rutas = new RoutesFragment();
     Fragment dietas = new DietasFragment();
     Fragment eventos = new EventosFragment();
     private long backPressedTime;
@@ -27,6 +27,10 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/trainings");
         c.getUserTrainings();
+        c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/routes");
+        c.getUserRoutes();
+        ConnetionAPI d = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/diets");
+        d.getUserDiets();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_layout, perfil);
         ft.commit();
@@ -60,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
     public void onBackPressed() {
         if(backPressedTime+2000 > System.currentTimeMillis()){ //compare first click time with second
             Intent homePage = new Intent(HomeActivity.this, MainActivity.class);
-            startActivity(homePage);;
+            startActivity(homePage);
         }
         else Toast.makeText( getBaseContext(), "Press back again", Toast.LENGTH_SHORT).show();
 
