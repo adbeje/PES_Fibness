@@ -18,6 +18,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.sun.mail.iap.ByteArray;
 import com.mapbox.geojson.Point;
 
@@ -1466,12 +1468,15 @@ public class ConnetionAPI {
 
                 try {
                     JSONArray jsonArray = new JSONArray(response);
-                    ArrayList<Pair<Integer,String>> users = new ArrayList<>();
-
+                    ArrayList<UserShortInfo> users = new ArrayList<>();
                     for (int i = 0; i < jsonArray.length(); i++) {
                         try {
                             JSONObject obj = jsonArray.getJSONObject(i);
-                            users.add(i, new Pair<Integer, String>((Integer) obj.get("id"), (String) obj.get("nombre")));
+                            UserShortInfo ui = new UserShortInfo();
+                            ui.id = (Integer) obj.get("id");
+                            ui.username= obj.get("nombre").toString();
+                            ui.blocked = (Boolean) obj.get("bloqueado");
+                            users.add(i, ui);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -1547,10 +1552,12 @@ public class ConnetionAPI {
         request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println("Follow response: " + response);
-                if(response.equals("Created"))
-                    Toast.makeText(context, "You are following", Toast.LENGTH_LONG).show();
 
+                System.out.println("Follow response: " + response);
+                if(response.contains("false"))
+                    Toast.makeText(context, "You are following", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(context, "You cannot follow the user because you have blocked", Toast.LENGTH_LONG).show();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -1719,7 +1726,23 @@ public class ConnetionAPI {
 
     }
 
+    public void unlockkUser() {
+        System.out.println("DENTRO DE unlockkUser");
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Respuesta unlock: "+ response);
 
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
+
+    }
 
 
 

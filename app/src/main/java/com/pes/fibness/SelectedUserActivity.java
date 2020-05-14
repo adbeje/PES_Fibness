@@ -38,7 +38,8 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
     private UserModel userModel;
     private UsersInfo ui = User.getInstance().getSelectedUser();
     private Boolean ImFolloing = ui.follow; /* ui.follow necesito por si el usuario en la misma pagina quiere seguir y dejar de seguir*/
-
+    private int n = ui.nFollower;
+    private int bkUnlk = -1; /*bk=0, unblock=1*/
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -67,10 +68,14 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
         }
 
         /*falta cargar imagen*/
-        nFollowers.setText(""+ ui.nFollower);
-        nFollowing.setText(""+ui.nFollowing);
+        if(ui.nFollower < 0)
+            nFollowers.setText("0");
+        else nFollowers.setText(""+ ui.nFollower);
+        if(ui.nFollowing < 0)
+            nFollowing.setText("0");
+        else nFollowing.setText(""+ui.nFollowing);
         username.setText(ui.username);
-        if(ui.birthDate == null)
+        if(ui.birthDate.equals("null"))
             coma.setText("");
         else {
             if(ui.sAge)
@@ -126,19 +131,31 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
                 System.out.println("My backgroud: " + view.getBackgroundTintList());
                 if(!ImFolloing){
                     //follow user
-                    ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/follow");
-                    connetionAPI.followUser(User.getInstance().getId(), userModel.getId());
+                    if(!userModel.getBlocked()){
+                        ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/follow");
+                        connetionAPI.followUser(User.getInstance().getId(), userModel.getId());
+                        follow.setBackgroundTintList(ColorStateList.valueOf(-2818048)); //-2818048 = red color
+                        ++n;
+                        nFollowers.setText(""+n);
+                        ImFolloing = true;
+                    }
+                    else Toast.makeText(getApplicationContext(), "You cannot follow the user because you have blocked", Toast.LENGTH_LONG).show();
 
-                    follow.setBackgroundTintList(ColorStateList.valueOf(-2818048)); //-2818048 = red color
-                    ImFolloing = true;
                 }
                 else{
                     //delete follow
-                    ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/follow/" + User.getInstance().getId() + "/" + userModel.getId());
-                    connetionAPI.deleteFollowing();
+                    if(!userModel.getBlocked()){
+                        ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/follow/" + User.getInstance().getId() + "/" + userModel.getId());
+                        connetionAPI.deleteFollowing();
 
-                    view.setBackgroundTintList(ColorStateList.valueOf(-16021062)); //-16021062 = @color/c_icon_bkg_unsel
-                    ImFolloing = false;
+                        view.setBackgroundTintList(ColorStateList.valueOf(-16021062)); //-16021062 = @color/c_icon_bkg_unsel
+                        --n;
+                        if(n < 0) n=0;
+                        nFollowers.setText(""+n);
+                        ImFolloing = false;
+                    }
+                    else Toast.makeText(getApplicationContext(), "You cannot follow the user because you have blocked", Toast.LENGTH_LONG).show();
+
                 }
 
             }
@@ -166,6 +183,10 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
         PopupMenu popupMenu = new PopupMenu(this, v);
         popupMenu.setOnMenuItemClickListener(this);
         popupMenu.inflate(R.menu.popup_block_menu);
+        System.out.println("my usermodel block: " + userModel.getBlocked());
+        if(userModel.getBlocked())
+            popupMenu.getMenu().getItem(0).setTitle(getResources().getString(R.string.unlockUser));
+        else popupMenu.getMenu().getItem(0).setTitle(getResources().getString(R.string.blockUser));
         popupMenu.show();
     }
 
@@ -174,14 +195,23 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         if(menuItem.getItemId() == R.id.bk_item){
-            Toast.makeText(this, "Inform a block message", Toast.LENGTH_SHORT).show();
-            showMessage();
+            String s = (String) menuItem.getTitle();
+            if(s.equals("Block user") || s.equals("Bloquear usuario")){
+                showBlockMessage();
+                if(userModel.getBlocked()) menuItem.setTitle(getResources().getString(R.string.unlockUser));
+            }
+            else{
+                showUnlockMessage();
+                if(!userModel.getBlocked()) menuItem.setTitle(getResources().getString(R.string.blockUser));
+            }
+
             return true;
         }
         return false;
     }
 
-    private void showMessage() {
+
+    private void showBlockMessage() {
         AlertDialog.Builder message = new AlertDialog.Builder(this);
         message.setTitle(getResources().getString(R.string.bkUser));
         message.setMessage(getResources().getString(R.string.bkMsg))
@@ -191,6 +221,8 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
                     public void onClick(DialogInterface dialogInterface, int i) {
                         ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/block");
                         connetionAPI.blockUser(User.getInstance().getId(), userModel.getId());
+                        userModel.setBlocked(true);
+                        System.out.println("my usermodel block true: " + userModel.getBlocked());
                     }
                 })
                 .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -203,6 +235,33 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
         alertDialog.show();
 
     }
+
+    private void showUnlockMessage() {
+        AlertDialog.Builder message = new AlertDialog.Builder(this);
+        message.setTitle(getResources().getString(R.string.unlockUser));
+        message.setMessage(getResources().getString(R.string.unlockMsg))
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.accept), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/block/"+ User.getInstance().getId() +"/"+userModel.getId());
+                        connetionAPI.unlockkUser();
+                        userModel.setBlocked(false);
+                        System.out.println("my usermodel block false: " + userModel.getBlocked());
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        AlertDialog alertDialog = message.create();
+        alertDialog.show();
+
+    }
+
+
 
     @Override
     public void onBackPressed() {

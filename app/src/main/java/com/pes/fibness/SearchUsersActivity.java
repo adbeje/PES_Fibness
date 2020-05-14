@@ -31,7 +31,7 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
     private TextView followers, following;
 
     private List<UserModel> userModelList = new ArrayList<>();
-    private ArrayList<Pair<Integer, String>> names = new ArrayList<>();
+    private ArrayList<UserShortInfo> names = new ArrayList<>();
     private UsersAdapter usersAdapter;
 
     @Override
@@ -44,7 +44,7 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
         following = findViewById(R.id.following);
         recyclerView = findViewById(R.id.recyclerview);
 
-        ArrayList<Pair<Integer,String>> users = User.getInstance().getShortUsersInfo();
+        ArrayList<UserShortInfo> users = User.getInstance().getShortUsersInfo();
         names = users;
 
         this.setSupportActionBar(toolbar);
@@ -56,7 +56,7 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
 
 
         for(int i=0; i < names.size(); ++i){
-            UserModel userModel = new UserModel(names.get(i).first, names.get(i).second);
+            UserModel userModel = new UserModel(names.get(i).id, names.get(i).username,names.get(i).blocked);
             userModelList.add(userModel);
         }
         Collections.sort(userModelList);

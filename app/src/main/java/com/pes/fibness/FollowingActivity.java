@@ -50,7 +50,7 @@ public class FollowingActivity extends AppCompatActivity implements FollowingAda
 
 
         for(int i=0; i < names.size(); ++i){
-            UserModel userModel = new UserModel(names.get(i).first, names.get(i).second);
+            UserModel userModel = new UserModel(names.get(i).first, names.get(i).second, false);
             userModelList.add(userModel);
         }
         Collections.sort(userModelList);

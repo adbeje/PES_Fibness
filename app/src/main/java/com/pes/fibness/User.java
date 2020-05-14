@@ -31,7 +31,7 @@ public class User {
     private static ArrayList<Ruta> rutasList = new ArrayList<>();
 
     private ArrayList<Achievement> achievements = new ArrayList<>(4);
-    private ArrayList<Pair<Integer, String>> shortUsersInfo = new ArrayList<>();
+    private ArrayList<UserShortInfo> shortUsersInfo = new ArrayList<>();
     private UsersInfo selectedUser = new UsersInfo();
     private ArrayList<Pair<Integer, String>> userFollowers = new ArrayList<>();
     private ArrayList<Pair<Integer, String>> userFollowing = new ArrayList<>();
@@ -109,8 +109,8 @@ public class User {
     public void setAchievements(ArrayList<Achievement> achievements) { this.achievements = achievements; }
 
     /** Serach Users **/
-    public ArrayList<Pair<Integer, String>> getShortUsersInfo() { return shortUsersInfo; }
-    public void setShortUsersInfo(ArrayList<Pair<Integer, String>> shortUsersInfo) { this.shortUsersInfo = shortUsersInfo; }
+    public ArrayList<UserShortInfo> getShortUsersInfo() { return shortUsersInfo; }
+    public void setShortUsersInfo(ArrayList<UserShortInfo> shortUsersInfo) { this.shortUsersInfo = shortUsersInfo; }
 
     /*Selected Users*/
     public UsersInfo getSelectedUser() { return selectedUser; }
@@ -471,6 +471,13 @@ class Achievement{
 
 }
 
+class UserShortInfo{
+    Integer id;
+    String username;
+    Boolean blocked;
+}
+
+
 class UsersInfo{
     Integer id;
     String username;
@@ -483,4 +490,5 @@ class UsersInfo{
     Boolean sFollower;
     Boolean sMessage;
     Boolean follow;
+
 }
