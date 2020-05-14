@@ -68,7 +68,7 @@ public class EntrenamientosFragment extends Fragment {
     }
 
     private void refreshList() {
-        listViewT.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.row, trainingList));
+        listViewT.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.row_white, trainingList));
     }
 
     private void showEditBox(final int position) {

@@ -1372,6 +1372,7 @@ public class ConnetionAPI {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
                 Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
             }
         }) {

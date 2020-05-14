@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/seleccion"
     android:orientation="vertical"
     tools:context=".MealActivity">
 
@@ -13,7 +12,6 @@
         android:id="@+id/toolbarMeal"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@color/seleccion"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +40,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarMeal"
-        android:background="@drawable/recyclerview_dark_blue">
+        android:padding="10dp"
+        android:background="@drawable/recyclerview_bg">
 
     </ListView>
 

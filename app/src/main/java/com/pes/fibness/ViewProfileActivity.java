@@ -83,16 +83,16 @@ public class ViewProfileActivity extends AppCompatActivity {
 
         username.setText(u.getName());
 
-        if(u.getBirthDate() == "null")
+        if((u.getBirthDate().equals("null")|| u.getBirthDate().equals("")))
             age.setText("-");
         else age.setText(howManyYears(u.getBirthDate()));
 
-        if(u.getCountry().equals("null"))
+        if((u.getCountry().equals("null")|| u.getCountry().equals("")))
             country.setText("-");
         else country.setText(planets[Integer.parseInt(u.getCountry())]);
 
         System.out.println("segundo");
-        if(u.getDescription().equals("null"))
+        if((u.getDescription().equals("null")|| u.getDescription().equals("")))
             description.setText("");
         else description.setText(u.getDescription());
 

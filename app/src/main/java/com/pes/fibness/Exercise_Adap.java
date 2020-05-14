@@ -54,7 +54,7 @@ public class Exercise_Adap extends BaseAdapter {
             int id = getImageID (dades.get(position).TitleEx);
             if(id != -1) image.setImageResource(id);
             else{
-                image.setImageResource(R.drawable.logo_blanco);
+                image.setImageResource(R.drawable.logoazulflojo);
                 Desc.setText(dades.get(position).Desc);
             }
             series.setText("SERIES: " + dades.get(position).NumSerie);
