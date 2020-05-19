@@ -227,6 +227,7 @@ public class MealActivity extends AppCompatActivity {
                     AlimentPage.putExtra("title", titleDiet);
                     AlimentPage.putExtra("dia", day);
                     AlimentPage.putExtra("comida", m2.name);
+                    User.getInstance().setAlimentList(new ArrayList<Aliment>());
                     startActivity(AlimentPage);
                 }
             }
