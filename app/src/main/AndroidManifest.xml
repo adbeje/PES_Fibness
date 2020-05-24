@@ -60,8 +60,6 @@
         <activity
             android:name=".SettingsActivity" />
         <activity
-            android:name=".ChatActivity" />
-        <activity
             android:name=".EditProfileActivity" />
         <activity
             android:name=".CreateTrainingActivity"
