@@ -43,7 +43,7 @@ public class ChatActivity extends AppCompatActivity implements RoomListener  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        editText = (EditText) findViewById(R.id.editText);
+        editText =  (EditText) findViewById(R.id.editText);
 
         getExtras();
         messageAdapter = new MessageAdapter(this);
