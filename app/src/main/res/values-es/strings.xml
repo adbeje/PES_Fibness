@@ -51,6 +51,10 @@
     <string name="newPassword">Nueva Contraseña</string>
     <string name="reset">Restablecer</string>
     <string name="aboutMe">Sobre mí</string>
+    <string name="ranking">Clasificación:</string>
+    <string name="training">ENTRENAMIENTOS</string>
+    <string name="diets">DIETAS</string>
+    <string name="routes">RUTAS</string>
     <string name="weeklyProgress">Progreso semanal</string>
     <string name="viewProfile">Ver perfil</string>
     <string name="achievements">Logros</string>

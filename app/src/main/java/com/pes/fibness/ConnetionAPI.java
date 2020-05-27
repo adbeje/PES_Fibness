@@ -452,6 +452,27 @@ public class ConnetionAPI {
 
     }
 
+    private void getSpecificUserProfile(String s, final UsersInfo ui) {
+        System.out.println("Dentro de getSpecificUserProfile");
+        request = new StringRequest(Request.Method.GET, s, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                byte[] pic = Base64.decode(response, Base64.DEFAULT);
+                ui.image = pic;
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+    }
+
+
+
     private void getUserProfile(String s) {
         System.out.println("--------------------------------------------------------------------");
         request = new StringRequest(Request.Method.GET, s, new Response.Listener<String>() {
@@ -1509,6 +1530,7 @@ public class ConnetionAPI {
             public void onResponse(String response) {
                 System.out.println("------------------________________________________----------------------");
                 System.out.println("Respuesta: "+ response);
+
                 try {
                     JSONObject obj = new JSONObject(response);
                     UsersInfo ui = new UsersInfo();
@@ -1524,6 +1546,7 @@ public class ConnetionAPI {
                     ui.sMessage = (Boolean) obj.get("nmensaje");
                     ui.follow = (Boolean) obj.get("seguir");
                     ui.blocked = (Boolean) obj.get("bloqueado");
+                    getSpecificUserProfile("http://10.4.41.146:3001/user/" + ui.id + "/profile", ui);
                     User.getInstance().setSelectedUser(ui);
 
                 } catch (JSONException e) {

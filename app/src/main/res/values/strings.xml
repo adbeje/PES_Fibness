@@ -50,6 +50,10 @@
     <string name="newPassword">New Password</string>
     <string name="reset">Reset</string>
     <string name="aboutMe">About me</string>
+    <string name="ranking">Ranking:</string>
+    <string name="training">TRAINING</string>
+    <string name="diets">DIETS</string>
+    <string name="routes">ROUTES</string>
     <string name="weeklyProgress">Weekly progress</string>
     <string name="viewProfile">View Profile</string>
     <string name="achievements">Achievements</string>
@@ -112,5 +116,7 @@
     <string name="Name">Name</string>
 
     <string name="Calories">Calories</string>
+
+
 
 </resources>

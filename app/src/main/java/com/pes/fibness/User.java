@@ -491,5 +491,6 @@ class UsersInfo{
     Boolean sMessage;
     Boolean follow;
     Boolean blocked;
+    byte[] image;
 
 }
