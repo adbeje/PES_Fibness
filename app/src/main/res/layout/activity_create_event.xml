@@ -28,10 +28,25 @@
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="10dp"
         android:tint="@android:color/white"
-        app:backgroundTint="@color/seleccion"
+        app:backgroundTint="@color/com_facebook_button_background_color_disabled"
         app:layout_constraintBottom_toBottomOf="@+id/mapView"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_search_category_default" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_save_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="35dp"
+        android:tint="@android:color/white"
+        app:backgroundTint="@color/mapbox_plugins_green"
+        app:layout_constraintBottom_toBottomOf="@+id/mapView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.89"
+        app:srcCompat="@android:drawable/ic_menu_save" />
 
     <EditText
         android:id="@+id/editText2"
