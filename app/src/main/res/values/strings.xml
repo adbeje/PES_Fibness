@@ -92,7 +92,7 @@
     <string name="bkMsg">Are you sure you want to block this user? The user will not be able to see your profile or send you messages</string>
     <string name="unlockMsg">Are you sure you want to unlock this user? The user will be able to see your profile and send you messages</string>
     <string name="bkAccounts">Blocked Accounts</string>
-    <string name="directions_activity_toast_message" tools:ignore="MissingTranslation">La distancia de la ruta es:</string>
+    <string name="directions_activity_toast_message" tools:ignore="MissingTranslation">The distance is:</string>
 
     <string name="Rest">REST: </string>
     <string name="Series">SERIES: </string>
@@ -112,5 +112,7 @@
     <string name="Name">Name</string>
 
     <string name="Calories">Calories</string>
+    <string name="name_of_the_event">Name of the event</string>
+    <string name="short_description_of_the_event">Short description of the event</string>
 
 </resources>

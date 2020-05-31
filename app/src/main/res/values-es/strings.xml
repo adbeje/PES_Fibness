@@ -112,5 +112,8 @@
     <string name="Name">Nombre</string>
 
     <string name="Calories">Calorias</string>
+    <string name="directions_activity_toast_message">La distancia es:</string>
+    <string name="name_of_the_event">Nombre del evento</string>
+    <string name="short_description_of_the_event">Pequeña descripción del evento</string>
 
 </resources>

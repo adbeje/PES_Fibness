@@ -51,7 +51,6 @@ import static com.pes.fibness.R.id.et_Description;
 import static com.pes.fibness.R.id.et_Name;
 import static com.pes.fibness.R.id.et_mostrar_fecha_picker;
 import static com.pes.fibness.R.id.ib_obtener_fecha;
-import static com.pes.fibness.R.id.image;
 import static com.pes.fibness.R.id.iv_user;
 import static com.pes.fibness.R.id.s_Country;
 import static com.pes.fibness.R.id.tB_fem;

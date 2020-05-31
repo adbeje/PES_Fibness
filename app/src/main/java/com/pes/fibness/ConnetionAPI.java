@@ -88,7 +88,7 @@ public class ConnetionAPI {
                                 homeActivity();
                             }
                         };
-                        h.sendEmptyMessageDelayed(0, 100);
+                        h.sendEmptyMessageDelayed(0, 150);
 
 
                     }
@@ -159,7 +159,7 @@ public class ConnetionAPI {
                             homeActivity();
                         }
                     };
-                    h.sendEmptyMessageDelayed(0, 100);
+                    h.sendEmptyMessageDelayed(0, 150);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -231,7 +231,7 @@ public class ConnetionAPI {
                                 homeActivity();
                             }
                         };
-                        h.sendEmptyMessageDelayed(0, 100);
+                        h.sendEmptyMessageDelayed(0, 150);
                     }
                     else Toast.makeText(getApplicationContext(), "Invalid Login Credentials", Toast.LENGTH_SHORT).show();
 
