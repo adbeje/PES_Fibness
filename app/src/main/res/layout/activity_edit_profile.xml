@@ -26,14 +26,14 @@
             android:focusable="true"
             android:padding="10dp"
             android:src="@mipmap/ic_arrow"
-            android:contentDescription="TODO" />
+            android:contentDescription="@string/back_arrow" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="Edit profile"
+            android:text="@string/editProfile"
             android:textColor="@color/c_let_light_bkg"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -45,11 +45,13 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="10dp"
             android:clickable="true"
-            android:paddingRight="10dp"
-            android:text="Done"
+            android:paddingEnd="10dp"
+            android:text="@string/profile_picture"
             android:textColor="@color/c_icon_bkg_unsel"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:focusable="true"
+            tools:ignore="RtlSymmetry" />
     </RelativeLayout>
 
     <ScrollView
@@ -101,7 +103,8 @@
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         app:srcCompat="@drawable/ic_account_frame"
-                        android:layout_gravity="center_horizontal"/>
+                        android:layout_gravity="center_horizontal"
+                        android:contentDescription="@string/profile_picture" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -130,7 +133,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:checked="false"
-                                android:outlineAmbientShadowColor="@color/c_icon_bkg_sel"
                                 android:text="@string/male"
                                 android:textOff="@string/male"
                                 android:textOn="@string/male" />

@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">fibness</string>
+    <string name="app_name" translatable="false">fibness</string>
     <string name="action_settings">Settings</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -114,5 +115,19 @@
     <string name="Calories">Calories</string>
     <string name="name_of_the_event">Name of the event</string>
     <string name="short_description_of_the_event">Short description of the event</string>
+    <string name="add_a_food">Add a Food</string>
+    <string name="save">Save</string>
+    <string name="origin_point">origin</string>
+    <string name="destination_point">destination</string>
+    <string name="back_arrow">back arrow</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="coma">,</string>
+    <string name="user_country">User country</string>
+    <string name="delete">Delete</string>
+    <string name="start_navigation">Start navigation</string>
+    <string name="edit">Edit</string>
+    <string name="two_points">:</string>
+    <string name="title">Title</string>
+    <string name="the_best_views_are_achieved_after_a_hard_climb">The best views are achieved after a hard climb.</string>
 
 </resources>

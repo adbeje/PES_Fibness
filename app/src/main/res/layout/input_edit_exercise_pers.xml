@@ -19,7 +19,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/txtRepet"
         app:layout_constraintTop_toTopOf="@+id/guideline5"
-        app:layout_constraintVertical_bias="0.125"></EditText>
+        app:layout_constraintVertical_bias="0.125" />
 
     <EditText
         android:id="@+id/num_Repet_edit"
@@ -34,7 +34,7 @@
         app:layout_constraintHorizontal_bias="0.741"
         app:layout_constraintStart_toEndOf="@+id/text_Repet_edit"
         app:layout_constraintTop_toBottomOf="@+id/num_Series_edit"
-        app:layout_constraintVertical_bias="0.666"></EditText>
+        app:layout_constraintVertical_bias="0.666" />
 
     <TextView
         android:id="@+id/txtRest_edit"
@@ -123,13 +123,13 @@
         app:layout_constraintHorizontal_bias="0.099"
         app:layout_constraintStart_toEndOf="@+id/txtRest"
         app:layout_constraintTop_toTopOf="@+id/guideline6"
-        app:layout_constraintVertical_bias="0.687"></EditText>
+        app:layout_constraintVertical_bias="0.687" />
 
     <Button
         android:id="@+id/btn_done_edit"
         android:layout_width="89dp"
         android:layout_height="36dp"
-        android:text="DONE"
+        android:text="@string/done"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
@@ -142,7 +142,7 @@
         android:layout_height="36dp"
         android:layout_marginEnd="116dp"
         android:backgroundTint="#89E85A5A"
-        android:text="DELETE"
+        android:text="@string/delete"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toStartOf="@+id/btn_done_edit"
         app:layout_constraintHorizontal_bias="1.0"

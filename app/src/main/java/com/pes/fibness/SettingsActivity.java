@@ -129,7 +129,7 @@ public class SettingsActivity extends AppCompatActivity {
     /*before We have to create a new string.xml*/
     private void showChangeLanguageDialog() {
         /*array of languages to display in alert dialog*/
-        final String[] listLanguages = {"English", "Spanish"};
+        final String[] listLanguages = {"English", "Spanish", "Catalan", "French", "German"};
         AlertDialog.Builder message = new AlertDialog.Builder(this);
         message.setTitle("Choose Language");
         message.setSingleChoiceItems(listLanguages, -1, new DialogInterface.OnClickListener() {
@@ -143,6 +143,21 @@ public class SettingsActivity extends AppCompatActivity {
                 else if(i == 1){
                     System.out.println("opcion elegida: " + "spanish");
                     setLocale("es");
+                    recreate();
+                }
+                else if(i == 2){
+                    System.out.println("opcion elegida: " + "catalan");
+                    setLocale("cat");
+                    recreate();
+                }
+                else if(i == 3){
+                    System.out.println("opcion elegida: " + "french");
+                    setLocale("fr");
+                    recreate();
+                }
+                else if(i == 4){
+                    System.out.println("opcion elegida: " + "german");
+                    setLocale("de");
                     recreate();
                 }
                 /*dismiis alert dialog when language selected*/

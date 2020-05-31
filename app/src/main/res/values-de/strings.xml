@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">Angleichen</string>
+
+    <string name="first_fragment_label">Primera Fragm</string>
+    <string name="second_fragment_label">Segundo Fragm</string>
+    <string name="next">Nachfolgend</string>
+    <string name="previous">Früher</string>
+
+    <string name="hello_first_fragment">Hallo, erster Ausschnitt</string>
+    <string name="hello_second_fragment">Hallo, zweiter Ausschnitt. Hallo. Arg: %1$</string>
+    <string name="email_address">E-mail</string>
+    <string name="password">Passwort</string>
+    <string name="don_t_remember_password">Du erinnerst dich nicht an dein Passwort?</string>
+    <string name="login_now">Initi Sesión</string>
+    <string name="don_t_have_an_account_register_here">Hast du kein Konto? Registriert hier</string>
+    <string name="sign_in_with_facebook">Anmeldung bei Facebook starten</string>
+    <string name="or">oder</string>
+    <string name="todo">SÄMTLICHE</string>
+    <string name="run_free_feel_free">Run free, feel free</string>
+    <string name="full_name">Vollständiger Name</string>
+    <string name="confirm_password">Passwort bestätigen</string>
+    <string name="register">Registrieren</string>
+    <string name="already_a_member_login_here">Bist du jetzt Benutzer? Zwischen hier</string>
+
+    <string name="facebook_app_id">140550577384866</string>
+    <string name="fb_login_protocol_scheme">fbfb140550577384866</string>
+    <string name="cancel_login">Die Operation wurde abgesagt</string>
+    <string name="error_login">Beim Einlaufen ist ein Fehler aufgetreten</string>
+    <string name="nombre_apellidos">Name und Vorname der Person</string>
+    <string name="male">mann</string>
+    <string name="female">weiblich</string>
+    <string name="im_user">Bild des Benutzers</string>
+    <string name="guardar">speichern</string>
+    <string name="descripcion_user">Beschreiben</string>
+    <string name="fecha_nacimiento">Wählen Sie das Geburtsdatum</string>
+    <string name="gender">Erzeugt</string>
+    <string name="back_button">Knopf für den Rückwärtsgang</string>
+
+    <!-- Strings used para obtener hora / fecha -->
+    <string name="formato_fecha">dd/mm/yyyy</string>
+    <string name="formato_hora">hh:mm</string>
+
+    <string name="birth_date">Datum der Geburt</string>
+    <string name="country">Land</string>
+    <string name="description">Beschreiben</string>
+    <string name="user_name">Name des Benutzers</string>
+    <string name="profile_picture">Foto des Profils</string>
+    <string name="Resetpassword">Passwort wiederherstellen</string>
+    <string name="newPassword">Nueva Passwort</string>
+    <string name="reset">Wiederherstellen</string>
+    <string name="aboutMe">Auf mich</string>
+    <string name="weeklyProgress">Wöchentlicher Fortschritt</string>
+    <string name="viewProfile">Aussehen</string>
+    <string name="achievements">Gelungen</string>
+    <string name="editProfile">Profil bearbeiten</string>
+    <string name="titleAch">"Das Abenteuer beginnt."</string>
+    <string name="descriptionAch">Für jede zurückgelegte Strecke wird eine Menge Meter zu deiner Progression hinzugefügt. Wie viele Gipfel kannst du krönen?</string>
+    <string name="letGo">Wir sind auf dem Weg!</string>
+    <string name="share">Teilen</string>
+    <string name="done">Gemacht</string>
+    <string name="profile">Profil</string>
+    <string name="noAge">Mein Alter nicht zeigen</string>
+    <string name="noDistance">Meinen Abstand verbergen</string>
+    <string name="eventInv">Einladungen zu Veranstaltungen</string>
+    <string name="notifications">Notifizieren</string>
+    <string name="newFollower">Nuevo Foll</string>
+    <string name="newMsg">Nuevo Mensaje</string>
+    <string name="contact">Kontakt</string>
+    <string name="sendEmail">Schick uns eine Email</string>
+    <string name="changeLang">Ändern Sprache</string>
+    <string name="logOut">Schließen Sesión</string>
+    <string name="deleteAccount">Entfernen Konto</string>
+    <string name="followers">Follow-up</string>
+    <string name="following">Gefolgt</string>
+    <string name="post">Post</string>
+    <string name="title_activity_maps">Karte</string>
+    <string name="message">Die beste Aussicht bekommt man nach einem harten Aufstieg.</string>
+    <string name="chat">CHAT</string>
+    <string name="users">BENUTZER</string>
+    <string name="blockUser">Benutzer sperren</string>
+    <string name="unlockUser">Benutzer von Sperren befreien</string>
+    <string name="sayHello">Sag hallo</string>
+    <string name="Send">Zusenden</string>
+    <string name="Users">Benutzer</string>
+    <string name="Follow">Folgen</string>
+    <string name="Following">Folgen</string>
+    <string name="msgFollow">Du folgst</string>
+    <string name="bkUser">Benutzer sperren</string>
+    <string name="accept">Akzeptieren</string>
+    <string name="cancel">Abblasen</string>
+    <string name="bkMsg">Bist du sicher, dass du den Benutzer blockieren willst? Der Benutzer wird nicht in der Lage sein, Ihr Profil zu sehen oder Nachrichten zu senden</string>
+    <string name="unlockMsg">Bist du sicher, dass du diesen Benutzer entsperren willst? Der Benutzer kann Ihr Profil ansehen und Nachrichten senden.</string>
+    <string name="bkAccounts">Konten werden gesperrt</string>
+
+    <string name="Rest">DESCANSO: </string>
+    <string name="Series">SERIES: </string>
+    <string name="Repetitions">WIEDERHOLUNGEN: </string>
+    <string name="Custom">Personalisiert</string>
+    <string name="Simple">Simpel</string>
+
+    <string name="AddEx">Fügt Ejercicio</string>
+
+    <string name="AddMeal">Füge eine Mahlzeit hinzu</string>
+    <string name="Time">Zeit</string>
+    <string name="Min">Minuten</string>
+
+    <string name="Delete">Ausradieren</string>
+
+    <string name="Description">Beschreiben</string>
+    <string name="Name">Name</string>
+
+    <string name="Calories">Kalorien</string>
+    <string name="directions_activity_toast_message">Die Entfernung ist:</string>
+    <string name="name_of_the_event">Name des Ereignisses</string>
+    <string name="short_description_of_the_event">Kurze Beschreibung des Ereignisses</string>
+    <string name="add_a_food">Zufügen</string>
+    <string name="save">speichern</string>
+    <string name="origin_point">woher</string>
+    <string name="destination_point">bestimmt</string>
+    <string name="back_arrow">Pfeil und Bogen</string>
+    <string name="edit_profile">Profil bearbeiten</string>
+    <string name="coma">,</string>
+    <string name="user_country">Land des Nutzers</string>
+    <string name="delete">Eliminiert</string>
+    <string name="start_navigation">Navigieren</string>
+    <string name="edit">Editieren</string>
+    <string name="two_points">:</string>
+    <string name="title">Titus</string>
+    <string name="the_best_views_are_achieved_after_a_hard_climb">Die beste Aussicht bekommt man nach einem harten Aufstieg.</string>
+
+</resources>

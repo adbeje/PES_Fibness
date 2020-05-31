@@ -87,7 +87,7 @@
         android:id="@+id/txtDosPunts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=":"
+        android:text="@string/two_points"
         app:layout_constraintBottom_toTopOf="@+id/guideline12"
         app:layout_constraintEnd_toStartOf="@+id/setNewMinutes"
         app:layout_constraintStart_toEndOf="@+id/NewSetHour"
