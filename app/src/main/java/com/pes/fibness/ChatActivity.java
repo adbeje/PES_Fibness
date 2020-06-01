@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.scaledrone.lib.HistoryRoomListener;
 import com.scaledrone.lib.Listener;
 import com.scaledrone.lib.Member;
 
@@ -26,6 +27,7 @@ import android.view.View;
 import com.scaledrone.lib.Room;
 import com.scaledrone.lib.RoomListener;
 import com.scaledrone.lib.Scaledrone;
+import com.scaledrone.lib.SubscribeOptions;
 
 import java.util.Random;
 
@@ -59,22 +61,38 @@ public class ChatActivity extends AppCompatActivity implements RoomListener  {
             @Override
             public void onOpen() {
                 System.out.println("Scaledrone connection open");
-                scaledrone.subscribe(roomName, ChatActivity.this);
+                Room room = scaledrone.subscribe(roomName, ChatActivity.this, new SubscribeOptions(100));
+                room.listenToHistoryEvents(new HistoryRoomListener() {
+                    @Override
+                    public void onHistoryMessage(Room room, com.scaledrone.lib.Message message) {
+                        System.out.println("Received a message from the past " + message.getData().asText());
+                        final ObjectMapper mapper = new ObjectMapper();
+                        MemberData data = new MemberData(getString(R.string.Previously), "red");
+                        final Message mes = new Message(message.getData().asText(), data, false);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                messageAdapter.add(mes);
+                                messagesView.setSelection(messagesView.getCount() - 1);
+                            }
+                        });
+                    }
+                });
             }
 
             @Override
             public void onOpenFailure(Exception ex) {
-                System.err.println(ex);
+                System.err.println("On open failure " + ex);
             }
 
             @Override
             public void onFailure(Exception ex) {
-                System.err.println(ex);
+                System.err.println("onFailure " + ex);
             }
 
             @Override
             public void onClosed(String reason) {
-                System.err.println(reason);
+                System.err.println("OnClosed " + reason);
             }
         });
     }
@@ -104,7 +122,6 @@ public class ChatActivity extends AppCompatActivity implements RoomListener  {
             final MemberData data = mapper.treeToValue(receivedMessage.getMember().getClientData(), MemberData.class);
             System.out.println("Nombre " + data.getName());
             boolean belongsToCurrentUser = receivedMessage.getClientID().equals(scaledrone.getClientID());
-            //receivedMessage.getMember().getClientData()
             final Message message = new Message(receivedMessage.getData().asText(), data, belongsToCurrentUser);
             runOnUiThread(new Runnable() {
                 @Override
@@ -118,7 +135,7 @@ public class ChatActivity extends AppCompatActivity implements RoomListener  {
         }
     }
 
-       private String getRandomColor() {
+        private String getRandomColor() {
         Random r = new Random();
         StringBuffer sb = new StringBuffer("#");
         while(sb.length() < 7){
