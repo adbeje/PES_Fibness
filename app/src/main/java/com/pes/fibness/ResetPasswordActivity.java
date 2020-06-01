@@ -104,7 +104,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     //press back to back mainpage
     @Override
     public void onBackPressed() {
-        Intent homePage = new Intent(ResetPasswordActivity.this, MainActivity.class);
+        Intent homePage = new Intent(ResetPasswordActivity.this, LoginActivity.class);
         startActivity(homePage);
     }
 

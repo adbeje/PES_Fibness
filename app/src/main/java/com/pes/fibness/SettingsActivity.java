@@ -2,13 +2,12 @@ package com.pes.fibness;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -55,8 +54,8 @@ public class SettingsActivity extends AppCompatActivity {
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
-                startActivity(intent);
+                onBackPressed();
+                finish();
 
             }
         });
@@ -66,8 +65,8 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveSettingsData();
-                Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
-                startActivity(intent);
+                onBackPressed();
+                finish();
             }
         });
 
@@ -93,8 +92,10 @@ public class SettingsActivity extends AppCompatActivity {
         logOut.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                setSharedPreferences();
+                Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -108,6 +109,17 @@ public class SettingsActivity extends AppCompatActivity {
 
         loadSetting();
 
+
+    }
+
+    private void setSharedPreferences(){
+
+        SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("userEmail", "");
+        editor.putString("userPassword", "");
+        editor.apply();
 
     }
 
@@ -238,13 +250,6 @@ public class SettingsActivity extends AppCompatActivity {
         AlertDialog alertDialog = message.create();
         alertDialog.show();
 
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
-        startActivity(intent);
 
     }
 
