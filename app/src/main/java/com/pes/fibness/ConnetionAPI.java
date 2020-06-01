@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Base64;
+import android.graphics.Paint;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Pair;
@@ -14,8 +15,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.sun.mail.iap.ByteArray;
 import com.mapbox.geojson.Point;
 
 import org.json.JSONArray;
@@ -24,7 +29,11 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLOutput;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.BitSet;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -216,6 +225,13 @@ public class ConnetionAPI {
                         getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
                         getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
 
+                        @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                            @Override
+                            public void handleMessage(Message msg) {
+                                homeActivity();
+                            }
+                        };
+                        h.sendEmptyMessageDelayed(0, 150);
                     }
                     else Toast.makeText(getApplicationContext(), "Invalid Login Credentials", Toast.LENGTH_SHORT).show();
 
@@ -261,7 +277,7 @@ public class ConnetionAPI {
                 System.out.println("Respuesta: "+ response);
                 if(response.equals("OK")){
                     Toast.makeText(getApplicationContext(), "Your account has been deleted", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(context, LoginActivity.class);
+                    Intent i = new Intent(context, MainActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
                 }
@@ -1738,7 +1754,7 @@ public class ConnetionAPI {
 
     //to go HomePage
     private void homeActivity() {
-        Intent homePage = new Intent(context, MainActivity.class);
+        Intent homePage = new Intent(context, HomeActivity.class);
         homePage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(homePage);
     }

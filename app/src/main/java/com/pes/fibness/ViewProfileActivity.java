@@ -22,6 +22,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -58,8 +59,8 @@ public class ViewProfileActivity extends AppCompatActivity {
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
-                onBackPressed();
-                finish();
+                Intent intent = new Intent(ViewProfileActivity.this, HomeActivity.class);
+                startActivity(intent);
 
             }
         });

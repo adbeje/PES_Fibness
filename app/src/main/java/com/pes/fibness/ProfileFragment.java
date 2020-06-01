@@ -114,12 +114,6 @@ public class ProfileFragment extends Fragment {
         return root;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        showUserInfo();
-    }
-
     private void showUserInfo() {
         boolean validImage = false;
         byte[] userImage = null;

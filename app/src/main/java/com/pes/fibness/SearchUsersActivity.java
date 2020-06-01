@@ -11,12 +11,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import java.net.ConnectException;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -166,7 +169,7 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(SearchUsersActivity.this, MainActivity.class);
+        Intent intent = new Intent(SearchUsersActivity.this, HomeActivity.class);
         startActivity(intent);
 
     }
