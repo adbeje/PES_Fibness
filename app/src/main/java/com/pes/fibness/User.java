@@ -464,6 +464,15 @@ class Ruta{
     Point destino;
 }
 
+class Evento{
+    int id;
+    String name;
+    String desc;
+    String date;
+    String hour;
+    Point place;
+}
+
 class Achievement{
     int id;
     Boolean active;

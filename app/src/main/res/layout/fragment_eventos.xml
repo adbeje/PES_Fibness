@@ -24,14 +24,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:theme="@style/ToolBar">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Users"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:text="Events"
                     android:textColor="#FFFFFF"
-                    android:layout_gravity="center" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
             </androidx.appcompat.widget.Toolbar>
         </LinearLayout>
 
@@ -53,12 +54,12 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/followers"
+                        android:id="@+id/cEvents"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Eventos de la comunidad"
-                        android:textColor="#FFF"
-                        android:textSize="17sp"
+                        android:text="Comunity Events"
+                        android:textColor="@color/seleccion"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
                 <LinearLayout
@@ -69,12 +70,12 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/following"
+                        android:id="@+id/mEvents"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mis Eventos"
-                        android:textColor="#FFF"
-                        android:textSize="17sp"
+                        android:text="My Events"
+                        android:textColor="@color/blanco"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
@@ -83,30 +84,28 @@
         <LinearLayout
             android:layout_weight="7"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:padding="10dp"
-            android:background="@drawable/recyclerview_bg">
+            android:layout_height="0dp">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview"
+                android:id="@+id/recyclerEventos"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:layout_marginTop="3dp"/>
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/fb_new_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/seleccion"
+        android:clickable="false"
         android:src="@drawable/ic_plus_24"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
