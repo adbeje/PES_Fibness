@@ -91,7 +91,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent chat = new Intent(getActivity(), ChatActivity.class);
-                chat.putExtra("name", "Pedro");
+                chat.putExtra("name", User.getInstance().getName());
                 startActivity(chat);
             }
         });
