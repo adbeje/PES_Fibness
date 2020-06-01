@@ -66,7 +66,7 @@ public class DietasFragment extends Fragment {
     }
 
     private void refreshList() {
-        listViewT.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.row_white, dietList));
+        listViewT.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.row, dietList));
     }
 
     private void showEditBox(final int position) {
