@@ -46,7 +46,7 @@
             android:layout_marginTop="10dp"
             android:clickable="true"
             android:paddingEnd="10dp"
-            android:text="@string/profile_picture"
+            android:text="@string/done"
             android:textColor="@color/c_icon_bkg_unsel"
             android:textSize="20sp"
             android:textStyle="bold"

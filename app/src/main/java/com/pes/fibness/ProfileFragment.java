@@ -114,6 +114,18 @@ public class ProfileFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        showUserInfo();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ivUser.setImageBitmap(null); ivUser.destroyDrawingCache();
+    }
+
     private void showUserInfo() {
         boolean validImage = false;
         byte[] userImage = null;
@@ -127,7 +139,7 @@ public class ProfileFragment extends Fragment {
                     .load(userImage)
                     .centerCrop()
                     .circleCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .skipMemoryCache(true)
                     .into(ivUser);
         }
     }

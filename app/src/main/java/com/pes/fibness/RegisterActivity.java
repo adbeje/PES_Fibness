@@ -2,8 +2,9 @@ package com.pes.fibness;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,18 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -55,8 +44,9 @@ public class RegisterActivity extends AppCompatActivity {
         backLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent registerIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                Intent registerIntent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(registerIntent);
+                finish();
             }
         });
 
@@ -137,13 +127,17 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(userName.getText().toString().isEmpty())
                     Toast.makeText(getApplicationContext(), "User name can't be empty.", Toast.LENGTH_LONG).show();
-                else if (canRegister)   insertUser();
+                else if (canRegister) {
+                    setSharedPreferences(userName.getText().toString(), password.getText().toString());
+                    insertUser();
+                }
                 else Toast.makeText(getApplicationContext(), "Error: Something went wrong. Registration Failed.", Toast.LENGTH_LONG).show();
             }
         });
 
 
     }
+
 
     //register an user in database
     private void insertUser() {
@@ -152,11 +146,19 @@ public class RegisterActivity extends AppCompatActivity {
         connetion.postUser(userName.getText().toString(), password.getText().toString(), emailAddress.getText().toString());
     }
 
-    //press back to back mainpage
-    @Override
-    public void onBackPressed() {
-        Intent homePage = new Intent(RegisterActivity.this, MainActivity.class);
+    private void setSharedPreferences(String userEmail, String userPassword){
+
+        SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("userEmail", userEmail);
+        editor.putString("userPassword", userPassword);
+        editor.apply();
+
+        Intent homePage = new Intent(RegisterActivity.this, SplashActivity.class);
         startActivity(homePage);
+        finish();
+
     }
 
 

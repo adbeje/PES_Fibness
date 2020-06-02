@@ -70,8 +70,8 @@ public class AchievementsActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AchievementsActivity.this, HomeActivity.class);
-                startActivity(intent);
+                onBackPressed();
+                finish();
 
             }
         });

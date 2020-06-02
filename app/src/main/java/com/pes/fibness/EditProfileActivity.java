@@ -7,10 +7,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Base64;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -30,15 +30,9 @@ import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.github.mikephil.charting.utils.FileUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -111,8 +105,8 @@ public class EditProfileActivity extends AppCompatActivity {
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EditProfileActivity.this, HomeActivity.class);
-                startActivity(intent);
+                onBackPressed();
+                finish();
             }
         });
 
@@ -137,8 +131,8 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveEditData();
-                Intent intent = new Intent(EditProfileActivity.this, HomeActivity.class);
-                startActivity(intent);
+                onBackPressed();
+                finish();
             }
         });
 
@@ -175,9 +169,15 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ivUser.setImageBitmap(null); ivUser.destroyDrawingCache();
+    }
+
     protected void saveProfilePicture() {
         // Reading a Image file from file system
-        //mirar que el bitmap no sea nulo
+        // mirar que el bitmap no sea nulo
             Bitmap bitmap = ((BitmapDrawable) ivUser.getDrawable()).getBitmap();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
@@ -199,10 +199,17 @@ public class EditProfileActivity extends AppCompatActivity {
                         .load(imageFiles.get(0))
                         .centerCrop()
                         .circleCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .skipMemoryCache(true)
                         .into(ivUser);
             }
         });
+        @SuppressLint("HandlerLeak") Handler h = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                saveProfilePicture();
+            }
+        };
+        h.sendEmptyMessageDelayed(0, 1000);
     }
 
     private void getDate(){
@@ -240,7 +247,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     .load(userImage)
                     .centerCrop()
                     .circleCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .skipMemoryCache(true)
                     .into(ivUser);
         }
 
@@ -256,7 +263,7 @@ public class EditProfileActivity extends AppCompatActivity {
         if (etDate.getText().toString().trim().length() != 0) u.setBirthDate(etDate.getText().toString());
         u.setCountry(String.valueOf(sCountry.getSelectedItemPosition()));
 
-        saveProfilePicture();
+
 
         String route = "http://10.4.41.146:3001/user/"+u.getId()+"/info";
         ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), route);

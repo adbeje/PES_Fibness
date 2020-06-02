@@ -165,12 +165,4 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
 
         return super.onOptionsItemSelected(item);
     }
-
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(SearchUsersActivity.this, HomeActivity.class);
-        startActivity(intent);
-
-    }
 }

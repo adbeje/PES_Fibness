@@ -59,8 +59,8 @@ public class ViewProfileActivity extends AppCompatActivity {
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ViewProfileActivity.this, HomeActivity.class);
-                startActivity(intent);
+                onBackPressed();
+                finish();
 
             }
         });
@@ -101,7 +101,7 @@ public class ViewProfileActivity extends AppCompatActivity {
                     .load(userImage)
                     .centerCrop()
                     .circleCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .skipMemoryCache(true)
                     .into(ivUser);
         }
 

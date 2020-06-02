@@ -82,14 +82,6 @@ public class ConnetionAPI {
                         getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
                         getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
 
-                        @SuppressLint("HandlerLeak") Handler h = new Handler(){
-                            @Override
-                            public void handleMessage(Message msg) {
-                                homeActivity();
-                            }
-                        };
-                        h.sendEmptyMessageDelayed(0, 150);
-
 
                     }
                     else Toast.makeText(getApplicationContext(), "Register response error", Toast.LENGTH_SHORT).show();
@@ -152,14 +144,8 @@ public class ConnetionAPI {
                     u.setId(id);
 
                     getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
+                    getUserProfile("http://10.4.41.146:3001/user/"+id+"/profile");
                     getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
-                    @SuppressLint("HandlerLeak") Handler h = new Handler(){
-                        @Override
-                        public void handleMessage(Message msg) {
-                            homeActivity();
-                        }
-                    };
-                    h.sendEmptyMessageDelayed(0, 150);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -223,15 +209,8 @@ public class ConnetionAPI {
                         System.out.println("user_id: "+ u.getId());
                         /*nedd to load user information & setting*/
                         getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
+                        getUserProfile("http://10.4.41.146:3001/user/"+id+"/profile");
                         getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
-
-                        @SuppressLint("HandlerLeak") Handler h = new Handler(){
-                            @Override
-                            public void handleMessage(Message msg) {
-                                homeActivity();
-                            }
-                        };
-                        h.sendEmptyMessageDelayed(0, 150);
                     }
                     else Toast.makeText(getApplicationContext(), "Invalid Login Credentials", Toast.LENGTH_SHORT).show();
 
@@ -317,7 +296,6 @@ public class ConnetionAPI {
                     Boolean b = (Boolean)obj.get("result");
                     if(b){
                         Toast.makeText(getApplicationContext(), "Your password has been reset successfully", Toast.LENGTH_SHORT).show();
-                        homeActivity();
                     }
                     else Toast.makeText(getApplicationContext(), "Your password has not been reset successfully", Toast.LENGTH_SHORT).show();
 
@@ -479,8 +457,6 @@ public class ConnetionAPI {
         final User u = User.getInstance();
 
         System.out.println("Dentro de User information");
-
-        getUserProfile("http://10.4.41.146:3001/user/" + u.getId() + "/profile");
 
         request = new StringRequest(Request.Method.GET, route, new Response.Listener<String>() {
             @Override
@@ -1754,7 +1730,7 @@ public class ConnetionAPI {
 
     //to go HomePage
     private void homeActivity() {
-        Intent homePage = new Intent(context, HomeActivity.class);
+        Intent homePage = new Intent(context, MainActivity.class);
         homePage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(homePage);
     }
