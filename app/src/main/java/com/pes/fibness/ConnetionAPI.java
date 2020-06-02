@@ -1036,7 +1036,7 @@ public class ConnetionAPI {
 
     }
 
-    public void getDietMeal(final String title, final String dia){
+    public void getDietMeal(final String title, final String diaTitle, final String dia){
         request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -1054,8 +1054,9 @@ public class ConnetionAPI {
                     User.getInstance().setMealList(mealList);
                     Intent MealPage = new Intent(context, MealActivity.class);
                     MealPage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    MealPage.putExtra("dia", dia);
+                    MealPage.putExtra("diaTitle", diaTitle);
                     MealPage.putExtra("title", title);
+                    MealPage.putExtra("dia", dia);
                     context.startActivity(MealPage);
                 } catch (JSONException e) {
                     e.printStackTrace();

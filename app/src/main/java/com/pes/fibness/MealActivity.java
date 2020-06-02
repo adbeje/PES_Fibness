@@ -24,6 +24,7 @@ public class MealActivity extends AppCompatActivity {
 
     private String titleDiet = "";
     private String day = "";
+    private String diaTitle = "";
     private ArrayList<Meal> meals;
     private ListView mealList;
     private boolean isNew = false;
@@ -35,7 +36,7 @@ public class MealActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMeal);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(titleDiet + "-" + day);
+        getSupportActionBar().setTitle(titleDiet + "-" + diaTitle);
         getSupportActionBar().setSubtitle(User.getInstance().getDietDesc(titleDiet));
 
         meals = User.getInstance().getMealList();
@@ -63,7 +64,7 @@ public class MealActivity extends AppCompatActivity {
                 String nameM = meals.get(position).name;
                 int idMeal = User.getInstance().getMealID(nameM);
                 ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/meal/" + idMeal + "/aliments");
-                c.getMealAliment(titleDiet, day, nameM, false);
+                c.getMealAliment(titleDiet, diaTitle, nameM, false);
             }
         });
 
@@ -86,6 +87,7 @@ public class MealActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         titleDiet = extras.getString("title");
         day = extras.getString("dia");
+        diaTitle = extras.getString("diaTitle");
     }
 
     private void showEditMealBox(final int position) {
@@ -230,7 +232,7 @@ public class MealActivity extends AppCompatActivity {
                     Intent AlimentPage = new Intent(getApplicationContext(), CreateDietActivity.class);
                     AlimentPage.putExtra("new", true);
                     AlimentPage.putExtra("title", titleDiet);
-                    AlimentPage.putExtra("dia", day);
+                    AlimentPage.putExtra("dia", diaTitle);
                     AlimentPage.putExtra("comida", m2.name);
                     User.getInstance().setAlimentList(new ArrayList<Aliment>());
                     startActivity(AlimentPage);

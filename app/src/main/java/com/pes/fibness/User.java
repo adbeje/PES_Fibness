@@ -19,8 +19,6 @@ public class User {
     private boolean[] settings = new boolean[5]; /*0 = Age, 1 = Distance, 2 = Invitation , 3 = Follower, 4 = Message*/
     private String recoveryCode;
 
-    private String[] dias = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"};
-
     /*User fitness*/
     private static ArrayList<Training> trainingList = new ArrayList<>();
     private static ArrayList<Exercise> exerciseList = new ArrayList<>();
@@ -293,15 +291,6 @@ public class User {
             }
         }
         return -1;
-    }
-
-    /**Dias**/
-    public ArrayList<String> getDias(){
-        ArrayList<String> ListaDias = new ArrayList<>();
-        for(int i = 0; i < dias.length; i++){
-            ListaDias.add(dias[i]);
-        }
-        return ListaDias;
     }
 
     /** Meals **/
