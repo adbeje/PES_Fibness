@@ -4,9 +4,12 @@ package com.pes.fibness;
 import com.mapbox.geojson.Point;
 import java.util.Date;
 import android.util.Pair;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class User {
 
@@ -65,7 +68,10 @@ public class User {
     public void setName(String name) { this.name = name; }
 
     public byte[] getImage() { return image; }
-    public void setImage(byte[] image) { this.image = image; }
+    public void setImage(byte[] image) {
+        Toast.makeText(getApplicationContext(), "Imagen guardada en local", Toast.LENGTH_LONG).show();
+        this.image = image;
+    }
 
     public int getnFollower() { return nFollower; }
     public void setnFollower(int nFollower) { this.nFollower = nFollower; }

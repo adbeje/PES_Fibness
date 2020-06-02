@@ -82,14 +82,6 @@ public class ConnetionAPI {
                         getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
                         getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
 
-                        @SuppressLint("HandlerLeak") Handler h = new Handler(){
-                            @Override
-                            public void handleMessage(Message msg) {
-                                homeActivity();
-                            }
-                        };
-                        h.sendEmptyMessageDelayed(0, 150);
-
 
                     }
                     else Toast.makeText(getApplicationContext(), "Register response error", Toast.LENGTH_SHORT).show();

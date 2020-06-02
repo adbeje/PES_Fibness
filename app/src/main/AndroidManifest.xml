@@ -68,18 +68,20 @@
             android:name=".MealActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".HomeActivity"
+            android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SplashActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
