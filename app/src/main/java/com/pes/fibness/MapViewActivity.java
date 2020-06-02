@@ -191,7 +191,6 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     @SuppressWarnings( {"MissingPermission"})
-
     private void getRoute(Point origin, Point destination) {
         NavigationRoute.builder(this)
                 .accessToken(getString(R.string.mapBox_ACCESS_TOKEN))

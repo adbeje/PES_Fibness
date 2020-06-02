@@ -68,7 +68,7 @@ public class EventosFragment extends Fragment{
         e.desc = "NBA 2K20 tournament";
         e.name = "NBA 2K20 tournament";
         e.date = "02/06/2020";
-        e.place = Point.fromLngLat(0,0);
+        e.place = Point.fromLngLat(2.16,42);
         mEventosList.add(e);
         adapterM = new AdapterEventos(mEventosList);
         adapterC = new AdapterEventos(cEventosList);
@@ -77,6 +77,14 @@ public class EventosFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Intent view_event = new Intent(getActivity(), EventActivity.class);
+                int pos = listEvents.getChildLayoutPosition(v);
+                view_event.putExtra("comunity", false);
+                view_event.putExtra("id", mEventosList.get(pos).id);
+                view_event.putExtra("title", mEventosList.get(pos).name);
+                view_event.putExtra("desc", mEventosList.get(pos).desc);
+                view_event.putExtra("date", mEventosList.get(pos).date);
+                view_event.putExtra("hour", mEventosList.get(pos).hour);
+                view_event.putExtra("place", mEventosList.get(pos).place);
                 startActivity(view_event);
             }
         });
@@ -85,6 +93,14 @@ public class EventosFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Intent view_event = new Intent(getActivity(), EventActivity.class);
+                view_event.putExtra("comunity", true);
+                int pos = listEvents.getChildLayoutPosition(v);
+                view_event.putExtra("id", cEventosList.get(pos).id);
+                view_event.putExtra("title", cEventosList.get(pos).name);
+                view_event.putExtra("desc", cEventosList.get(pos).desc);
+                view_event.putExtra("date", cEventosList.get(pos).date);
+                view_event.putExtra("hour", cEventosList.get(pos).hour);
+                view_event.putExtra("place", cEventosList.get(pos).place);
                 startActivity(view_event);
             }
         });
@@ -95,6 +111,7 @@ public class EventosFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 Intent create_event = new Intent(getActivity(), CreateEventActivity.class);
+                create_event.putExtra("new", true);
                 startActivity(create_event);
             }
         });

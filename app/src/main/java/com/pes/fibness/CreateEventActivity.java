@@ -14,7 +14,9 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.gson.JsonObject;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 import com.mapbox.geojson.Feature;
@@ -33,6 +35,8 @@ import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Calendar;
 
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
@@ -40,11 +44,18 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 
 public class CreateEventActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    Boolean newEvent;
+    String title;
+    String desc;
+    String date;
+    String hora;
+    Point place;
+    int id;
+
+
     private static final int REQUEST_CODE_AUTOCOMPLETE = 1;
     private MapView mapView;
     private MapboxMap mapboxMap;
-    private CarmenFeature home;
-    private CarmenFeature work;
     private String geojsonSourceLayerId = "geojsonSourceLayerId";
     private String symbolIconId = "symbolIconId";
 
@@ -79,13 +90,23 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
 
         etDatePicker = findViewById(R.id.et_date_picker);
         etHourPicker = findViewById(R.id.et_hour_picker);
+        mapView = findViewById(R.id.mapView);
+
+        getExtras();
+
+        if(!newEvent){
+            ((EditText) findViewById(R.id.editText2)).setText(title);
+            ((EditText) findViewById(R.id.editText4)).setText(desc);
+            ((EditText) findViewById(R.id.et_date_picker)).setText(date);
+            ((EditText) findViewById(R.id.et_hour_picker)).setText(hora);
+        }
+
 
         etDatePicker.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
                 getDate();
-
             }
         });
 
@@ -94,13 +115,23 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
             @Override
             public void onClick(View v) {
                 getHour();
-
             }
         });
 
-        mapView = findViewById(R.id.mapView);
+
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+    }
+
+    private void getExtras() {
+        Bundle extras = getIntent().getExtras();
+        newEvent = extras.getBoolean("new");
+        title = extras.getString("title");
+        desc = extras.getString("desc");
+        date = extras.getString("date");
+        hora = extras.getString("hour");
+        place = (Point) extras.get("place");
+        id = extras.getInt("id");
     }
 
     private void getHour() {
@@ -110,13 +141,8 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 String formatHour =  (hourOfDay < 10)? String.valueOf(zero + hourOfDay) : String.valueOf(hourOfDay);
                 String formatMinute = (minute < 10)? String.valueOf(zero + minute):String.valueOf(minute);
-                String AM_PM;
-                if(hourOfDay < 12) {
-                    AM_PM = "a.m.";
-                } else {
-                    AM_PM = "p.m.";
-                }
-                etHourPicker.setText(formatHour + two_points + formatMinute + " " + AM_PM);
+                etHourPicker.setText(formatHour + two_points + formatMinute );
+                hora = etHourPicker.getText().toString();
             }
         }, hour, minute, false);
 
@@ -132,6 +158,7 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
                 String formatDay = (dayOfMonth < 10)? zero + dayOfMonth :String.valueOf(dayOfMonth);
                 String formatMonth = (mesActual < 10)? zero + mesActual :String.valueOf(mesActual);
                 etDatePicker.setText(formatDay + slash + formatMonth + slash + year);
+                date = etDatePicker.getText().toString();
             }
         }, year, month, day);
         datePicker.show();
@@ -145,8 +172,6 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
             public void onStyleLoaded(@NonNull Style style) {
                 initSearchFab();
 
-                //addUserLocations();
-
                 // Add the symbol layer icon to map for future use
                 style.addImage(symbolIconId, BitmapFactory.decodeResource(
                         CreateEventActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
@@ -156,8 +181,18 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
 
                 // Set up a new symbol layer for displaying the searched location's feature coordinates
                 setupLayer(style);
+
+                if(!newEvent) addCameraPosition();
             }
         });
+    }
+
+    private void addCameraPosition() {
+        mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                new CameraPosition.Builder()
+                        .target(new LatLng(place.latitude(), place.longitude()))
+                        .zoom(14)
+                        .build()), 4000);
     }
 
     private void initSearchFab() {
@@ -174,22 +209,6 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
                 startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE);
             }
         });
-    }
-
-    private void addUserLocations() {
-        home = CarmenFeature.builder().text("Mapbox SF Office")
-                .geometry(Point.fromLngLat(-122.3964485, 37.7912561))
-                .placeName("50 Beale St, San Francisco, CA")
-                .id("mapbox-sf")
-                .properties(new JsonObject())
-                .build();
-
-        work = CarmenFeature.builder().text("Mapbox DC Office")
-                .placeName("740 15th Street NW, Washington DC")
-                .geometry(Point.fromLngLat(-77.0338348, 38.899750))
-                .id("mapbox-dc")
-                .properties(new JsonObject())
-                .build();
     }
 
     private void setUpSource(@NonNull Style loadedMapStyle) {
@@ -231,6 +250,8 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
                                             ((Point) selectedCarmenFeature.geometry()).longitude()))
                                     .zoom(14)
                                     .build()), 4000);
+
+                    place = (Point) selectedCarmenFeature.geometry();
                 }
             }
         }
@@ -274,7 +295,7 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
