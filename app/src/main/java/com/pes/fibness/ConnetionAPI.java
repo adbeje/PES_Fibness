@@ -154,13 +154,6 @@ public class ConnetionAPI {
                     getUserInfo("http://10.4.41.146:3001/user/"+id+"/info");
                     getUserProfile("http://10.4.41.146:3001/user/"+id+"/profile");
                     getUserSettings("http://10.4.41.146:3001/user/"+id+"/settings");
-                    @SuppressLint("HandlerLeak") Handler h = new Handler(){
-                        @Override
-                        public void handleMessage(Message msg) {
-                            homeActivity();
-                        }
-                    };
-                    h.sendEmptyMessageDelayed(0, 150);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

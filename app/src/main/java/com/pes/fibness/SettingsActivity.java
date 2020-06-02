@@ -2,6 +2,7 @@ package com.pes.fibness;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -93,8 +94,10 @@ public class SettingsActivity extends AppCompatActivity {
         logOut.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                setSharedPreferences();
+                Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -111,6 +114,17 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    private void setSharedPreferences(){
+
+        SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("userEmail", "");
+        editor.putString("userPassword", "");
+        editor.putString("userName", "");
+        editor.apply();
+
+    }
 
 
     /*send email to fibness*/
