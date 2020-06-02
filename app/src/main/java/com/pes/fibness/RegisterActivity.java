@@ -152,11 +152,19 @@ public class RegisterActivity extends AppCompatActivity {
         connetion.postUser(userName.getText().toString(), password.getText().toString(), emailAddress.getText().toString());
     }
 
-    //press back to back mainpage
-    @Override
-    public void onBackPressed() {
-        Intent homePage = new Intent(RegisterActivity.this, MainActivity.class);
+    private void setSharedPreferences(String userEmail, String userPassword){
+
+        SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("userEmail", userEmail);
+        editor.putString("userPassword", userPassword);
+        editor.apply();
+
+        Intent homePage = new Intent(RegisterActivity.this, SplashActivity.class);
         startActivity(homePage);
+        finish();
+
     }
 
 

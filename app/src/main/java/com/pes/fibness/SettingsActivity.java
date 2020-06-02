@@ -55,8 +55,8 @@ public class SettingsActivity extends AppCompatActivity {
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
-                startActivity(intent);
+                onBackPressed();
+                finish();
 
             }
         });
@@ -66,8 +66,8 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveSettingsData();
-                Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
-                startActivity(intent);
+                onBackPressed();
+                finish();
             }
         });
 
@@ -240,14 +240,5 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
-        startActivity(intent);
-
-    }
-
-
 
 }

@@ -99,13 +99,22 @@ public class ResetPasswordActivity extends AppCompatActivity {
         //tengo que pasar email y la contrasena haseada, al final se avisa que se ha cambiado la contra (Toast)
         ConnetionAPI connetion = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/resetPassword");
         connetion.resetPassword(email, confirmPassword.getText().toString()); //cuando termine tiene que llevar a la pagina principal
+        homeActivity();
     }
 
-    //press back to back mainpage
+    //press back to back login
     @Override
     public void onBackPressed() {
-        Intent homePage = new Intent(ResetPasswordActivity.this, MainActivity.class);
+        Intent homePage = new Intent(ResetPasswordActivity.this, LoginActivity.class);
         startActivity(homePage);
+        finish();
     }
+
+    private void homeActivity() {
+        Intent homePage = new Intent(ResetPasswordActivity.this, SplashActivity.class);
+        startActivity(homePage);
+        finish();
+    }
+
 
 }

@@ -175,6 +175,12 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ivUser.setImageBitmap(null); ivUser.destroyDrawingCache();
+    }
+
     protected void saveProfilePicture() {
         // Reading a Image file from file system
         //mirar que el bitmap no sea nulo
@@ -199,7 +205,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         .load(imageFiles.get(0))
                         .centerCrop()
                         .circleCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .skipMemoryCache(true)
                         .into(ivUser);
             }
         });
@@ -240,7 +246,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     .load(userImage)
                     .centerCrop()
                     .circleCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .skipMemoryCache(true)
                     .into(ivUser);
         }
 
