@@ -20,41 +20,43 @@
         android:id="@+id/TitleTraininginput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/Name"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
+        android:hint="@string/Name"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.051"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputboxTitleTraining"/>
+        app:layout_constraintTop_toBottomOf="@+id/inputboxTitleTraining"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btdone"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="4dp"
         android:layout_weight="1"
         android:background="@drawable/btn_black"
         android:text="@string/done"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.919"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.85" />
 
     <EditText
         android:id="@+id/DescNewTraining"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/Description"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
+        android:hint="@string/Description"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TitleTraininginput" />
+        app:layout_constraintTop_toBottomOf="@+id/TitleTraininginput"
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
