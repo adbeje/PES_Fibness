@@ -426,7 +426,6 @@ public class User {
         Chats.add(new Pair("Trainings", "ecvi0PNesQSdBcBK"));
         Chats.add(new Pair("Diets", "PRYFLbm0FZp1JB3i"));
         Chats.add(new Pair("Routes", "rEejgq7VGoTc1bci"));
-        Chats.add(new Pair("Routes", "rEejgq7VGoTc1bci"));
         Chats.add(new Pair("Events", "bFeChQnd1FrN0ic5"));
         Chats.add(new Pair("Others", "OhFX7jCm248D2Ddm"));
     }
