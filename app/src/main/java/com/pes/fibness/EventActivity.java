@@ -47,6 +47,9 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         setContentView(R.layout.activity_view_event);
         getExtras();
 
+        ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/event/" + id + "/participants");
+        connection.getParticipants();
+
         delete = findViewById(R.id.btn_delete_event);
         edit = findViewById(R.id.btn_edit_event);
         join = findViewById(R.id.btn_join_event);
@@ -87,7 +90,8 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //conectionAPI delete event
+                ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/event/" + id);
+                connection.deleteEvent();
                 User.getInstance().deleteEvent(pos);
                 finish();
             }
@@ -114,14 +118,16 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
             @Override
             public void onClick(View v) {
                 if(participa){
-                    //conectionAPI delete participa
+                    ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/event/" + id);
+                    connection.deleteParticipa();
                     User.getInstance().deleteParticipa();
                     join.setBackground(getResources().getDrawable(R.drawable.btn_bg_sel));
                     join.setText("Join");
                     participa = false;
                 }
                 else{
-                    //conectionAPI put participa
+                    ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/event/" + id + "/join");
+                    connection.createParticipa();
                     User.getInstance().addParticipa();
                     join.setBackground(getResources().getDrawable(R.drawable.btn_bg));
                     join.setText("Leave");

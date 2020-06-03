@@ -78,9 +78,6 @@ public class SplashActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 ConnetionAPI connection;
 
-                connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/profile");
-                connection.getUserTrainings();
-
                 connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/trainings");
                 connection.getUserTrainings();
 
@@ -90,11 +87,11 @@ public class SplashActivity extends AppCompatActivity {
                 connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/diets");
                 connection.getUserDiets();
 
-                /*connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/diets");
-                connection.getAllEvents();
+                connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/events");
+                connection.getUserEvents();
 
-                connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/diets");
-                connection.getUserEvents();*/
+                connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/event");
+                connection.getAllEvents();
             }
         };
         h.sendEmptyMessageDelayed(0, 600);

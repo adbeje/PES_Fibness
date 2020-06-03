@@ -1722,11 +1722,63 @@ public class ConnetionAPI {
 
     }
 
+    public void getAllEvents() {
 
+    }
 
+    public void getUserEvents() {
 
+    }
 
+    public void createEvent() {
 
+    }
+
+    public void updateEvent() {
+
+    }
+
+    public void deleteEvent() {
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your event has not been deleted. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
+    }
+
+    public void getParticipants() {
+
+    }
+
+    public void deleteParticipa() {
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your participation has not been deleted. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
+    }
+
+    public void createParticipa() {
+
+    }
 
     //to go HomePage
     private void homeActivity() {
@@ -1735,11 +1787,8 @@ public class ConnetionAPI {
         context.startActivity(homePage);
     }
 
-
     private void enqueue(){
         requestQueue.add(request);
     }
-
-
 
 }

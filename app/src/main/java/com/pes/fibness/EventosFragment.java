@@ -67,7 +67,6 @@ public class EventosFragment extends Fragment{
                 view_event.putExtra("date", mEventosList.get(pos).date);
                 view_event.putExtra("hour", mEventosList.get(pos).hour);
                 view_event.putExtra("place", mEventosList.get(pos).place);
-                //ConnetionAPI get participants
                 startActivity(view_event);
             }
         });
@@ -84,7 +83,6 @@ public class EventosFragment extends Fragment{
                 view_event.putExtra("date", cEventosList.get(pos).date);
                 view_event.putExtra("hour", cEventosList.get(pos).hour);
                 view_event.putExtra("place", cEventosList.get(pos).place);
-                //ConnetionAPI get participants
                 startActivity(view_event);
             }
         });
@@ -115,7 +113,8 @@ public class EventosFragment extends Fragment{
         cEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //conectionAPI get all events
+                ConnetionAPI connection = new ConnetionAPI(getContext(), "http://10.4.41.146:3001/event");
+                connection.getAllEvents();
                 newEvent.setVisibility(View.INVISIBLE);
                 newEvent.setClickable(false);
                 cEvents.setTextColor(getResources().getColor(R.color.seleccion));
@@ -193,7 +192,7 @@ class AdapterEventos extends RecyclerView.Adapter<AdapterEventos.ViewHolderEvent
     }
 
 
-    class ViewHolderEvents extends RecyclerView.ViewHolder {
+    static class ViewHolderEvents extends RecyclerView.ViewHolder {
 
         ImageView mapView;
         TextView title;

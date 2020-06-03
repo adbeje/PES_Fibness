@@ -106,7 +106,6 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
             etHourPicker.setText(hora);
         }
 
-
         etDatePicker.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceType")
             @Override
@@ -135,11 +134,13 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
                     e.place = place;
                     if (newEvent) {
                         e.id = 0;
-                        //ConnectionAPI post event
+                        ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/event");
+                        connection.createEvent();
                         User.getInstance().addEvent(e);
                     } else {
                         e.id = id;
-                        //ConnectionAPI put event
+                        ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/event/" + id);
+                        connection.updateEvent();
                         User.getInstance().updateEvent(pos, e);
                     }
                     finish();
