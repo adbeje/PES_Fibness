@@ -129,4 +129,50 @@
     <string name="title">Títol</string>
     <string name="the_best_views_are_achieved_after_a_hard_climb">Les millors vistes s\'aconsegueixen després d\'una dura pujada.</string>
 
+    <string name="WriteAMessage">Escriu un missatge</string>
+    <string name="Previously">Prèviament</string>
+
+    <string name="AddAName">Afegeix un nom</string>
+    <string name="Diet">Dieta</string>
+
+    <string name="PleaseAddAName">Si us plau, afegeix un nom</string>
+    <string name="NameAlreadyUsed">Aquest nom ja s\'ha utilitzat</string>
+    <string name="Meal">Menjar</string>
+    <string name="AddAnHour">Si us plau, afegiex una hora</string>
+    <string name="AddAValidHour">Si us plau, afegiex una hora vàlida</string>
+    <string name="PleaseAddMinutes">Si us plau, afegeix minuts</string>
+    <string name="AddValidMinutes">Si us plau, afegeix minuts vàlids</string>
+    <string name="AddANumber">Si us plau, afegeix un número</string>
+    <string name="Food">Aliment</string>
+    <string name="Exercise">Exercici</string>
+    <string name="Training">Entrenament</string>
+    <string name="SelectExercise">Selecciona eexercici</string>
+
+    <!-- Array Ejercicios -->
+    <string-array name="exercises">
+        <item>Selecciona ejercico</item>
+        <item>Sentadillas</item>
+        <item>Hollow Hold</item>
+        <item>Lunges</item>
+        <item>Back Extension Hold</item>
+        <item>Plancha</item>
+        <item>Abdominales</item>
+        <item>Saltos de tijera</item>
+        <item>Flexiones</item>
+        <item>Dips</item>
+        <item>Soldadito</item>
+        <item>Abdominales inferiores</item>
+    </string-array>
+
+    <!-- Array dias -->
+    <string-array name="days">
+        <item>Lunes</item>
+        <item>Martes</item>
+        <item>Miercoles</item>
+        <item>Jueves</item>
+        <item>Viernes</item>
+        <item>Sábado</item>
+        <item>Domingo</item>
+    </string-array>
+
 </resources>

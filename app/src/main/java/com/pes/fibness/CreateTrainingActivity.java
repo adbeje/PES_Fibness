@@ -321,7 +321,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean correct = true;
                 String txtName = (String) txtNameS.getSelectedItem();
-                if (txtName.equals("Select exercise")) {
+                if (txtName.equals(getString(R.string.SelectExercise))) {
                     correct = false;
                 }
                 if (numRepet.getText().toString().trim().length() == 0) {

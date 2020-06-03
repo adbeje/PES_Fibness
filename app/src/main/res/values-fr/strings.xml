@@ -129,4 +129,49 @@
     <string name="title">Titre</string>
     <string name="the_best_views_are_achieved_after_a_hard_climb">Les meilleures vues sont obtenues après une forte montée.</string>
 
+    <string name="WriteAMessage">Ecrire un message</string>
+    <string name="Previously">Previously</string>
+
+    <string name="AddAName">Ajouter un nom</string>
+    <string name="Diet">Diet</string>
+    <string name="PleaseAddAName">Veuillez ajouter un nom</string>
+    <string name="NameAlreadyUsed">Ce nom est déjà utilisé</string>
+    <string name="Meal">Repas</string>
+    <string name="AddAnHour">Veuillez ajouter une heure</string>
+    <string name="AddAValidHour">Veuillez ajouter une heure valide</string>
+    <string name="PleaseAddMinutes">Veuillez ajouter des minutes</string>
+    <string name="AddValidMinutes">Veuillez ajouter des minutes valides</string>
+    <string name="AddANumber">Veuillez ajouter un numéro</string>
+    <string name="Food">Aliments</string>
+    <string name="Exercise">Exercice</string>
+    <string name="Training">Entraînement</string>
+    <string name="SelectExercise">Sélectionner exercice</string>
+
+    <!-- Tableau Ejercicios -->
+    <string-array name="exercises">
+        <item>Sélectionner exercice</item>
+        <item>Squat</item>
+        <item>Hollow Hold</item>
+        <item>Lunges</item>
+        <item>Back Extension Hold</item>
+        <item>Planche</item>
+        <item>Redressements assis</item>
+        <item>Jumping Jacks</item>
+        <item>Push Up</item>
+        <item>Dips</item>
+        <item>Burpees</item>
+        <item>Lève-jambes</item>
+    </string-array>
+
+    <!-- Dias en réseau -->
+    <string-array name="days">
+        <item>Lundi</item>
+        <point>Mardi</point>
+        <point>Mercredi</point>
+        <point>Jeudi</point>
+        <point>vendredi</point>
+        <item>Samedi</item>
+        <item>Dimanche</item>
+    </string-array>
+
 </resources>
