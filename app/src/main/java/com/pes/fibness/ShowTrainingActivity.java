@@ -76,10 +76,14 @@ public class ShowTrainingActivity extends AppCompatActivity implements ShowTrain
         ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/training/" + trainingModel.getId() + "/activities");
         c.getTrainingExercises("chivato");
 
-        /*
-        ConnetionAPI c2 = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/elemento/" + userModel.getId() + "/" + trainingModel.getId());
-        c2.getElementLike();
-        */
+
+        ConnetionAPI c2 = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/elementoLike");
+        c2.getElementLike(User.getInstance().getId(), trainingModel.getId());
+
+
+        /*cargo comments*/
+        ConnetionAPI c3 = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/comment/" + trainingModel.getId() + "/comments");
+        c3.getTrainingComments();
 
 
         @SuppressLint("HandlerLeak") Handler h = new Handler(){
@@ -91,7 +95,7 @@ public class ShowTrainingActivity extends AppCompatActivity implements ShowTrain
                 startActivity(i);
             }
         };
-        h.sendEmptyMessageDelayed(0, 100);
+        h.sendEmptyMessageDelayed(0, 150);
 
 
 

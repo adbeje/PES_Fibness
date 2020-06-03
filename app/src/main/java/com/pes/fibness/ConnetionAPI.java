@@ -1850,7 +1850,6 @@ public class ConnetionAPI {
 
     }
 
-
     public void deleteElementLike() {
         System.out.println("DENTRO DE deleteElementLike");
         request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
@@ -1870,7 +1869,166 @@ public class ConnetionAPI {
 
     }
 
+    public void getTrainingComments() {
+        System.out.println("Dentro de getTrainingComments");
 
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                    System.out.println("--------------Comments-------------------");
+                    System.out.println(response);
+                    try {
+                        JSONArray comments = new JSONArray(response);
+                        ArrayList<Comment> commentList = new ArrayList<>();
+                        for(int i = 0; i < comments.length(); i++){
+                            JSONObject cm = comments.getJSONObject(i);
+                            Comment c = new Comment();
+                            c.id_comment = (Integer) cm.getInt("idcomentario");
+                            c.id_user = (Integer) cm.getInt("idusuario");
+                            c.user_name = (String) cm.getString("nombre");
+                            c.date = (String) cm.getString("fecha");
+                            c.text = (String) cm.getString("texto");
+                            commentList.add(c);
+                        }
+                        User.getInstance().setComments(commentList);
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+
+    }
+
+    public void getElementLike(Integer id, int id1) {
+        System.out.println("Dentro de getElementLike");
+
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("--------------Element-------------------");
+                System.out.println(response);
+                try {
+                    JSONArray comments = new JSONArray(response);
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+
+
+    }
+
+
+
+    public void postComment(int userId, int id_element, String text) {
+        System.out.println("Dentro de postComment");
+
+        final String data = "{"+
+                "\"idUser\": " + "\"" + userId + "\"," +
+                "\"idElement\": " + "\"" + id_element + "\"," +
+                "\"text\": " + "\"" + text+ "\"" +
+                "}";
+
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Respuesta post comment: "+ response);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+
+            }
+
+        };
+        enqueue();
+
+
+    }
+
+
+
+    public void importElement(String training, int id_element, Integer user_id) {
+        System.out.println("Dentro de importElement");
+
+        final String data = "{"+
+                "\"type\": " + "\"" + training + "\"," +
+                "\"idElement\": " + "\"" + id_element + "\"," +
+                "\"idUser\": " + "\"" + user_id+ "\"" +
+                "}";
+
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Respuesta post comment: "+ response);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+
+            }
+
+        };
+        enqueue();
+
+    }
 
 
 

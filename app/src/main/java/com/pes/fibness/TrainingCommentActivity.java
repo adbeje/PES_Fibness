@@ -1,6 +1,7 @@
 package com.pes.fibness;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -13,31 +14,44 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.mail.Quota;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 public class TrainingCommentActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView, recyclerview_comment;
     private Button importTraining;
-    private ImageView like, comment ;
+    private ImageView like, comment, send ;
     private TextView nlike, ncomment;
     private ConstraintLayout CL;
+    private EditText msgText;
 
     private List<ExerciseModel> exerciseModelList = new ArrayList<>();
     private ArrayList<ExerciseExtra> names = new ArrayList<>();
     private ShowExerciseAdapter showExerciseAdapter;
+
+    private List<CommentModel> commentModelList = new ArrayList<>();
+    private ArrayList<Comment> names2 = new ArrayList<>();
+    private CommentAdapter commentAdapter;
 
     private TrainingModel trainingModel;
     private int userId;
@@ -58,6 +72,7 @@ public class TrainingCommentActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerview);
+        recyclerview_comment = findViewById(R.id.recyclerview_comment);
         importTraining = findViewById(R.id.importTraining);
         like = findViewById(R.id.like);
         nlike = findViewById(R.id.nlike);
@@ -66,26 +81,52 @@ public class TrainingCommentActivity extends AppCompatActivity {
         CL = findViewById(R.id.CL);
         nlike.setText("" + trainingModel.getnLikes());
         ncomment.setText("" + trainingModel.getnComment());
-
+        send = findViewById(R.id.send);
+        msgText = findViewById(R.id.msgText);
 
         ArrayList<ExerciseExtra> tn = User.getInstance().getExerciseExtras();
         names = tn;
+
+        ArrayList<Comment> tc = User.getInstance().getComments();
+        names2 = tc;
 
         this.setSupportActionBar(toolbar);
         this.getSupportActionBar().setTitle("");
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-
+        recyclerview_comment.setLayoutManager(new LinearLayoutManager(this));
+        recyclerview_comment.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         for(int i=0; i < names.size(); ++i){
             ExerciseModel exerciseModel = new ExerciseModel(names.get(i).id, names.get(i).title, names.get(i).desc, names.get(i).numRep, names.get(i).numSerie, names.get(i).numRest);
             exerciseModelList.add(exerciseModel);
         }
 
+        for(int i=0; i < names2.size(); ++i){
+            CommentModel commentModel = new CommentModel(names2.get(i).id_comment, names2.get(i).id_user, names2.get(i).user_name, names2.get(i).date, names2.get(i).text);
+            commentModelList.add(commentModel);
+        }
+
+
 
         showExerciseAdapter = new ShowExerciseAdapter(exerciseModelList);
         recyclerView.setAdapter(showExerciseAdapter);
+
+        commentAdapter = new CommentAdapter(commentModelList);
+        recyclerview_comment.setAdapter(commentAdapter);
+
+
+
+        importTraining.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/import");
+                connetionAPI.importElement("training",trainingModel.getId(), User.getInstance().getId() );
+            }
+        });
+
+
 
 
 
@@ -113,6 +154,36 @@ public class TrainingCommentActivity extends AppCompatActivity {
 
             }
         });
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View view) {
+                String text = msgText.getText().toString();
+                if(text.equals("")){
+                    System.out.println("commentAdapter size: " + commentAdapter.getItemCount());
+                    Toast.makeText(getApplicationContext(), "The comment cannot be empty", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/comment/");
+                    c.postComment(User.getInstance().getId(), trainingModel.getId(),text);
+
+                    CommentModel commentModel = new CommentModel(1, User.getInstance().getId(), User.getInstance().getName(), LocalDate.now().toString(), text);
+                    commentModelList.add(commentModel);
+
+                    commentAdapter = new CommentAdapter(commentModelList);
+                    recyclerview_comment.setAdapter(commentAdapter);
+
+
+
+                }
+
+
+            }
+        });
+
+
+
 
     }
 
@@ -222,3 +293,79 @@ class ShowExerciseAdapter extends RecyclerView.Adapter<ShowExerciseAdapter.ShowE
 
 
 }
+
+
+
+
+
+
+
+
+
+
+class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentAdapterVh> {
+
+    private List<CommentModel> commentModelList;
+    private Context context;
+
+    public CommentAdapter(List<CommentModel> commentModelList) {
+        this.commentModelList = commentModelList;
+    }
+
+    @NonNull
+    @Override
+    public CommentAdapter.CommentAdapterVh onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
+        return new CommentAdapter.CommentAdapterVh(LayoutInflater.from(context).inflate(R.layout.row_comments, null));
+    }
+
+
+    @Override
+    public void onBindViewHolder(@NonNull CommentAdapter.CommentAdapterVh holder, int position) {
+
+        CommentModel commentModel = commentModelList.get(position);
+        System.out.println("myname: " + commentModel.getUsername());
+        System.out.println("mytext: " + commentModel.getText());
+        System.out.println("mydate: " + commentModel.getDate());
+
+        holder.prefix.setText(commentModel.getUsername().substring(0,1));
+        holder.username.setText(commentModel.getUsername());
+        holder.comment.setText(commentModel.getText());
+        holder.date.setText(commentModel.getDate().substring(0,10));
+
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return commentModelList.size();
+    }
+
+
+
+    public class CommentAdapterVh extends RecyclerView.ViewHolder {
+
+        TextView prefix, username, comment, date;
+        public CommentAdapterVh(View itemView){
+            super(itemView);
+            prefix = itemView.findViewById(R.id.prefix);
+            username = itemView.findViewById(R.id.username);
+            comment = itemView.findViewById(R.id.comment);
+            date = itemView.findViewById(R.id.dateC);
+
+
+
+        }
+
+    }
+
+
+
+
+}
+
+
+
+
+
+

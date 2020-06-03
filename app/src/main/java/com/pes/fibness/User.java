@@ -38,6 +38,7 @@ public class User {
 
     private static ArrayList<TrainingExtra> trainingExtra = new ArrayList<>();
     private static ArrayList<ExerciseExtra> exerciseExtras = new ArrayList<>();
+    private static ArrayList<Comment> comments = new ArrayList<>();
 
     /*we are applying singleton because we will have an instance for each aplication user*/
     private static User instance = null;
@@ -200,13 +201,13 @@ public class User {
         return -1;
     }
 
-    public ArrayList<TrainingExtra> getTrainingExtra() {
-        return trainingExtra;
-    }
+    /*training aux*/
+    public ArrayList<TrainingExtra> getTrainingExtra() { return trainingExtra; }
+    public void setTrainingExtra(ArrayList<TrainingExtra> trainingExtra) { this.trainingExtra = trainingExtra; }
 
-    public void setTrainingExtra(ArrayList<TrainingExtra> trainingExtra) {
-        this.trainingExtra = trainingExtra;
-    }
+    /*training comment*/
+    public static ArrayList<Comment> getComments() { return comments; }
+    public static void setComments(ArrayList<Comment> comments) { User.comments = comments; }
 
     /** Exercises **/
     public ArrayList<Exercise> getExerciseList(){
@@ -450,6 +451,14 @@ class TrainingExtra{
     int nComment;
 }
 
+class Comment{
+    int id_comment;
+    int id_user;
+    String user_name;
+    String date;
+    String text;
+}
+
 
 class Exercise{
     int id;
@@ -470,6 +479,9 @@ class ExerciseExtra{
     String desc;
 }
 
+class AuxVariable{
+
+}
 
 
 
