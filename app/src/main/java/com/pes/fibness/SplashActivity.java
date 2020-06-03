@@ -23,18 +23,18 @@ public class SplashActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         // Duración en milisegundos que se mostrará el splash
-        // 3 segundos
+        // 2 segundos
         int DURACION_SPLASH = 2000;
         new Handler().postDelayed(new Runnable(){
             public void run(){
-                // Cuando pasen los 3 segundos, pasamos a la actividad principal de la aplicación
+                // Cuando pasen los 2 segundos, pasamos a la actividad principal de la aplicación
 
                 if (logged) {
                     Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
-            };
+            }
         }, DURACION_SPLASH);
     }
 
@@ -58,7 +58,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void checkUserFacebook(String userName, String userEmail, String userPassword) {
         ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/fb");
-        connection.fbUser(userName,userEmail, userPassword);
+        connection.fbUser(userName, userEmail, userPassword);
 
         getAllUserInfo();
     }
@@ -89,6 +89,12 @@ public class SplashActivity extends AppCompatActivity {
 
                 connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/diets");
                 connection.getUserDiets();
+
+                /*connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/diets");
+                connection.getAllEvents();
+
+                connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/diets");
+                connection.getUserEvents();*/
             }
         };
         h.sendEmptyMessageDelayed(0, 600);

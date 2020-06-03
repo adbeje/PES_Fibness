@@ -71,47 +71,6 @@ public class MainActivity extends AppCompatActivity {
         u.setImage(null);
     }
 
-    private void getSharedPreferences(){
-        SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
-
-        String userEmail = preferences.getString("userEmail", "");
-        String userPassword = preferences.getString("userPassword", "");
-
-        if (userEmail == "" && userPassword == "") {
-            finish();
-            Intent logIn = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(logIn);
-        }
-        else {
-            checkUser(userEmail, userPassword);
-        }
-
-    }
-
-    private void checkUser(String userEmail, String userPassword) {
-
-        ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/validate");
-        connection.validateUser(userEmail, userPassword);
-
-        @SuppressLint("HandlerLeak") Handler h = new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                ConnetionAPI connection;
-
-                connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/trainings");
-                connection.getUserTrainings();
-
-                connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/routes");
-                connection.getUserRoutes();
-
-                connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + User.getInstance().getId() + "/diets");
-                connection.getUserDiets();
-            }
-        };
-        h.sendEmptyMessageDelayed(0, 500);
-
-    }
-
     //press back to back mainpage
     @Override
     public void onBackPressed() {

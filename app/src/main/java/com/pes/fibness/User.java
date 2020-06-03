@@ -33,6 +33,10 @@ public class User {
 
     private static ArrayList<Ruta> rutasList = new ArrayList<>();
 
+    private static ArrayList<Evento> comunityEvents = new ArrayList<>();
+    private static ArrayList<Evento> myEvents = new ArrayList<>();
+    private static ArrayList<UserShortInfo> participantsList = new ArrayList<>();
+
     private ArrayList<Achievement> achievements = new ArrayList<>(4);
     private ArrayList<UserShortInfo> shortUsersInfo = new ArrayList<>();
     private UsersInfo selectedUser = new UsersInfo();
@@ -423,6 +427,72 @@ public class User {
         alimentList.get(pos).id = newID;
     }
 
+
+    public void setComunityEvents(ArrayList<Evento> events){
+        comunityEvents = events;
+    }
+
+    public void setMyEvents(ArrayList<Evento> events){
+        myEvents = events;
+    }
+
+    public void setParticipantsList(ArrayList<UserShortInfo> participants){
+        participantsList = participants;
+    }
+
+    public ArrayList<Evento> getComunityEvents(){
+        return comunityEvents;
+    }
+
+    public ArrayList<Evento> getMyEvents(){
+        return myEvents;
+    }
+
+    public ArrayList<UserShortInfo> getParticipantsList(){
+        return participantsList;
+    }
+
+    public void deleteParticipa() {
+        for(int i = 0; i < participantsList.size(); ++i){
+            if(participantsList.get(i).id.equals(user_id)){
+                participantsList.remove(i);
+                break;
+            }
+        }
+    }
+
+    public void addParticipa() {
+        UserShortInfo u = new UserShortInfo();
+        u.blocked = false;
+        u.id = user_id;
+        u.username = name;
+        participantsList.add(u);
+    }
+
+    public Boolean participa() {
+        for(int i = 0; i < participantsList.size(); ++i){
+            if(participantsList.get(i).id.equals(user_id)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void deleteEvent(int pos) {
+        myEvents.remove(pos);
+    }
+
+    public void addEvent(Evento e) {
+        myEvents.add(e);
+    }
+
+    public void updateEvent(int pos, Evento e) {
+        myEvents.set(pos, e);
+    }
+
+    public void setEventID(int pos, int newID){
+        myEvents.get(pos).id = newID;
+    }
 }
 
 

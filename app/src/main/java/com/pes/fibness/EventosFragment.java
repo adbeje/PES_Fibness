@@ -50,26 +50,8 @@ public class EventosFragment extends Fragment{
 
         listEvents.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-        //cEventosList = User.getInstance().getMyEventList();
-        //mEventosList = User.getInstance().getEventList();
-        for (int i = 0; i < 10; ++i){
-            Evento e = new Evento();
-            e.id = 0;
-            e.hour = "20:00";
-            e.desc = "NBA 2K20 tournament";
-            e.name = "NBA 2K20 tournament";
-            e.date = "02/06/2020";
-            e.place = Point.fromLngLat(2.16,41.37);
-            cEventosList.add(e);
-        }
-        Evento e = new Evento();
-        e.id = 0;
-        e.hour = "20:00";
-        e.desc = "NBA 2K20 tournament";
-        e.name = "NBA 2K20 tournament";
-        e.date = "02/06/2020";
-        e.place = Point.fromLngLat(2.16,42);
-        mEventosList.add(e);
+        mEventosList = User.getInstance().getMyEvents();
+        cEventosList = User.getInstance().getComunityEvents();
         adapterM = new AdapterEventos(mEventosList);
         adapterC = new AdapterEventos(cEventosList);
 
@@ -85,6 +67,7 @@ public class EventosFragment extends Fragment{
                 view_event.putExtra("date", mEventosList.get(pos).date);
                 view_event.putExtra("hour", mEventosList.get(pos).hour);
                 view_event.putExtra("place", mEventosList.get(pos).place);
+                //ConnetionAPI get participants
                 startActivity(view_event);
             }
         });
@@ -93,14 +76,15 @@ public class EventosFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Intent view_event = new Intent(getActivity(), EventActivity.class);
-                view_event.putExtra("comunity", true);
                 int pos = listEvents.getChildLayoutPosition(v);
+                view_event.putExtra("comunity", true);
                 view_event.putExtra("id", cEventosList.get(pos).id);
                 view_event.putExtra("title", cEventosList.get(pos).name);
                 view_event.putExtra("desc", cEventosList.get(pos).desc);
                 view_event.putExtra("date", cEventosList.get(pos).date);
                 view_event.putExtra("hour", cEventosList.get(pos).hour);
                 view_event.putExtra("place", cEventosList.get(pos).place);
+                //ConnetionAPI get participants
                 startActivity(view_event);
             }
         });
@@ -131,6 +115,7 @@ public class EventosFragment extends Fragment{
         cEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //conectionAPI get all events
                 newEvent.setVisibility(View.INVISIBLE);
                 newEvent.setClickable(false);
                 cEvents.setTextColor(getResources().getColor(R.color.seleccion));
@@ -146,12 +131,12 @@ public class EventosFragment extends Fragment{
 
     private void updateRecycler(){
         if(comunity){
-            //cEventosList = User.getInstance().getMyEventList();
+            cEventosList = User.getInstance().getComunityEvents();
             adapterC.notifyDataSetChanged();
             listEvents.setAdapter(adapterC);
         }
         else{
-            //mEventosList = User.getInstance().getEventList();
+            mEventosList = User.getInstance().getMyEvents();
             adapterM.notifyDataSetChanged();
             listEvents.setAdapter(adapterM);
         }
@@ -160,8 +145,8 @@ public class EventosFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        //cEventosList = User.getInstance().getMyEventList();
-        //mEventosList = User.getInstance().getEventList();
+        mEventosList = User.getInstance().getMyEvents();
+        cEventosList = User.getInstance().getComunityEvents();
         adapterC.notifyDataSetChanged();
         adapterM.notifyDataSetChanged();
     }

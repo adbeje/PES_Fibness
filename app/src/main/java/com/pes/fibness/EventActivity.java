@@ -1,7 +1,6 @@
 package com.pes.fibness;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,15 +19,6 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
-import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-
-import org.jetbrains.annotations.NotNull;
-
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 
 public class EventActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -40,6 +30,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
     Point place;
     Boolean comunity;
     Boolean participa = false;
+    int pos;
 
     Button delete;
     Button edit;
@@ -74,7 +65,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
             edit.setClickable(false);
             join.setVisibility(View.VISIBLE);
             join.setClickable(true);
-            //participa = User.getInstance().participa();
+            participa = User.getInstance().participa();
             if(participa){
                 join.setBackground(getResources().getDrawable(R.drawable.btn_bg));
                 join.setText("Leave");
@@ -97,7 +88,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
             @Override
             public void onClick(View v) {
                 //conectionAPI delete event
-                //User.getInstance().deleteEvent(id);
+                User.getInstance().deleteEvent(pos);
                 finish();
             }
         });
@@ -113,6 +104,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
                 modify_event.putExtra("date", date);
                 modify_event.putExtra("hour", hour);
                 modify_event.putExtra("place", place);
+                modify_event.putExtra("position", pos);
                 startActivity(modify_event);
                 finish();
             }
@@ -123,14 +115,14 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
             public void onClick(View v) {
                 if(participa){
                     //conectionAPI delete participa
-                    //User.getInstance().deleteParticipa();
+                    User.getInstance().deleteParticipa();
                     join.setBackground(getResources().getDrawable(R.drawable.btn_bg_sel));
                     join.setText("Join");
                     participa = false;
                 }
                 else{
                     //conectionAPI put participa
-                    //User.getInstance().addParticipa();
+                    User.getInstance().addParticipa();
                     join.setBackground(getResources().getDrawable(R.drawable.btn_bg));
                     join.setText("Leave");
                     participa = true;
@@ -150,56 +142,19 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         mapView.getMapAsync(this);
     }
 
-    private void getExtras() {
-        Bundle extras = getIntent().getExtras();
-        title = extras.getString("title");
-        desc = extras.getString("desc");
-        date = extras.getString("date");
-        hour = extras.getString("hour");
-        place = (Point) extras.get("place");
-        id = extras.getInt("id");
-        comunity = extras.getBoolean("comunity");
-    }
-
     private void addCameraPosition() {
         mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(
                 new CameraPosition.Builder()
                         .target(new LatLng(place.latitude(), place.longitude()))
-                        .zoom(14)
+                        .zoom(15)
                         .build()), 4000);
-
     }
 
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
         addCameraPosition();
-
-        mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
-            @Override
-            public void onStyleLoaded(@NonNull Style style) {
-
-                addIconSymbolLayer(style);
-
-            }
-        });
     }
-
-    private void addIconSymbolLayer(@NonNull Style loadedMapStyle) {
-
-        loadedMapStyle.addImage("point-icon-id",
-                BitmapFactory.decodeResource(this.getResources(), R.drawable.mapbox_marker_icon_default));
-        GeoJsonSource geoJsonSource = new GeoJsonSource("point-source-id");
-        loadedMapStyle.addSource(geoJsonSource);
-        SymbolLayer pointSymbolLayer = new SymbolLayer("point-symbol-layer-id", "point-source-id");
-        pointSymbolLayer.withProperties(
-                iconImage("point-icon-id"),
-                iconAllowOverlap(true),
-                iconIgnorePlacement(true)
-        );
-        loadedMapStyle.addLayer(pointSymbolLayer);
-    }
-
 
     @Override
     public void onResume() {
@@ -238,8 +193,21 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
     }
 
     @Override
-    protected void onSaveInstanceState(@NotNull Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
+
+    private void getExtras() {
+        Bundle extras = getIntent().getExtras();
+        title = extras.getString("title");
+        desc = extras.getString("desc");
+        date = extras.getString("date");
+        hour = extras.getString("hour");
+        place = (Point) extras.get("place");
+        id = extras.getInt("id");
+        pos = extras.getInt("position");
+        comunity = extras.getBoolean("comunity");
+    }
+
 }

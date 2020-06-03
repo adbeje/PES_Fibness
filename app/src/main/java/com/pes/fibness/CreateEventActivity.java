@@ -16,8 +16,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.gson.JsonObject;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
@@ -50,8 +49,8 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
     String date;
     String hora;
     Point place;
+    int pos;
     int id;
-
 
     private static final int REQUEST_CODE_AUTOCOMPLETE = 1;
     private MapView mapView;
@@ -76,6 +75,9 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
     /*                                        Widgets                                     */
     EditText etHourPicker;
     EditText etDatePicker;
+    EditText textTitle;
+    EditText textDesc;
+    FloatingActionButton save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,15 +92,18 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
 
         etDatePicker = findViewById(R.id.et_date_picker);
         etHourPicker = findViewById(R.id.et_hour_picker);
+        save = findViewById(R.id.fab_save_event);
         mapView = findViewById(R.id.mapView);
+        textTitle = (EditText) findViewById(R.id.editText2);
+        textDesc = (EditText) findViewById(R.id.editText4);
 
         getExtras();
 
         if(!newEvent){
-            ((EditText) findViewById(R.id.editText2)).setText(title);
-            ((EditText) findViewById(R.id.editText4)).setText(desc);
-            ((EditText) findViewById(R.id.et_date_picker)).setText(date);
-            ((EditText) findViewById(R.id.et_hour_picker)).setText(hora);
+            textTitle.setText(title);
+            textDesc.setText(desc);
+            etDatePicker.setText(date);
+            etHourPicker.setText(hora);
         }
 
 
@@ -118,20 +123,55 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
             }
         });
 
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(compruebaDatos()) {
+                    Evento e = new Evento();
+                    e.name = title;
+                    e.desc = desc;
+                    e.date = date;
+                    e.hour = hora;
+                    e.place = place;
+                    if (newEvent) {
+                        e.id = 0;
+                        //ConnectionAPI post event
+                        User.getInstance().addEvent(e);
+                    } else {
+                        e.id = id;
+                        //ConnectionAPI put event
+                        User.getInstance().updateEvent(pos, e);
+                    }
+                    finish();
+                }
+            }
+        });
 
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
     }
 
-    private void getExtras() {
-        Bundle extras = getIntent().getExtras();
-        newEvent = extras.getBoolean("new");
-        title = extras.getString("title");
-        desc = extras.getString("desc");
-        date = extras.getString("date");
-        hora = extras.getString("hour");
-        place = (Point) extras.get("place");
-        id = extras.getInt("id");
+    private boolean compruebaDatos() {
+
+        if (textTitle.getText().toString().trim().length() == 0) {
+            textTitle.setError("Please, add a name");
+            return false;
+        }
+        else if(hora == null){
+            etHourPicker.setError("Please, select an hour");
+            return false;
+        }
+        else if(date == null){
+            etDatePicker.setError("Please, select a date");
+            return false;
+        }
+        else if(place == null){
+            Toast.makeText(this, "Please, select a place for the event", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        title = textTitle.getText().toString();
+        desc = textDesc.getText().toString();
+        return true;
     }
 
     private void getHour() {
@@ -248,7 +288,7 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
                             new CameraPosition.Builder()
                                     .target(new LatLng(((Point) selectedCarmenFeature.geometry()).latitude(),
                                             ((Point) selectedCarmenFeature.geometry()).longitude()))
-                                    .zoom(14)
+                                    .zoom(15)
                                     .build()), 4000);
 
                     place = (Point) selectedCarmenFeature.geometry();
@@ -299,5 +339,18 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
+
+    private void getExtras() {
+        Bundle extras = getIntent().getExtras();
+        newEvent = extras.getBoolean("new");
+        title = extras.getString("title");
+        desc = extras.getString("desc");
+        date = extras.getString("date");
+        hora = extras.getString("hour");
+        place = (Point) extras.get("place");
+        id = extras.getInt("id");
+        pos = extras.getInt("position");
+    }
+
 }
 
