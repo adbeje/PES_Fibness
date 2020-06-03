@@ -1,6 +1,7 @@
 package com.pes.fibness;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,16 +12,33 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mapbox.android.core.permissions.PermissionsListener;
+import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 
-public class EventActivity extends AppCompatActivity implements OnMapReadyCallback {
+import java.util.List;
+import java.util.Objects;
+
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
+
+public class EventActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener {
 
     int id;
     String title;
@@ -37,8 +55,10 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
     Button join;
     FloatingActionButton participantes;
 
-    MapView mapView;
-    MapboxMap mapboxMap;
+    private MapView mapView;
+    private MapboxMap mapboxMap;
+    private LocationComponent locationComponent;
+    private PermissionsManager permissionsManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -154,6 +174,16 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
         addCameraPosition();
+
+        mapboxMap.setStyle(getString(R.string.navigation_guidance_day), new Style.OnStyleLoaded() {
+            @Override
+            public void onStyleLoaded(@NonNull Style style) {
+                enableLocationComponent(style);
+                addDestinationIconSymbolLayer(style);
+                GeoJsonSource source = mapboxMap.getStyle().getSourceAs("destination-source-id");
+                source.setGeoJson(Feature.fromGeometry(place));
+            }
+        });
     }
 
     @Override
@@ -210,4 +240,55 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         comunity = extras.getBoolean("comunity");
     }
 
+    private void enableLocationComponent(@NonNull Style loadedMapStyle) {
+        // Check if permissions are enabled and if not request
+        if (PermissionsManager.areLocationPermissionsGranted(this)) {
+            // Activate the MapboxMap LocationComponent to show user location
+            // Adding in LocationComponentOptions is also an optional parameter
+            locationComponent = mapboxMap.getLocationComponent();
+            locationComponent.activateLocationComponent(this, loadedMapStyle);
+            locationComponent.setLocationComponentEnabled(true);
+            // Set the component's camera mode
+            //locationComponent.setCameraMode(CameraMode.TRACKING);
+        } else {
+            permissionsManager = new PermissionsManager(this);
+            permissionsManager.requestLocationPermissions(this);
+        }
+    }
+
+
+    private void addDestinationIconSymbolLayer(@NonNull Style loadedMapStyle) {
+
+        loadedMapStyle.addImage("destination-icon-id",
+                BitmapFactory.decodeResource(this.getResources(), R.drawable.mapbox_marker_icon_default));
+        GeoJsonSource geoJsonSource = new GeoJsonSource("destination-source-id");
+        loadedMapStyle.addSource(geoJsonSource);
+        SymbolLayer destinationSymbolLayer = new SymbolLayer("destination-symbol-layer-id", "destination-source-id");
+        destinationSymbolLayer.withProperties(
+                iconImage("destination-icon-id"),
+                iconAllowOverlap(true),
+                iconIgnorePlacement(true)
+        );
+        loadedMapStyle.addLayer(destinationSymbolLayer);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onExplanationNeeded(List<String> permissionsToExplain) {
+        //Toast.makeText(this, R.string.user_location_permission_explanation, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onPermissionResult(boolean granted) {
+        if (granted) {
+            enableLocationComponent(Objects.requireNonNull(mapboxMap.getStyle()));
+        } else {
+            //Toast.makeText(this, R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show();
+            finish();
+        }
+    }
 }
