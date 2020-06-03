@@ -7,6 +7,7 @@ import android.util.Pair;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -71,10 +72,7 @@ public class User {
     public void setName(String name) { this.name = name; }
 
     public byte[] getImage() { return image; }
-    public void setImage(byte[] image) {
-        Toast.makeText(getApplicationContext(), "Imagen guardada en local", Toast.LENGTH_LONG).show();
-        this.image = image;
-    }
+    public void setImage(byte[] image) { this.image = image; }
 
     public int getnFollower() { return nFollower; }
     public void setnFollower(int nFollower) { this.nFollower = nFollower; }
@@ -134,7 +132,6 @@ public class User {
     public void setUserFollowing(ArrayList<Pair<Integer, String>> userFollowing) { this.userFollowing = userFollowing; }
 
 
-    /***************************************************************************/
     /** Trainings **/
     public void setTrainingList(ArrayList<Training> t){
         trainingList = t;
@@ -306,11 +303,7 @@ public class User {
 
     /**Dias**/
     public ArrayList<String> getDias(){
-        ArrayList<String> ListaDias = new ArrayList<>();
-        for(int i = 0; i < dias.length; i++){
-            ListaDias.add(dias[i]);
-        }
-        return ListaDias;
+        return new ArrayList<>(Arrays.asList(dias));
     }
 
     /** Meals **/
