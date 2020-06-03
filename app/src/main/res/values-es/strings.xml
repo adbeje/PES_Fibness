@@ -150,17 +150,17 @@
     <!-- Array Ejercicios -->
     <string-array name="exercises">
         <item>Selecciona ejercico</item>
-        <item>Squat</item>
+        <item>Sentadillas</item>
         <item>Hollow Hold</item>
         <item>Lunges</item>
         <item>Back Extensión Hold</item>
-        <item>Plank</item>
-        <item>Sit ups</item>
-        <item>Jumping Jacks</item>
-        <item>Push Up</item>
+        <item>Plancha</item>
+        <item>Abdominales</item>
+        <item>Saltos de tijera</item>
+        <item>Flexiones</item>
         <item>Dips</item>
-        <item>Burpees</item>
-        <item>Leg Raises</item>
+        <item>Soldadito</item>
+        <item>Abdominales inferiores</item>
     </string-array>
 
 </resources>
