@@ -166,10 +166,10 @@
     <!-- Dias en réseau -->
     <string-array name="days">
         <item>Lundi</item>
-        <point>Mardi</point>
-        <point>Mercredi</point>
-        <point>Jeudi</point>
-        <point>vendredi</point>
+        <item>Mardi</item>
+        <item>Mercredi</item>
+        <item>Jeudi</item>
+        <item>Vendredi</item>
         <item>Samedi</item>
         <item>Dimanche</item>
     </string-array>
