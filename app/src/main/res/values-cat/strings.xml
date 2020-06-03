@@ -99,9 +99,9 @@
     <string name="Custom">Personalitzat</string>
     <string name="Simple">Simple</string>
 
-    <string name="AddEx">Añade Ejercicio</string>
+    <string name="AddEx">Afegeix Exercici</string>
 
-    <string name="AddMeal">Añade una Menjar</string>
+    <string name="AddMeal">Afegeix un Menjar</string>
     <string name="Time">Hora</string>
     <string name="Min">Minuts</string>
 
@@ -146,33 +146,33 @@
     <string name="Food">Aliment</string>
     <string name="Exercise">Exercici</string>
     <string name="Training">Entrenament</string>
-    <string name="SelectExercise">Selecciona eexercici</string>
+    <string name="SelectExercise">Selecciona exercici</string>
 
     <!-- Array Ejercicios -->
     <string-array name="exercises">
-        <item>Selecciona ejercico</item>
-        <item>Sentadillas</item>
+        <item>Selecciona exercici</item>
+        <item>esquat</item>
         <item>Hollow Hold</item>
         <item>Lunges</item>
         <item>Back Extension Hold</item>
-        <item>Plancha</item>
-        <item>Abdominales</item>
-        <item>Saltos de tijera</item>
-        <item>Flexiones</item>
+        <item>Planxa</item>
+        <item>Abdominals</item>
+        <item>Salts de tisores</item>
+        <item>Flexions</item>
         <item>Dips</item>
-        <item>Soldadito</item>
-        <item>Abdominales inferiores</item>
+        <item>Soldadet</item>
+        <item>Abdominals inferiors</item>
     </string-array>
 
     <!-- Array dias -->
     <string-array name="days">
-        <item>Lunes</item>
-        <item>Martes</item>
-        <item>Miercoles</item>
-        <item>Jueves</item>
-        <item>Viernes</item>
-        <item>Sábado</item>
-        <item>Domingo</item>
+        <item>Dilluns</item>
+        <item>Dimarts</item>
+        <item>Dimecres</item>
+        <item>Dijous</item>
+        <item>Divendres</item>
+        <item>Disabte</item>
+        <item>Diumenge</item>
     </string-array>
 
 </resources>
