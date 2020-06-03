@@ -415,7 +415,7 @@ class Exercise_Adap extends BaseAdapter {
             ImageView image = (ImageView) vista.findViewById(R.id.photo_ex);
             TextView Desc = (TextView) vista.findViewById(R.id.txtDesc);
             titulo.setText(dades.get(position).TitleEx);
-            int id = getImageID (dades.get(position).TitleEx);
+            int id = getImageID (position);
             if(id != -1) image.setImageResource(id);
             else{
                 image.setImageResource(R.drawable.logoazulflojo);
@@ -429,43 +429,44 @@ class Exercise_Adap extends BaseAdapter {
         return vista;
     }
 
-    private int getImageID(String name){
+    private int getImageID(int position){
         int id = -1;
-        switch (name){
-            case "Squat":
+        int pos = User.getInstance().getExerciseNamePos(position);
+        switch (pos){
+            case 1:
                 id = R.drawable.squat;
                 break;
-            case "Hollow Hold":
+            case 2:
                 id = R.drawable.hollow_hold;
                 break;
-            case "Lunges":
+            case 3:
                 id = R.drawable.lunges;
                 break;
-            case "Back Extensión Hold":
+            case 4:
                 id = R.drawable.back_extension_hold;
                 break;
-            case "Plank":
+            case 5:
                 id = R.drawable.plank;
                 break;
-            case "Sit ups":
+            case 6:
                 id = R.drawable.sit_ups;
                 break;
-            case "Jumping Jacks":
+            case 7:
                 id = R.drawable.jumping_jacks;
                 break;
-            case "Push Up":
+            case 8:
                 id = R.drawable.push_up;
                 break;
-            case "Dips":
+            case 9:
                 id = R.drawable.dips;
                 break;
-            case "Burpees":
+            case 10:
                 id = R.drawable.burpees;
                 break;
-            case "Leg Raises":
+            case 11:
                 id = R.drawable.ab_infer;
                 break;
-            case "Bicycle Crunches":
+            case 12:
                 id = R.drawable.bicycle_crunches;
                 break;
         }
