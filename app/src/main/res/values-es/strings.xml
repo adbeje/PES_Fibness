@@ -132,15 +132,35 @@
     <string name="WriteAMessage">Escribe un mensaje</string>
     <string name="Previously">Previamente</string>
 
-    <string name="Edit">Editar</string>
     <string name="AddAName">Añade un nombre</string>
     <string name="Diet">Dieta</string>
 
-    <string name="PleaseAddAName">Porfavor, añade un nombre</string>
+    <string name="PleaseAddAName">Por favor, añade un nombre</string>
     <string name="NameAlreadyUsed">Este nombre ya se ha utilizado</string>
     <string name="Meal">Comida</string>
-    <string name="AddAnHour">Porfavor, añade una hora</string>
-    <string name="AddAValidName">Porfavor, añade una hora válida</string>
-    <string name="PleaseAddMinutes">Porfavor, añade minutos</string>
+    <string name="AddAnHour">Por favor, añade una hora</string>
+    <string name="AddAValidHour">Por favor, añade una hora válida</string>
+    <string name="PleaseAddMinutes">Por favor, añade minutos</string>
+    <string name="AddValidMinutes">Por favor, añade minutos válidos</string>
+    <string name="AddANumber">Por favor, añade un número</string>
+    <string name="Food">Alimento</string>
+    <string name="Exercise">Ejercicio</string>
+    <string name="Training">Entrenamiento</string>
+
+    <!-- Array Ejercicios -->
+    <string-array name="exercises">
+        <item>Selecciona ejercico</item>
+        <item>Squat</item>
+        <item>Hollow Hold</item>
+        <item>Lunges</item>
+        <item>Back Extensión Hold</item>
+        <item>Plank</item>
+        <item>Sit ups</item>
+        <item>Jumping Jacks</item>
+        <item>Push Up</item>
+        <item>Dips</item>
+        <item>Burpees</item>
+        <item>Leg Raises</item>
+    </string-array>
 
 </resources>

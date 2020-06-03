@@ -74,7 +74,7 @@ public class EntrenamientosFragment extends Fragment {
     private void showEditBox(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(R.layout.input_edit_training);
-        builder.setTitle("Edit " + trainingList.get(position));
+        builder.setTitle(getString(R.string.edit) + " " + trainingList.get(position));
         final AlertDialog dialog = builder.create();
         dialog.show();
         final EditText editNameText = (EditText) dialog.findViewById(R.id.editTitleTraininginput);
@@ -89,11 +89,11 @@ public class EntrenamientosFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (editNameText.getText().toString().trim().length() == 0) {
-                    editNameText.setError("Please, add a name");
+                    editNameText.setError(getString(R.string.PleaseAddAName));
                 }
                 else if (trainingList.contains(editNameText.getText().toString()) &&
                         !trainingList.get(position).equals(editNameText.getText().toString())){
-                        editNameText.setError("This name is already used");
+                        editNameText.setError(getString(R.string.NameAlreadyUsed));
                 }
                 else {
                     int idTraining = User.getInstance().getTrainingID(trainingList.get(position));
@@ -134,11 +134,11 @@ public class EntrenamientosFragment extends Fragment {
     public void showInputBox() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(R.layout.input_new_training);
-        builder.setTitle("Training");
+        builder.setTitle(getString(R.string.Training));
         final AlertDialog dialog = builder.create();
         dialog.show();
         TextView txt = (TextView) dialog.findViewById(R.id.inputboxTitleTraining);
-        txt.setText("Add a name");
+        txt.setText(getString(R.string.AddAName));
         final EditText editNameText = (EditText) dialog.findViewById(R.id.TitleTraininginput);
         final EditText editDescText = (EditText) dialog.findViewById(R.id.DescNewTraining);
         Button bt = (Button) dialog.findViewById(R.id.btdone);
@@ -146,10 +146,10 @@ public class EntrenamientosFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (editNameText.getText().toString().trim().length() == 0) {
-                    editNameText.setError("Please, add a name");
+                    editNameText.setError(getString(R.string.PleaseAddAName));
                 }
                 else if (trainingList.contains(editNameText.getText().toString())){
-                    editNameText.setError("This name is already used");
+                    editNameText.setError(getString(R.string.NameAlreadyUsed));
                 }
                 else {
                     Training t = new Training();

@@ -132,15 +132,35 @@
 
     <string name="WriteAMessage">Write a message</string>
     <string name="Previously">Previously</string>
-    
-    <string name="Edit">Edit</string>
+
     <string name="AddAName">Add a name</string>
     <string name="Diet">Diet</string>
     <string name="PleaseAddAName">Please, add a name</string>
     <string name="NameAlreadyUsed">This name is already used</string>
     <string name="Meal">Meal</string>
     <string name="AddAnHour">Please, add an Hour</string>
-    <string name="AddAValidName">Please, add a valid Hour</string>
+    <string name="AddAValidHour">Please, add a valid Hour</string>
     <string name="PleaseAddMinutes">Please, add Minutes</string>
+    <string name="AddValidMinutes">Please, add valid Minutes</string>
+    <string name="AddANumber">Please, add a number</string>
+    <string name="Food">Food</string>
+    <string name="Exercise">Exercise</string>
+    <string name="Training">Training</string>
+
+    <!-- Array Ejercicios -->
+    <string-array name="exercises">
+        <item>Select exercise</item>
+        <item>Squat</item>
+        <item>Hollow Hold</item>
+        <item>Lunges</item>
+        <item>Back Extensión Hold</item>
+        <item>Plank</item>
+        <item>Sit ups</item>
+        <item>Jumping Jacks</item>
+        <item>Push Up</item>
+        <item>Dips</item>
+        <item>Burpees</item>
+        <item>Leg Raises</item>
+    </string-array>
 
 </resources>
