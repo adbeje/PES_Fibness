@@ -149,6 +149,12 @@ public class ChatActivity extends AppCompatActivity implements RoomListener  {
         User_name = extras.getString("name");
         channelID = extras.getString("channelID");
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
 
 class MemberData {

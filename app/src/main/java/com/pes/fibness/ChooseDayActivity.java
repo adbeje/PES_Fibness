@@ -96,4 +96,9 @@ public class ChooseDayActivity extends AppCompatActivity {
         titleDiet = extras.getString("title");
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

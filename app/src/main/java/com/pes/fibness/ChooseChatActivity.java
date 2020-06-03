@@ -52,4 +52,9 @@ public class ChooseChatActivity extends AppCompatActivity {
         chatList.setAdapter(new ArrayAdapter<String>(this, R.layout.row, listaChat));
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

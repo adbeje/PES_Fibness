@@ -241,6 +241,11 @@ public class MealActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
 
 class Meal_Adap extends BaseAdapter {
