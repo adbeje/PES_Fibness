@@ -90,9 +90,8 @@ public class ProfileFragment extends Fragment {
         chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent chat = new Intent(getActivity(), ChatActivity.class);
-                chat.putExtra("name", User.getInstance().getName());
-                startActivity(chat);
+                Intent chatList = new Intent(getActivity(), ChooseChatActivity.class);
+                startActivity(chatList);
             }
         });
 

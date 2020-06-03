@@ -33,7 +33,7 @@ import java.util.Random;
 
 public class ChatActivity extends AppCompatActivity implements RoomListener  {
 
-    private String channelID = "qcDKk1BcW8uJEtZU";
+    private String channelID;
     private String roomName = "observable-room";
     private EditText editText;
     private Scaledrone scaledrone;
@@ -147,6 +147,7 @@ public class ChatActivity extends AppCompatActivity implements RoomListener  {
     private void getExtras(){
         Bundle extras = getIntent().getExtras();
         User_name = extras.getString("name");
+        channelID = extras.getString("channelID");
     }
 }
 

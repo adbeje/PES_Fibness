@@ -18,6 +18,7 @@ public class User {
     private byte[] image;
     private boolean[] settings = new boolean[5]; /*0 = Age, 1 = Distance, 2 = Invitation , 3 = Follower, 4 = Message*/
     private String recoveryCode;
+    private ArrayList<Pair<String, String> > Chats = new ArrayList<Pair<String, String> >();
 
     /*User fitness*/
     private static ArrayList<Training> trainingList = new ArrayList<>();
@@ -406,6 +407,29 @@ public class User {
         alimentList.get(pos).id = newID;
     }
 
+    /**Chats**/
+    public ArrayList<String> getChatsName(){
+        if(Chats.size() < 1) iniChats();
+        ArrayList<String> ChatsName = new ArrayList<String>();
+        for(int i = 0; i < Chats.size(); i++){
+            ChatsName.add(Chats.get(i).first);
+        }
+        return ChatsName;
+    }
+
+    public String getChannelID(int position){
+        return Chats.get(position).second;
+    }
+
+    private void iniChats(){
+        Chats.add(new Pair("prueba", "h9CfVtj8v1Ze3GuX"));
+        Chats.add(new Pair("Trainings", "ecvi0PNesQSdBcBK"));
+        Chats.add(new Pair("Diets", "PRYFLbm0FZp1JB3i"));
+        Chats.add(new Pair("Routes", "rEejgq7VGoTc1bci"));
+        Chats.add(new Pair("Routes", "rEejgq7VGoTc1bci"));
+        Chats.add(new Pair("Events", "bFeChQnd1FrN0ic5"));
+        Chats.add(new Pair("Others", "OhFX7jCm248D2Ddm"));
+    }
 }
 
 
