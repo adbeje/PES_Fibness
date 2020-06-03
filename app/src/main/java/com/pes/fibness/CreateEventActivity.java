@@ -38,6 +38,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 
@@ -223,7 +225,24 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
                 // Set up a new symbol layer for displaying the searched location's feature coordinates
                 setupLayer(style);
 
-                if(!newEvent) addCameraPosition();
+                if (!newEvent) {
+                    if (mapboxMap != null) {
+                        if (style != null) {
+                            GeoJsonSource source = style.getSourceAs(geojsonSourceLayerId);
+                            if (source != null) {
+                                source.setGeoJson(FeatureCollection.fromFeatures(
+                                        new Feature[]{Feature.fromGeometry(place)}));
+                            }
+
+                            // Move map camera to the selected location
+                            mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                                    new CameraPosition.Builder()
+                                            .target(new LatLng(place.latitude(), place.longitude()))
+                                            .zoom(15)
+                                            .build()), 4000);
+                        }
+                    }
+                }
             }
         });
     }
@@ -271,6 +290,7 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
             // Retrieve selected location's CarmenFeature
             CarmenFeature selectedCarmenFeature = PlaceAutocomplete.getPlace(data);
 
+
             // Create a new FeatureCollection and add a new Feature to it using selectedCarmenFeature above.
             // Then retrieve and update the source designated for showing a selected location's symbol layer icon
 
@@ -284,7 +304,6 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
                     }
 
                     // Move map camera to the selected location
-//////////////////////Aqui es donde nos quedaria la posición del evento en el CarmenFeature//////////////////////
                     mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(
                             new CameraPosition.Builder()
                                     .target(new LatLng(((Point) selectedCarmenFeature.geometry()).latitude(),
@@ -351,6 +370,21 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
         place = (Point) extras.get("place");
         id = extras.getInt("id");
         pos = extras.getInt("position");
+    }
+
+    private void addDestinationIconSymbolLayer(@NonNull Style loadedMapStyle) {
+
+        loadedMapStyle.addImage("destination-icon-id",
+                BitmapFactory.decodeResource(this.getResources(), R.drawable.mapbox_marker_icon_default));
+        GeoJsonSource geoJsonSource = new GeoJsonSource("destination-source-id");
+        loadedMapStyle.addSource(geoJsonSource);
+        SymbolLayer destinationSymbolLayer = new SymbolLayer("destination-symbol-layer-id", "destination-source-id");
+        destinationSymbolLayer.withProperties(
+                iconImage("destination-icon-id"),
+                iconAllowOverlap(true),
+                iconIgnorePlacement(true)
+        );
+        loadedMapStyle.addLayer(destinationSymbolLayer);
     }
 
 }
