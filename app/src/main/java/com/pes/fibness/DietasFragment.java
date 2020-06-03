@@ -72,7 +72,7 @@ public class DietasFragment extends Fragment {
     private void showEditBox(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(R.layout.input_edit_diet);
-        builder.setTitle(getString(R.string.Edit) + dietList.get(position));
+        builder.setTitle(getString(R.string.edit) + " " + dietList.get(position));
         final AlertDialog dialog = builder.create();
         dialog.show();
         final EditText editNameText = (EditText) dialog.findViewById(R.id.editTitleDietInput);

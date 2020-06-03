@@ -118,7 +118,6 @@ public class ChatActivity extends AppCompatActivity implements RoomListener  {
         final ObjectMapper mapper = new ObjectMapper();
         try {
             final MemberData data = mapper.treeToValue(receivedMessage.getMember().getClientData(), MemberData.class);
-            System.out.println("Nombre " + data.getName());
             boolean belongsToCurrentUser = receivedMessage.getClientID().equals(scaledrone.getClientID());
             final Message message = new Message(receivedMessage.getData().asText(), data, belongsToCurrentUser);
             runOnUiThread(new Runnable() {

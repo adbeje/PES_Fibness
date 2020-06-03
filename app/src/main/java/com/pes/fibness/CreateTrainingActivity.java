@@ -53,7 +53,6 @@ public class CreateTrainingActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                System.out.println("Entra");
                 showChooseOption();
                 isNew = false;
                 refreshList();
@@ -98,7 +97,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
     private void showEditExBox(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(CreateTrainingActivity.this);
         builder.setView(R.layout.input_edit_exercise);
-        builder.setTitle("Exercise");
+        builder.setTitle(getString(R.string.Exercise));
         final AlertDialog dialog = builder.create();
         dialog.show();
         final Spinner txtNameS = (Spinner) dialog.findViewById(R.id.ExerciseTitle_edit);
@@ -121,15 +120,15 @@ public class CreateTrainingActivity extends AppCompatActivity {
                     correct = false;
                 }
                 if (numRest.getText().toString().trim().length() == 0) {
-                    numRest.setError("Please, add a number");
+                    numRest.setError(getString(R.string.AddANumber));
                     correct = false;
                 }
                 if (numRepet.getText().toString().trim().length() == 0) {
-                    numRepet.setError("Please, add a number");
+                    numRepet.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (numSeries.getText().toString().trim().length() == 0) {
-                    numSeries.setError("Please, add a number");
+                    numSeries.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (correct) {
@@ -172,7 +171,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
     private void showEditExBoxPers(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(CreateTrainingActivity.this);
         builder.setView(R.layout.input_edit_exercise_pers);
-        builder.setTitle("Exercise");
+        builder.setTitle(getString(R.string.Exercise));
         final AlertDialog dialog = builder.create();
         dialog.show();
         final EditText txtName = (EditText) dialog.findViewById(R.id.ExerciseTitle_edit);
@@ -192,19 +191,19 @@ public class CreateTrainingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean correct = true;
                 if (txtName.getText().toString().trim().length() == 0) {
-                    txtName.setError("Please, add a name");
+                    txtName.setError(getString((R.string.PleaseAddAName)));
                     correct = false;
                 }
                 if (numRest.getText().toString().trim().length() == 0) {
-                    numRest.setError("Please, add a number");
+                    numRest.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (numRepet.getText().toString().trim().length() == 0) {
-                    numRepet.setError("Please, add a number");
+                    numRepet.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (numSeries.getText().toString().trim().length() == 0) {
-                    numSeries.setError("Please, add a number");
+                    numSeries.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (correct) {
@@ -233,7 +232,6 @@ public class CreateTrainingActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 int idExercise = User.getInstance().getExerciseID(position);
-                System.out.println("IDDDD " + idExercise);
                 ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/exercise/" + idExercise );
                 c.deleteTrainingExercises();
 
@@ -253,7 +251,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
     private void showNewExercisePers() {
         AlertDialog.Builder builder = new AlertDialog.Builder(CreateTrainingActivity.this);
         builder.setView(R.layout.input_new_exercise_pers);
-        builder.setTitle("Exercise");
+        builder.setTitle(getString(R.string.Exercise));
         final AlertDialog dialog = builder.create();
         dialog.show();
         final EditText txtName = (EditText) dialog.findViewById(R.id.ExerciseTitle);
@@ -267,19 +265,19 @@ public class CreateTrainingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean correct = true;
                 if (txtName.getText().toString().trim().length() == 0) {
-                    txtName.setError("Please, add a name");
+                    txtName.setError(getString((R.string.PleaseAddAName)));
                     correct = false;
                 }
                 if (numRepet.getText().toString().trim().length() == 0) {
-                    numRepet.setError("Please, add a number");
+                    numRepet.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (numRest.getText().toString().trim().length() == 0) {
-                    numRest.setError("Please, add a number");
+                    numRest.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (numSeries.getText().toString().trim().length() == 0) {
-                    numSeries.setError("Please, add a number");
+                    numSeries.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (correct) {
@@ -310,7 +308,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
     private void showNewExercise() {
         AlertDialog.Builder builder = new AlertDialog.Builder(CreateTrainingActivity.this);
         builder.setView(R.layout.input_new_exercise);
-        builder.setTitle("Exercise");
+        builder.setTitle(getString(R.string.Exercise));
         final AlertDialog dialog = builder.create();
         dialog.show();
         final Spinner txtNameS = (Spinner) dialog.findViewById(R.id.ExerciseTitle);
@@ -327,15 +325,15 @@ public class CreateTrainingActivity extends AppCompatActivity {
                     correct = false;
                 }
                 if (numRepet.getText().toString().trim().length() == 0) {
-                    numRepet.setError("Please, add a number");
+                    numRepet.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (numRest.getText().toString().trim().length() == 0) {
-                    numRest.setError("Please, add a number");
+                    numRest.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (numSeries.getText().toString().trim().length() == 0) {
-                    numSeries.setError("Please, add a number");
+                    numSeries.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (correct) {
