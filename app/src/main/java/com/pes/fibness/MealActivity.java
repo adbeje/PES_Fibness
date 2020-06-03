@@ -178,7 +178,7 @@ public class MealActivity extends AppCompatActivity {
     private void showNewMeal() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MealActivity.this);
         builder.setView(R.layout.input_new_meal);
-        builder.setTitle("Meal");
+        builder.setTitle(getString(R.string.Meal));
         final AlertDialog dialog = builder.create();
         dialog.show();
         final EditText txtName = (EditText) dialog.findViewById(R.id.NewNameMeal);
@@ -190,19 +190,19 @@ public class MealActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean correct = true;
                 if (txtName.getText().toString().trim().length() == 0) {
-                    txtName.setError("Please, add a name");
+                    txtName.setError(getString(R.string.AddAName));
                     correct = false;
                 }
                 if (txtHour.getText().toString().trim().length() == 0) {
-                    txtHour.setError("Please, add an Hour");
+                    txtHour.setError(getString(R.string.AddAnHour));
                     correct = false;
                 }
                 else if (Integer.valueOf(txtHour.getText().toString()) > 23 || txtHour.getText().toString().length() > 2) {
-                    txtHour.setError("Please, add a valid Hour");
+                    txtHour.setError(getString(R.string.AddAValidName));
                     correct = false;
                 }
                 if (txtMin.getText().toString().trim().length() == 0) {
-                    txtMin.setError("Please, add Minutes");
+                    txtMin.setError(getString(R.string.PleaseAddMinutes));
                     correct = false;
                 }
                 else if (Integer.valueOf(txtMin.getText().toString()) > 59 || txtMin.getText().toString().length() > 2) {

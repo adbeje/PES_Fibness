@@ -122,5 +122,9 @@
 
     <string name="PleaseAddAName">Porfavor, añade un nombre</string>
     <string name="NameAlreadyUsed">Este nombre ya se ha utilizado</string>
+    <string name="Meal">Comida</string>
+    <string name="AddAnHour">Porfavor, añade una hora</string>
+    <string name="AddAValidName">Porfavor, añade una hora válida</string>
+    <string name="PleaseAddMinutes">Porfavor, añade minutos</string>
 
 </resources>

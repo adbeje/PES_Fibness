@@ -121,5 +121,9 @@
     <string name="Diet">Diet</string>
     <string name="PleaseAddAName">Please, add a name</string>
     <string name="NameAlreadyUsed">This name is already used</string>
+    <string name="Meal">Meal</string>
+    <string name="AddAnHour">Please, add an Hour</string>
+    <string name="AddAValidName">Please, add a valid Hour</string>
+    <string name="PleaseAddMinutes">Please, add Minutes</string>
 
 </resources>
