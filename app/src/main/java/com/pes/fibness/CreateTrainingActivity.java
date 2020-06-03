@@ -116,7 +116,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean correct = true;
                 String txtName = (String) txtNameS.getSelectedItem();
-                if (txtName.equals("Select exercise")) {
+                if (txtName.equals(getString(R.string.SelectExercise))) {
                     correct = false;
                 }
                 if (numRest.getText().toString().trim().length() == 0) {
@@ -137,7 +137,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
                     t2.NumSerie = numSeries.getText().toString();
                     t2.NumRest = numRest.getText().toString();
                     t2.NumRepet = numRepet.getText().toString();
-                    t2.Pos = User.getInstance().getExerciseNamePos(position);
+                    t2.Pos = txtNameS.getSelectedItemPosition();
                     int idExercise = User.getInstance().getExerciseID(position);
                     t2.id = idExercise;
 
@@ -421,9 +421,9 @@ class Exercise_Adap extends BaseAdapter {
                 image.setImageResource(R.drawable.logoazulflojo);
                 Desc.setText(dades.get(position).Desc);
             }
-            series.setText("SERIES: " + dades.get(position).NumSerie);
-            rest.setText("REST: " + dades.get(position).NumRest + "s");
-            repet.setText("REPETITIONS: " + dades.get(position).NumRepet);
+            series.setText(dades.get(position).NumSerie);
+            rest.setText(dades.get(position).NumRest + "s");
+            repet.setText(dades.get(position).NumRepet);
         }
 
         return vista;

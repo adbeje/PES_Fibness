@@ -146,6 +146,7 @@
     <string name="Food">Food</string>
     <string name="Exercise">Exercise</string>
     <string name="Training">Training</string>
+    <string name="SelectExercise">Select exercise</string>
 
     <!-- Array Ejercicios -->
     <string-array name="exercises">
