@@ -44,6 +44,9 @@
     <color name="deseleccion">#1affffff </color>
     <color name="deseleccion_alt">#66ffffff</color>
 
+    <color name="red">#FFF44336</color>
+    <color name="c_icon_like">#145795</color>
+
     <!-- colors for achievement page-->
     <color name="color1">#424549</color>
     <color name="color2">#7e455e</color>

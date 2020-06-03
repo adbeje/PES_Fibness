@@ -22,19 +22,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".TrainingCommentActivity"></activity>
+        <activity android:name=".ShowTrainingActivity" />
         <activity
             android:name=".FollowingActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".FollowersActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".SelectedUserActivity" />
         <activity
             android:name=".SearchUsersActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -43,13 +45,12 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
-
         <activity
-        android:name=".MapViewActivity"
-        android:theme="@style/AppTheme.NoActionBar"/>
+            android:name=".MapViewActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MapEditActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AchievementsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -57,10 +58,8 @@
         <activity
             android:name=".ResetPasswordActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".SettingsActivity" />
-        <activity
-            android:name=".EditProfileActivity" />
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".EditProfileActivity" />
         <activity
             android:name=".CreateTrainingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -69,10 +68,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ChooseDayActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MealActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />

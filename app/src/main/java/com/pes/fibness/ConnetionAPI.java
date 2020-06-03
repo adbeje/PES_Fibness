@@ -556,29 +556,52 @@ public class ConnetionAPI {
             @Override
             public void onResponse(String response) {
                 try {
+                    System.out.println("--------------Exercise-------------------");
+                    System.out.println(response);
                     JSONArray exercises = new JSONArray(response);
-                    ArrayList<Exercise> exerciseList = new ArrayList<>();
-                    for(int i = 0; i < exercises.length(); i++){
-                        JSONObject exercise = exercises.getJSONObject(i);
-                        Exercise e = new Exercise();
-                        e.TitleEx = (String) exercise.getString("nombre");
-                        e.Pos = (Integer) exercise.getInt("posicion");
-                        int numRest = (Integer) exercise.getInt("tiempodescanso");
-                        e.NumRest = String.valueOf(numRest);
-                        int numSerie = (Integer) exercise.getInt("numsets");
-                        e.NumSerie = String.valueOf(numSerie);
-                        int numRept = (Integer) exercise.getInt("numrepeticiones");
-                        e.NumRepet = String.valueOf(numRept);
-                        e.Desc = (String) exercise.getString("descripcion");
-                        e.id = (Integer) exercise.getInt("idactividad");
-                        exerciseList.add(e);
+
+                    if(!title.equals("chivato")){
+                        ArrayList<Exercise> exerciseList = new ArrayList<>();
+                        for(int i = 0; i < exercises.length(); i++){
+                            JSONObject exercise = exercises.getJSONObject(i);
+                            Exercise e = new Exercise();
+                            e.TitleEx = (String) exercise.getString("nombre");
+                            e.Pos = (Integer) exercise.getInt("posicion");
+                            int numRest = (Integer) exercise.getInt("tiempodescanso");
+                            e.NumRest = String.valueOf(numRest);
+                            int numSerie = (Integer) exercise.getInt("numsets");
+                            e.NumSerie = String.valueOf(numSerie);
+                            int numRept = (Integer) exercise.getInt("numrepeticiones");
+                            e.NumRepet = String.valueOf(numRept);
+                            e.Desc = (String) exercise.getString("descripcion");
+                            e.id = (Integer) exercise.getInt("idactividad");
+                            exerciseList.add(e);
+                        }
+                        User.getInstance().setExerciseList(exerciseList);
+                        Intent TrainingPage = new Intent(context, CreateTrainingActivity.class);
+                        TrainingPage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        TrainingPage.putExtra("new", false);
+                        TrainingPage.putExtra("title", title);
+                        context.startActivity(TrainingPage);
                     }
-                    User.getInstance().setExerciseList(exerciseList);
-                    Intent TrainingPage = new Intent(context, CreateTrainingActivity.class);
-                    TrainingPage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    TrainingPage.putExtra("new", false);
-                    TrainingPage.putExtra("title", title);
-                    context.startActivity(TrainingPage);
+                    else{
+                        ArrayList<ExerciseExtra> eel = new ArrayList<>();
+                        for(int i = 0; i < exercises.length(); i++){
+                            JSONObject exercise = exercises.getJSONObject(i);
+                            ExerciseExtra exc = new ExerciseExtra();
+                            exc.title = (String) exercise.getString("nombre");
+                            exc.numRest = (Integer) exercise.getInt("tiempodescanso");
+                            exc.numSerie = (Integer) exercise.getInt("numsets");;
+                            exc.numRep = (Integer) exercise.getInt("numrepeticiones");
+                            exc.desc = (String) exercise.getString("descripcion");
+                            exc.id = (Integer) exercise.getInt("idactividad");
+                            eel.add(exc);
+                        }
+                        User.getInstance().setExerciseExtras(eel);
+                    }
+
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -732,17 +755,28 @@ public class ConnetionAPI {
             @Override
             public void onResponse(String response) {
                 try {
+                    System.out.println("------------------------trainings------------------------------");
+                    System.out.println(response);
                     JSONArray trainings = new JSONArray(response);
                     ArrayList<Training> trainingList = new ArrayList<>();
+                    ArrayList<TrainingExtra> te = new ArrayList<>();
                     for(int i = 0; i < trainings.length(); i++){
                         JSONObject training = trainings.getJSONObject(i);
                         Training t = new Training();
+                        TrainingExtra tn = new TrainingExtra();
                         t.name = (String) training.getString("nombre");
                         t.desc = (String) training.getString("descripcion");
                         t.id = (Integer) training.getInt("idelemento");
                         trainingList.add(t);
+                        tn.id = (Integer) training.getInt("idelemento");
+                        tn.name = (String) training.getString("nombre");
+                        tn.desc = (String) training.getString("descripcion");
+                        tn.nLikes = (Integer) training.getInt("nlikes");
+                        tn.nComment = (Integer) training.getInt("ncomentarios");
+                        te.add(tn);
                     }
                     User.getInstance().setTrainingList(trainingList);
+                    User.getInstance().setTrainingExtra(te);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1770,6 +1804,71 @@ public class ConnetionAPI {
     }
 
 
+    public void likeElement(int userId, int id, String element) {
+        System.out.println("DENTRO DE likeElement");
+
+        final String data = "{"+
+                "\"idUser\": " + "\"" + userId + "\"," +
+                "\"idElement\": " + "\"" + id + "\"," +
+                "\"type\": " + "\"" + element+ "\"" +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("Follow response: " + response);
+                Toast.makeText(context, "Liked", Toast.LENGTH_LONG).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Message error: " + error);
+                Toast.makeText(context, "Can't like", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                try {
+                    return data == null ? null: data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+            }
+
+        };
+        enqueue();
+
+
+
+    }
+
+
+    public void deleteElementLike() {
+        System.out.println("DENTRO DE deleteElementLike");
+        request = new StringRequest(Request.Method.DELETE, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Respuesta: "+ response);
+                Toast.makeText(getApplicationContext(), "Unliked", Toast.LENGTH_SHORT).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Can't unliked", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
+
+    }
 
 
 

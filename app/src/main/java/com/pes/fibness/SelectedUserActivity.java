@@ -15,6 +15,8 @@ import android.graphics.ColorSpace;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -143,6 +145,31 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
 
             }
         });
+
+
+
+        btn_training.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /**cargo entrenamientos*/
+                ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + userModel.getId() + "/trainings");
+                c.getUserTrainings();
+
+                @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                    @Override
+                    public void handleMessage(Message msg) {
+                        Intent i = new Intent().setClass(SelectedUserActivity.this, ShowTrainingActivity.class).putExtra("data", userModel);
+                        i.putExtra("name", "SelectedUserActivity");
+                        startActivity(i);
+                    }
+                };
+                h.sendEmptyMessageDelayed(0, 100);
+
+
+
+            }
+        });
+
 
     }
 

@@ -36,6 +36,9 @@ public class User {
     private ArrayList<Pair<Integer, String>> userFollowers = new ArrayList<>();
     private ArrayList<Pair<Integer, String>> userFollowing = new ArrayList<>();
 
+    private static ArrayList<TrainingExtra> trainingExtra = new ArrayList<>();
+    private static ArrayList<ExerciseExtra> exerciseExtras = new ArrayList<>();
+
     /*we are applying singleton because we will have an instance for each aplication user*/
     private static User instance = null;
     private User(){
@@ -197,6 +200,14 @@ public class User {
         return -1;
     }
 
+    public ArrayList<TrainingExtra> getTrainingExtra() {
+        return trainingExtra;
+    }
+
+    public void setTrainingExtra(ArrayList<TrainingExtra> trainingExtra) {
+        this.trainingExtra = trainingExtra;
+    }
+
     /** Exercises **/
     public ArrayList<Exercise> getExerciseList(){
         return exerciseList;
@@ -223,6 +234,10 @@ public class User {
     public int getExerciseID(int position){ return exerciseList.get(position).id;  }
 
     public int getExerciseNamePos(int position){ return exerciseList.get(position).Pos;  }
+
+    public static ArrayList<ExerciseExtra> getExerciseExtras() { return exerciseExtras; }
+    public static void setExerciseExtras(ArrayList<ExerciseExtra> exerciseExtras) { User.exerciseExtras = exerciseExtras; }
+
 
     /** Diets **/
     public void setDietList(ArrayList<Diet> d){
@@ -427,6 +442,15 @@ class Training{
     String desc;
 }
 
+class TrainingExtra{
+    int id;
+    String name;
+    String desc;
+    int nLikes;
+    int nComment;
+}
+
+
 class Exercise{
     int id;
     String TitleEx;
@@ -436,6 +460,18 @@ class Exercise{
     int  Pos;
     String Desc;
 }
+
+class ExerciseExtra{
+    int id;
+    String title;
+    int numRep;
+    int numSerie;
+    int numRest;
+    String desc;
+}
+
+
+
 
 class Diet{
     int id;
