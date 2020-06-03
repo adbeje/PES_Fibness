@@ -1,15 +1,12 @@
 package com.pes.fibness;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.api.staticmap.v1.MapboxStaticMap;
 import com.mapbox.api.staticmap.v1.StaticMapCriteria;
@@ -27,7 +23,6 @@ import com.mapbox.geojson.Point;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.EventListener;
 
 public class EventosFragment extends Fragment{
 
@@ -35,7 +30,6 @@ public class EventosFragment extends Fragment{
     RecyclerView listEvents;
     AdapterEventos adapterC;
     AdapterEventos adapterM;
-    boolean comunity = true;
     ArrayList<Evento> mEventosList = new ArrayList<>();
     ArrayList<Evento> cEventosList = new ArrayList<>();
 
@@ -67,6 +61,8 @@ public class EventosFragment extends Fragment{
                 view_event.putExtra("date", mEventosList.get(pos).date);
                 view_event.putExtra("hour", mEventosList.get(pos).hour);
                 view_event.putExtra("place", mEventosList.get(pos).place);
+                ConnetionAPI connection = new ConnetionAPI(getContext(), "http://10.4.41.146:3001/event/" + mEventosList.get(pos).id + "/participants");
+                connection.getParticipants();
                 startActivity(view_event);
             }
         });
@@ -83,7 +79,8 @@ public class EventosFragment extends Fragment{
                 view_event.putExtra("date", cEventosList.get(pos).date);
                 view_event.putExtra("hour", cEventosList.get(pos).hour);
                 view_event.putExtra("place", cEventosList.get(pos).place);
-
+                ConnetionAPI connection = new ConnetionAPI(getContext(), "http://10.4.41.146:3001/event/" + cEventosList.get(pos).id + "/participants");
+                connection.getParticipants();
                 startActivity(view_event);
             }
         });
@@ -106,23 +103,22 @@ public class EventosFragment extends Fragment{
                 newEvent.setClickable(true);
                 mEvents.setTextColor(getResources().getColor(R.color.seleccion));
                 cEvents.setTextColor(getResources().getColor(R.color.blanco));
-                comunity = false;
-                updateRecycler();
+                mEventosList = User.getInstance().getMyEvents();
+                listEvents.setAdapter(adapterM);
+                adapterM.notifyDataSetChanged();
             }
         });
 
         cEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConnetionAPI connection = new ConnetionAPI(getContext(), "http://10.4.41.146:3001/event");
-                connection.getAllEvents();
                 newEvent.setVisibility(View.INVISIBLE);
                 newEvent.setClickable(false);
                 cEvents.setTextColor(getResources().getColor(R.color.seleccion));
                 mEvents.setTextColor(getResources().getColor(R.color.blanco));
-                comunity = true;
-                updateRecycler();
-                //delay 1 sec
+                cEventosList = User.getInstance().getComunityEvents();
+                listEvents.setAdapter(adapterC);
+                adapterC.notifyDataSetChanged();
             }
         });
 
@@ -130,26 +126,20 @@ public class EventosFragment extends Fragment{
 
     }
 
-    private void updateRecycler(){
-        if(comunity){
-            cEventosList = User.getInstance().getComunityEvents();
-            adapterC.notifyDataSetChanged();
-            listEvents.setAdapter(adapterC);
-        }
-        else{
-            mEventosList = User.getInstance().getMyEvents();
-            adapterM.notifyDataSetChanged();
-            listEvents.setAdapter(adapterM);
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
-        mEventosList = User.getInstance().getMyEvents();
-        cEventosList = User.getInstance().getComunityEvents();
-        adapterC.notifyDataSetChanged();
-        adapterM.notifyDataSetChanged();
+        ConnetionAPI connection = new ConnetionAPI(getContext(), "http://10.4.41.146:3001/event");
+        connection.getAllEvents();
+        new Handler().postDelayed(new Runnable(){
+            public void run(){
+                mEventosList = User.getInstance().getMyEvents();
+                cEventosList = User.getInstance().getComunityEvents();
+                adapterC.notifyDataSetChanged();
+                adapterM.notifyDataSetChanged();
+            }
+        }, 200);
+
     }
 
 }

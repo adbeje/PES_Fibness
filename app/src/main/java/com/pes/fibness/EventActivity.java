@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,33 +15,24 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.mapbox.android.core.permissions.PermissionsListener;
-import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.location.LocationComponent;
-import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
-
-import java.util.List;
-import java.util.Objects;
 
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 
-public class EventActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener {
+public class EventActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     int id;
     String title;
@@ -58,8 +51,6 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
 
     private MapView mapView;
     private MapboxMap mapboxMap;
-    private LocationComponent locationComponent;
-    private PermissionsManager permissionsManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,9 +58,6 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         Mapbox.getInstance(this, getString(R.string.mapBox_ACCESS_TOKEN));
         setContentView(R.layout.activity_view_event);
         getExtras();
-
-        ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/event/" + id + "/participants");
-        connection.getParticipants();
 
         delete = findViewById(R.id.btn_delete_event);
         edit = findViewById(R.id.btn_edit_event);
@@ -81,32 +69,35 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         ((TextView) findViewById(R.id.descEvent)).setText(desc);
         ((TextView) findViewById(R.id.dateEvent)).setText(date);
         ((TextView) findViewById(R.id.hourEvent)).setText(hour);
-
-        if(comunity){
-            delete.setVisibility(View.INVISIBLE);
-            delete.setClickable(false);
-            edit.setVisibility(View.INVISIBLE);
-            edit.setClickable(false);
-            join.setVisibility(View.VISIBLE);
-            join.setClickable(true);
-            participa = User.getInstance().participa();
-            if(participa){
-                join.setBackground(getResources().getDrawable(R.drawable.btn_bg));
-                join.setText("Leave");
+        new Handler().postDelayed(new Runnable(){
+            public void run(){
+                if(comunity){
+                    delete.setVisibility(View.INVISIBLE);
+                    delete.setClickable(false);
+                    edit.setVisibility(View.INVISIBLE);
+                    edit.setClickable(false);
+                    join.setVisibility(View.VISIBLE);
+                    join.setClickable(true);
+                    participa = User.getInstance().participa();
+                    if(participa){
+                        join.setBackground(getResources().getDrawable(R.drawable.btn_bg));
+                        join.setText("Leave");
+                    }
+                    else{
+                        join.setBackground(getResources().getDrawable(R.drawable.btn_bg_sel));
+                        join.setText("Join");
+                    }
+                }
+                else{
+                    delete.setVisibility(View.VISIBLE);
+                    delete.setClickable(true);
+                    edit.setVisibility(View.VISIBLE);
+                    edit.setClickable(true);
+                    join.setVisibility(View.INVISIBLE);
+                    join.setClickable(false);
+                }
             }
-            else{
-                join.setBackground(getResources().getDrawable(R.drawable.btn_bg_sel));
-                join.setText("Join");
-            }
-        }
-        else{
-            delete.setVisibility(View.VISIBLE);
-            delete.setClickable(true);
-            edit.setVisibility(View.VISIBLE);
-            edit.setClickable(true);
-            join.setVisibility(View.INVISIBLE);
-            join.setClickable(false);
-        }
+        }, 100);
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,8 +151,8 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         participantes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent participants = new Intent(EventActivity.this, ParticipantsActivity.class);
-                //startActivity(participants);
+                Intent participants = new Intent(EventActivity.this, ParticipantsActivity.class);
+                startActivity(participants);
             }
         });
 
@@ -185,7 +176,6 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         mapboxMap.setStyle(getString(R.string.navigation_guidance_day), new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull Style style) {
-                enableLocationComponent(style);
                 addDestinationIconSymbolLayer(style);
                 GeoJsonSource source = mapboxMap.getStyle().getSourceAs("destination-source-id");
                 source.setGeoJson(Feature.fromGeometry(place));
@@ -247,23 +237,6 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         comunity = extras.getBoolean("comunity");
     }
 
-    @SuppressLint("MissingPermission")
-    private void enableLocationComponent(@NonNull Style loadedMapStyle) {
-        // Check if permissions are enabled and if not request
-        if (PermissionsManager.areLocationPermissionsGranted(this)) {
-            // Activate the MapboxMap LocationComponent to show user location
-            // Adding in LocationComponentOptions is also an optional parameter
-            locationComponent = mapboxMap.getLocationComponent();
-            locationComponent.activateLocationComponent(this, loadedMapStyle);
-            locationComponent.setLocationComponentEnabled(true);
-            // Set the component's camera mode
-            //locationComponent.setCameraMode(CameraMode.TRACKING);
-        } else {
-            permissionsManager = new PermissionsManager(this);
-            permissionsManager.requestLocationPermissions(this);
-        }
-    }
-
 
     private void addDestinationIconSymbolLayer(@NonNull Style loadedMapStyle) {
 
@@ -280,23 +253,4 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         loadedMapStyle.addLayer(destinationSymbolLayer);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @Override
-    public void onExplanationNeeded(List<String> permissionsToExplain) {
-        //Toast.makeText(this, R.string.user_location_permission_explanation, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onPermissionResult(boolean granted) {
-        if (granted) {
-            enableLocationComponent(Objects.requireNonNull(mapboxMap.getStyle()));
-        } else {
-            //Toast.makeText(this, R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show();
-            finish();
-        }
-    }
 }

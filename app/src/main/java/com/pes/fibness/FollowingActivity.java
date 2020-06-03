@@ -200,7 +200,7 @@ class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.FollowingAd
 
 
     public interface SelectedUser{
-        public void selectedUser(UserModel userModel);
+        void selectedUser(UserModel userModel);
     }
 
 
