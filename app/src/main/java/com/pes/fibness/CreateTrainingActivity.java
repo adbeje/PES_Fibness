@@ -422,7 +422,7 @@ class Exercise_Adap extends BaseAdapter {
                 Desc.setText(dades.get(position).Desc);
             }
             series.setText(dades.get(position).NumSerie);
-            rest.setText(dades.get(position).NumRest + "s");
+            rest.setText(dades.get(position).NumRest + " s");
             repet.setText(dades.get(position).NumRepet);
         }
 
