@@ -87,6 +87,13 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent chatList = new Intent(getActivity(), ChooseChatActivity.class);
+                startActivity(chatList);
+            }
+        });
 
         /*load user info (id,username)*/
         users.setOnClickListener(new View.OnClickListener() {

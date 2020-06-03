@@ -113,6 +113,8 @@ public class FollowingActivity extends AppCompatActivity implements FollowingAda
         return true;
     }
 
+
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(FollowingActivity.this, SearchUsersActivity.class);
@@ -200,7 +202,7 @@ class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.FollowingAd
 
 
     public interface SelectedUser{
-        void selectedUser(UserModel userModel);
+        public void selectedUser(UserModel userModel);
     }
 
 

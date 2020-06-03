@@ -130,4 +130,17 @@
     <string name="title">Title</string>
     <string name="the_best_views_are_achieved_after_a_hard_climb">The best views are achieved after a hard climb.</string>
 
+    <string name="WriteAMessage">Write a message</string>
+    <string name="Previously">Previously</string>
+    
+    <string name="Edit">Edit</string>
+    <string name="AddAName">Add a name</string>
+    <string name="Diet">Diet</string>
+    <string name="PleaseAddAName">Please, add a name</string>
+    <string name="NameAlreadyUsed">This name is already used</string>
+    <string name="Meal">Meal</string>
+    <string name="AddAnHour">Please, add an Hour</string>
+    <string name="AddAValidName">Please, add a valid Hour</string>
+    <string name="PleaseAddMinutes">Please, add Minutes</string>
+
 </resources>

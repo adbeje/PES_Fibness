@@ -12,7 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.Nullable;
@@ -57,7 +59,7 @@ public class CreateDietActivity extends AppCompatActivity {
                 refreshList();
             }
         });
-
+        
         foodList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -179,6 +181,55 @@ public class CreateDietActivity extends AppCompatActivity {
         meal = extras.getString("comida");
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+}
+
+class Food_Adap extends BaseAdapter {
+
+    private static LayoutInflater inflater = null;
+
+    private Context context;
+    private ArrayList<Aliment> dades;
+    private boolean New;
+
+    public Food_Adap(Context c, ArrayList<Aliment> d, boolean IsNew){
+        context = c;
+        dades = d;
+        New = IsNew;
+        inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    @Override
+    public int getCount() {
+        return dades.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        final View vista = inflater.inflate(R.layout.aliment_element, null);
+        if(!New) {
+            TextView titulo = (TextView) vista.findViewById(R.id.txtNameAliment);
+            TextView calorias = (TextView) vista.findViewById(R.id.txtSetCalories);
+            titulo.setText(dades.get(position).name);
+            calorias.setText(dades.get(position).calories);
+        }
+
+        return vista;
+    }
 }
 
 class Food_Adap extends BaseAdapter {

@@ -24,6 +24,7 @@ public class MealActivity extends AppCompatActivity {
 
     private String titleDiet = "";
     private String day = "";
+    private String diaTitle = "";
     private ArrayList<Meal> meals;
     private ListView mealList;
     private boolean isNew = false;
@@ -35,7 +36,7 @@ public class MealActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMeal);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(titleDiet + "-" + day);
+        getSupportActionBar().setTitle(titleDiet + "-" + diaTitle);
         getSupportActionBar().setSubtitle(User.getInstance().getDietDesc(titleDiet));
 
         meals = User.getInstance().getMealList();
@@ -63,7 +64,7 @@ public class MealActivity extends AppCompatActivity {
                 String nameM = meals.get(position).name;
                 int idMeal = User.getInstance().getMealID(nameM);
                 ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/meal/" + idMeal + "/aliments");
-                c.getMealAliment(titleDiet, day, nameM, false);
+                c.getMealAliment(titleDiet, diaTitle, nameM, false);
             }
         });
 
@@ -86,6 +87,7 @@ public class MealActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         titleDiet = extras.getString("title");
         day = extras.getString("dia");
+        diaTitle = extras.getString("diaTitle");
     }
 
     private void showEditMealBox(final int position) {
@@ -176,7 +178,7 @@ public class MealActivity extends AppCompatActivity {
     private void showNewMeal() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MealActivity.this);
         builder.setView(R.layout.input_new_meal);
-        builder.setTitle("Meal");
+        builder.setTitle(getString(R.string.Meal));
         final AlertDialog dialog = builder.create();
         dialog.show();
         final EditText txtName = (EditText) dialog.findViewById(R.id.NewNameMeal);
@@ -188,19 +190,19 @@ public class MealActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean correct = true;
                 if (txtName.getText().toString().trim().length() == 0) {
-                    txtName.setError("Please, add a name");
+                    txtName.setError(getString(R.string.AddAName));
                     correct = false;
                 }
                 if (txtHour.getText().toString().trim().length() == 0) {
-                    txtHour.setError("Please, add an Hour");
+                    txtHour.setError(getString(R.string.AddAnHour));
                     correct = false;
                 }
                 else if (Integer.valueOf(txtHour.getText().toString()) > 23 || txtHour.getText().toString().length() > 2) {
-                    txtHour.setError("Please, add a valid Hour");
+                    txtHour.setError(getString(R.string.AddAValidName));
                     correct = false;
                 }
                 if (txtMin.getText().toString().trim().length() == 0) {
-                    txtMin.setError("Please, add Minutes");
+                    txtMin.setError(getString(R.string.PleaseAddMinutes));
                     correct = false;
                 }
                 else if (Integer.valueOf(txtMin.getText().toString()) > 59 || txtMin.getText().toString().length() > 2) {
@@ -230,7 +232,7 @@ public class MealActivity extends AppCompatActivity {
                     Intent AlimentPage = new Intent(getApplicationContext(), CreateDietActivity.class);
                     AlimentPage.putExtra("new", true);
                     AlimentPage.putExtra("title", titleDiet);
-                    AlimentPage.putExtra("dia", day);
+                    AlimentPage.putExtra("dia", diaTitle);
                     AlimentPage.putExtra("comida", m2.name);
                     User.getInstance().setAlimentList(new ArrayList<Aliment>());
                     startActivity(AlimentPage);
@@ -239,6 +241,11 @@ public class MealActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
 
 class Meal_Adap extends BaseAdapter {
