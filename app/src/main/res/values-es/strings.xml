@@ -164,4 +164,15 @@
         <item>Abdominales inferiores</item>
     </string-array>
 
+    <!-- Array dias -->
+    <string-array name="days">
+        <item>Lunes</item>
+        <item>Martes</item>
+        <item>Miercoles</item>
+        <item>Jueves</item>
+        <item>Viernes</item>
+        <item>Sábado</item>
+        <item>Domingo</item>
+    </string-array>
+
 </resources>
