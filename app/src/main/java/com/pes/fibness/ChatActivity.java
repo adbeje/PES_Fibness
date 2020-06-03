@@ -50,8 +50,6 @@ public class ChatActivity extends AppCompatActivity implements RoomListener  {
         getExtras();
         messageAdapter = new MessageAdapter(this);
         messagesView = (ListView) findViewById(R.id.messageView);
-        if(messagesView == null) System.out.println("null");
-        else System.out.println("not null");
         messagesView.setAdapter(messageAdapter);
 
         MemberData data = new MemberData(User_name, getRandomColor());

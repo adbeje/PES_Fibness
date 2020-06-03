@@ -116,4 +116,11 @@
     <string name="WriteAMessage">Escribe un mensaje</string>
     <string name="Previously">Previamente</string>
 
+    <string name="Edit">Editar</string>
+    <string name="AddAName">Añade un nombre</string>
+    <string name="Diet">Dieta</string>
+
+    <string name="PleaseAddAName">Porfavor, añade un nombre</string>
+    <string name="NameAlreadyUsed">Este nombre ya se ha utilizado</string>
+
 </resources>

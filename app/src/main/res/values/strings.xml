@@ -115,5 +115,11 @@
 
     <string name="WriteAMessage">Write a message</string>
     <string name="Previously">Previously</string>
+    
+    <string name="Edit">Edit</string>
+    <string name="AddAName">Add a name</string>
+    <string name="Diet">Diet</string>
+    <string name="PleaseAddAName">Please, add a name</string>
+    <string name="NameAlreadyUsed">This name is already used</string>
 
 </resources>
