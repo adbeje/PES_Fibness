@@ -1,5 +1,6 @@
 package com.pes.fibness;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -147,7 +148,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
                 }
                 else{
                     ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/event/" + id + "/join");
-                    connection.createParticipa();
+                    connection.createParticipa(User.getInstance().getId());
                     User.getInstance().addParticipa();
                     join.setBackground(getResources().getDrawable(R.drawable.btn_bg));
                     join.setText("Leave");
@@ -246,6 +247,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         comunity = extras.getBoolean("comunity");
     }
 
+    @SuppressLint("MissingPermission")
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
         // Check if permissions are enabled and if not request
         if (PermissionsManager.areLocationPermissionsGranted(this)) {

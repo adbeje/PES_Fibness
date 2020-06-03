@@ -83,6 +83,7 @@ public class EventosFragment extends Fragment{
                 view_event.putExtra("date", cEventosList.get(pos).date);
                 view_event.putExtra("hour", cEventosList.get(pos).hour);
                 view_event.putExtra("place", cEventosList.get(pos).place);
+
                 startActivity(view_event);
             }
         });
@@ -121,6 +122,7 @@ public class EventosFragment extends Fragment{
                 mEvents.setTextColor(getResources().getColor(R.color.blanco));
                 comunity = true;
                 updateRecycler();
+                //delay 1 sec
             }
         });
 

@@ -38,8 +38,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 
@@ -136,13 +134,13 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
                     e.place = place;
                     if (newEvent) {
                         e.id = 0;
+                        int position = User.getInstance().addEvent(e);
                         ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/event");
-                        connection.createEvent();
-                        User.getInstance().addEvent(e);
+                        connection.createEvent(e, User.getInstance().getId(), position);
                     } else {
                         e.id = id;
                         ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/event/" + id);
-                        connection.updateEvent();
+                        connection.updateEvent(e);
                         User.getInstance().updateEvent(pos, e);
                     }
                     finish();
@@ -226,33 +224,21 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
                 setupLayer(style);
 
                 if (!newEvent) {
-                    if (mapboxMap != null) {
-                        if (style != null) {
-                            GeoJsonSource source = style.getSourceAs(geojsonSourceLayerId);
-                            if (source != null) {
-                                source.setGeoJson(FeatureCollection.fromFeatures(
-                                        new Feature[]{Feature.fromGeometry(place)}));
-                            }
-
-                            // Move map camera to the selected location
-                            mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(
-                                    new CameraPosition.Builder()
-                                            .target(new LatLng(place.latitude(), place.longitude()))
-                                            .zoom(15)
-                                            .build()), 4000);
-                        }
+                    GeoJsonSource source = style.getSourceAs(geojsonSourceLayerId);
+                    if (source != null) {
+                        source.setGeoJson(FeatureCollection.fromFeatures(
+                                new Feature[]{Feature.fromGeometry(place)}));
                     }
+
+                    // Move map camera to the selected location
+                    mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                            new CameraPosition.Builder()
+                                    .target(new LatLng(place.latitude(), place.longitude()))
+                                    .zoom(15)
+                                    .build()), 4000);
                 }
             }
         });
-    }
-
-    private void addCameraPosition() {
-        mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(
-                new CameraPosition.Builder()
-                        .target(new LatLng(place.latitude(), place.longitude()))
-                        .zoom(14)
-                        .build()), 4000);
     }
 
     private void initSearchFab() {
@@ -370,21 +356,6 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
         place = (Point) extras.get("place");
         id = extras.getInt("id");
         pos = extras.getInt("position");
-    }
-
-    private void addDestinationIconSymbolLayer(@NonNull Style loadedMapStyle) {
-
-        loadedMapStyle.addImage("destination-icon-id",
-                BitmapFactory.decodeResource(this.getResources(), R.drawable.mapbox_marker_icon_default));
-        GeoJsonSource geoJsonSource = new GeoJsonSource("destination-source-id");
-        loadedMapStyle.addSource(geoJsonSource);
-        SymbolLayer destinationSymbolLayer = new SymbolLayer("destination-symbol-layer-id", "destination-source-id");
-        destinationSymbolLayer.withProperties(
-                iconImage("destination-icon-id"),
-                iconAllowOverlap(true),
-                iconIgnorePlacement(true)
-        );
-        loadedMapStyle.addLayer(destinationSymbolLayer);
     }
 
 }

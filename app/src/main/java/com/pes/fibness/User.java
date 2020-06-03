@@ -2,11 +2,10 @@ package com.pes.fibness;
 
 
 import com.mapbox.geojson.Point;
-import java.util.Date;
+
 import android.util.Pair;
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -482,8 +481,9 @@ public class User {
         myEvents.remove(pos);
     }
 
-    public void addEvent(Evento e) {
+    public int addEvent(Evento e) {
         myEvents.add(e);
+        return myEvents.size() -1;
     }
 
     public void updateEvent(int pos, Evento e) {

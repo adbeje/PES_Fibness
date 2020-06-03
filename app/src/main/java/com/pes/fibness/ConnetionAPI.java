@@ -1,12 +1,8 @@
 package com.pes.fibness;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Base64;
-import android.graphics.Paint;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Pair;
 import android.widget.Toast;
 
@@ -15,12 +11,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.sun.mail.iap.ByteArray;
 import com.mapbox.geojson.Point;
 
 import org.json.JSONArray;
@@ -29,11 +21,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLOutput;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.BitSet;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -1722,20 +1710,160 @@ public class ConnetionAPI {
 
     }
 
-    public void getAllEvents() {
 
+    public void getAllEvents() {
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray events = new JSONArray(response);
+                    ArrayList<Evento> eventsList = new ArrayList<>();
+                    for(int i = 0; i < events.length(); i++){
+                        JSONObject event = events.getJSONObject(i);
+                        String[] lugar;
+                        Evento e = new Evento();
+                        e.name = (String) event.getString("titulo");
+                        e.desc = (String) event.getString("descripcion");
+                        e.id = (Integer) event.getInt("id");
+                        e.date = (String) event.getString("fecha");
+                        e.hour = (String) event.getString("hora");
+                        lugar = event.getString("localizacion").split(";");
+                        e.place = Point.fromLngLat(Double.parseDouble(lugar[0]), Double.parseDouble(lugar[1]));
+                        eventsList.add(e);
+                    }
+                    User.getInstance().setComunityEvents(eventsList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
     }
 
     public void getUserEvents() {
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray events = new JSONArray(response);
+                    ArrayList<Evento> eventsList = new ArrayList<>();
+                    for(int i = 0; i < events.length(); i++){
+                        JSONObject event = events.getJSONObject(i);
+                        String[] lugar;
+                        Evento e = new Evento();
+                        e.name = (String) event.getString("titulo");
+                        e.desc = (String) event.getString("descripcion");
+                        e.id = (Integer) event.getInt("id");
+                        e.date = (String) event.getString("fecha");
+                        e.hour = (String) event.getString("hora");
+                        lugar = event.getString("localizacion").split(";");
+                        e.place = Point.fromLngLat(Double.parseDouble(lugar[0]), Double.parseDouble(lugar[1]));
+                        eventsList.add(e);
+                    }
+                    User.getInstance().setMyEvents(eventsList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
     }
 
-    public void createEvent() {
+    public void createEvent(Evento event, int userID, final int pos) {
+        String lugar = event.place.longitude() +";"+ event.place.latitude();
+        final String data = "{"+
+                "\"titulo\": " + "\"" + event.name + "\"," +
+                "\"descripcion\": " + "\"" + event.desc + "\"," +
+                "\"idcreador\": " + userID + "," +
+                "\"localizacion\": " + "\"" + lugar + "\"," +
+                "\"fecha\": " + "\"" + event.date + "\"," +
+                "\"hora\": " + "\"" + event.hour + "\"" +
+                "}";
 
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.has("id")) {
+                        int id = (Integer) obj.getInt("id");
+                        User.getInstance().setEventID(pos, id);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+        };
+        enqueue();
     }
 
-    public void updateEvent() {
+    public void updateEvent(Evento event) {
+        String lugar = event.place.longitude() +";"+ event.place.latitude();
+        final String data = "{"+
+                "\"titulo\": " + "\"" + event.name + "\"," +
+                "\"descripcion\": " + "\"" + event.desc + "\"," +
+                "\"localizacion\": " + "\"" + lugar + "\"," +
+                "\"fecha\": " + "\"" + event.date + "\"," +
+                "\"hora\": " + "\"" + event.hour + "\"" +
+                "}";
+        request = new StringRequest(Request.Method.PUT, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equals("OK")){
+                    Toast.makeText(getApplicationContext(), "Your event has not been modified. Re-open application and try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
 
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+
+
+        };
+
+        enqueue();
     }
 
     public void deleteEvent() {
@@ -1756,7 +1884,32 @@ public class ConnetionAPI {
     }
 
     public void getParticipants() {
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray users = new JSONArray(response);
+                    ArrayList<UserShortInfo> participants = new ArrayList<>();
+                    for(int i = 0; i < users.length(); i++){
+                        JSONObject user = users.getJSONObject(i);
+                        UserShortInfo u = new UserShortInfo();
+                        u.username = (String) user.getString("nombre");
+                        u.id = (Integer) user.getInt("id");
+                        participants.add(u);
+                    }
+                    User.getInstance().setParticipantsList(participants);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+        enqueue();
     }
 
     public void deleteParticipa() {
@@ -1776,15 +1929,34 @@ public class ConnetionAPI {
         enqueue();
     }
 
-    public void createParticipa() {
+    public void createParticipa(int userID) {
+        final String data = "{"+
+                "\"idusuario\": " + userID +
+                "}";
 
-    }
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
 
-    //to go HomePage
-    private void homeActivity() {
-        Intent homePage = new Intent(context, MainActivity.class);
-        homePage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(homePage);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+        };
+        enqueue();
     }
 
     private void enqueue(){
