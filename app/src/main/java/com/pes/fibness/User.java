@@ -523,7 +523,6 @@ public class User {
     }
 
     private void iniChats(){
-        Chats.add(new Pair("prueba", "h9CfVtj8v1Ze3GuX"));
         Chats.add(new Pair("Trainings", "ecvi0PNesQSdBcBK"));
         Chats.add(new Pair("Diets", "PRYFLbm0FZp1JB3i"));
         Chats.add(new Pair("Routes", "rEejgq7VGoTc1bci"));

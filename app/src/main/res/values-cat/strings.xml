@@ -175,4 +175,11 @@
         <item>Diumenge</item>
     </string-array>
 
+    <string name="ranking">Ranking:</string>
+    <string name="imp">IMPORTAR</string>
+    <string name="msgComment">Deixa un missatge</string>
+    <string name="training">ENTRENAMENT</string>
+    <string name="diets">DIETES</string>
+    <string name="routes">RUTES</string>
+
 </resources>

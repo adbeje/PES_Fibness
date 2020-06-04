@@ -133,7 +133,7 @@
     <string name="Previously">Previously</string>
 
     <string name="AddAName">Ajouter un nom</string>
-    <string name="Diet">Diet</string>
+    <string name="Diet">Régime</string>
     <string name="PleaseAddAName">Veuillez ajouter un nom</string>
     <string name="NameAlreadyUsed">Ce nom est déjà utilisé</string>
     <string name="Meal">Repas</string>
@@ -173,5 +173,12 @@
         <item>Samedi</item>
         <item>Dimanche</item>
     </string-array>
+
+    <string name="ranking">Ranking:</string>
+    <string name="imp">IMPORTER</string>
+    <string name="msgComment">Laisser un message</string>
+    <string name="training">ENTRAÌnement</string>
+    <string name="diets">RÉGIMES</string>
+    <string name="routes">ITINÉRAIRES</string>
 
 </resources>
