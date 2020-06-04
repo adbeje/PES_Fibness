@@ -135,7 +135,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @SuppressLint("HandlerLeak") Handler h = new Handler(){
                         @Override
                         public void handleMessage(Message msg) {
-                            setSharedPreferences(userName.getText().toString(), password.getText().toString());
+                            setSharedPreferences(emailAddress.getText().toString(), password.getText().toString());
                         }
                     };
                     h.sendEmptyMessageDelayed(0, 200);
