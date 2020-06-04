@@ -37,10 +37,18 @@ public class User {
     private static ArrayList<UserShortInfo> participantsList = new ArrayList<>();
 
     private ArrayList<Achievement> achievements = new ArrayList<>(4);
+    private int totalDst;
     private ArrayList<UserShortInfo> shortUsersInfo = new ArrayList<>();
     private UsersInfo selectedUser = new UsersInfo();
     private ArrayList<Pair<Integer, String>> userFollowers = new ArrayList<>();
     private ArrayList<Pair<Integer, String>> userFollowing = new ArrayList<>();
+
+    private static ArrayList<TrainingExtra> trainingExtra = new ArrayList<>();
+    private static ArrayList<ExerciseExtra> exerciseExtras = new ArrayList<>();
+    private Boolean elementLike;
+    private static ArrayList<Comment> comments = new ArrayList<>();
+    private static ArrayList<Statistic> statistics = new ArrayList<>();
+
 
     /*we are applying singleton because we will have an instance for each aplication user*/
     private static User instance = null;
@@ -113,6 +121,9 @@ public class User {
     /** Achievements **/
     public ArrayList<Achievement> getAchievements() { return achievements; }
     public void setAchievements(ArrayList<Achievement> achievements) { this.achievements = achievements; }
+
+    public int getTotalDst() { return totalDst; }
+    public void setTotalDst(int totalDst) { this.totalDst = totalDst; }
 
     /** Serach Users **/
     public ArrayList<UserShortInfo> getShortUsersInfo() { return shortUsersInfo; }
@@ -202,6 +213,19 @@ public class User {
         return -1;
     }
 
+    /*training aux*/
+    public ArrayList<TrainingExtra> getTrainingExtra() { return trainingExtra; }
+    public void setTrainingExtra(ArrayList<TrainingExtra> trainingExtra) { this.trainingExtra = trainingExtra; }
+
+    /*training comment*/
+    public static ArrayList<Comment> getComments() { return comments; }
+    public static void setComments(ArrayList<Comment> comments) { User.comments = comments; }
+
+    public Boolean getElementLike() { return  this.elementLike; }
+    public void setElementLike(Boolean elementLike) {
+        this.elementLike = elementLike;
+    }
+
     /** Exercises **/
     public ArrayList<Exercise> getExerciseList(){
         return exerciseList;
@@ -228,6 +252,10 @@ public class User {
     public int getExerciseID(int position){ return exerciseList.get(position).id;  }
 
     public int getExerciseNamePos(int position){ return exerciseList.get(position).Pos;  }
+
+    public static ArrayList<ExerciseExtra> getExerciseExtras() { return exerciseExtras; }
+    public static void setExerciseExtras(ArrayList<ExerciseExtra> exerciseExtras) { User.exerciseExtras = exerciseExtras; }
+
 
     /** Diets **/
     public void setDietList(ArrayList<Diet> d){
@@ -502,6 +530,13 @@ public class User {
         Chats.add(new Pair("Events", "bFeChQnd1FrN0ic5"));
         Chats.add(new Pair("Others", "OhFX7jCm248D2Ddm"));
     }
+
+    /*Statistic*/
+
+    public static ArrayList<Statistic> getStatistics() { return statistics; }
+    public static void setStatistics(ArrayList<Statistic> statistics) { User.statistics = statistics; }
+
+
 }
 
 
@@ -512,6 +547,23 @@ class Training{
     String desc;
 }
 
+class TrainingExtra{
+    int id;
+    String name;
+    String desc;
+    int nLikes;
+    int nComment;
+}
+
+class Comment{
+    int id_comment;
+    int id_user;
+    String user_name;
+    String date;
+    String text;
+}
+
+
 class Exercise{
     int id;
     String TitleEx;
@@ -521,6 +573,17 @@ class Exercise{
     int  Pos;
     String Desc;
 }
+
+class ExerciseExtra{
+    int id;
+    String title;
+    int numRep;
+    int numSerie;
+    int numRest;
+    String desc;
+}
+
+
 
 class Diet{
     int id;
@@ -585,5 +648,11 @@ class UsersInfo{
     Boolean sMessage;
     Boolean follow;
     Boolean blocked;
+    byte[] image;
 
+}
+
+class Statistic{
+    int day;
+    int dst;
 }

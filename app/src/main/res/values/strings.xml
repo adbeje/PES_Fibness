@@ -51,6 +51,10 @@
     <string name="newPassword">New Password</string>
     <string name="reset">Reset</string>
     <string name="aboutMe">About me</string>
+    <string name="ranking">Ranking:</string>
+    <string name="training">TRAINING</string>
+    <string name="diets">DIETS</string>
+    <string name="routes">ROUTES</string>
     <string name="weeklyProgress">Weekly progress</string>
     <string name="viewProfile">View Profile</string>
     <string name="achievements">Achievements</string>
@@ -129,6 +133,8 @@
     <string name="two_points">:</string>
     <string name="title">Title</string>
     <string name="the_best_views_are_achieved_after_a_hard_climb">The best views are achieved after a hard climb.</string>
+    <string name="imp">IMPORT</string>
+    <string name="msgComment">Leave a message</string>
 
     <string name="WriteAMessage">Write a message</string>
     <string name="Previously">Previously</string>

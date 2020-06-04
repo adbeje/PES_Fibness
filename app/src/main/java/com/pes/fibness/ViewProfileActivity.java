@@ -23,10 +23,12 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ViewProfileActivity extends AppCompatActivity {
@@ -84,11 +86,11 @@ public class ViewProfileActivity extends AppCompatActivity {
         username.setText(u.getName());
 
         if((u.getBirthDate().equals("null")|| u.getBirthDate().equals("")))
-            age.setText("-");
-        else age.setText(howManyYears(u.getBirthDate()));
+            age.setText("");
+        else age.setText(", " + howManyYears(u.getBirthDate()));
 
         if((u.getCountry().equals("null")|| u.getCountry().equals("")))
-            country.setText("-");
+            country.setText("");
         else country.setText(planets[Integer.parseInt(u.getCountry())]);
 
         System.out.println("segundo");
@@ -138,10 +140,11 @@ public class ViewProfileActivity extends AppCompatActivity {
         barChart.setDescription(d);
 
 
-        final String[] week = new String[] {"Monday", "Tuesday", "Wednesday", "Thrusday", "Friday", "Saturday", "Sunday"};
+        final String[] week = new String[] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
         XAxis xAxis = barChart.getXAxis();
         xAxis.setValueFormatter(new MyValueFormatter(week));
         barChart.getAxisLeft().setAxisMinimum(0);
+        barChart.getAxisRight().setAxisMinimum(0);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
         xAxis.setCenterAxisLabels(true);
@@ -150,21 +153,54 @@ public class ViewProfileActivity extends AppCompatActivity {
         List<BarEntry> distances = new ArrayList<>();
         List<BarEntry> calories = new ArrayList<>();
 
-        distances.add(new BarEntry(0f, 80f));
-        distances.add(new BarEntry(2f, 80f));
-        distances.add(new BarEntry(4f, 80f));
-        distances.add(new BarEntry(6f, 80f));
-        distances.add(new BarEntry(8f, 80f));
-        distances.add(new BarEntry(10f, 80f));
-        distances.add(new BarEntry(12f, 80f));
+        Date now = new Date();
+        SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE"); // the day of the week spelled out completely
+        String day = simpleDateformat.format(now);
+        System.out.println("thar day: " + day);
+        ArrayList<Statistic> statistics = u.getStatistics();
+        int loop = statistics.size();
+        /*
+        switch (day){
+            case "Monday":
+                loop = 1;
+                break;
+            case "Tuesday":
+                loop = 2;
+                break;
+            case "Wednesday":
+                loop = 3;
+                break;
+            case "Thursday":
+                loop = 4;
+                break;
+            case "Friday":
+                loop = 5;
+                break;
+            case "Saturday":
+                loop = 6;
+                break;
+            case "Sunday":
+                loop = 7;
+                break;
+        }
 
-        calories.add(new BarEntry(1f, 20f));
-        calories.add(new BarEntry(3f, 20f));
-        calories.add(new BarEntry(5f, 20f));
-        calories.add(new BarEntry(7f, 20f));
-        calories.add(new BarEntry(9f, 20f));
-        calories.add(new BarEntry(11f, 20f));
-        calories.add(new BarEntry(13f, 20f));
+         */
+        System.out.println("loop: " + loop);
+        int y = 0;
+        for(int i=0; i<14; i+=2){
+            if(y == loop){
+                distances.add(new BarEntry(i, 0));
+                calories.add(new BarEntry(i+1, 0));
+            }
+            else {
+                distances.add(new BarEntry(i, statistics.get(y).dst));
+                calories.add(new BarEntry(i + 1, (statistics.get(y).dst * 60) / 1000)); //(dst * 60)/ 1000
+                System.out.println("------it:" + y);
+                ++y;
+            }
+
+
+        }
 
 
         /*Create 2 datasets*/
