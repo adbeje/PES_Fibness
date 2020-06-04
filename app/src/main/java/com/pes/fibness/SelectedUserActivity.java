@@ -47,7 +47,6 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
     private Boolean bkUser= ui.blocked;
 
     private Button btn_training, btn_diets, btn_routes;
-    private ImageView send;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -71,7 +70,6 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
         btn_training = findViewById(R.id.btn_training);
         btn_diets = findViewById(R.id.btn_diets);
         btn_routes = findViewById(R.id.btn_routes);
-        send = findViewById(R.id.send);
 
 
         showUserInfo();

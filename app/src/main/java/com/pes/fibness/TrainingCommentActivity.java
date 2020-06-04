@@ -187,6 +187,10 @@ public class TrainingCommentActivity extends AppCompatActivity {
                     ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/comment/");
                     c.postComment(User.getInstance().getId(), trainingModel.getId(),text);
 
+                    int n = trainingModel.getnComment() + 1;
+                    trainingModel.setnComment(n);
+                    ncomment.setText("" + n);
+
                     CommentModel commentModel = new CommentModel(1, User.getInstance().getId(), User.getInstance().getName(), LocalDate.now().toString(), text);
                     commentModelList.add(commentModel);
 
