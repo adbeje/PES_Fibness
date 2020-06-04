@@ -114,17 +114,17 @@ public class AchievementsActivity extends AppCompatActivity {
                 System.out.println("slide number: " + position);
                 if(position < (adapterViewPager.getCount()-1) && position < (colors.length -1)){
                     viewPager.setBackgroundColor((Integer) argbEvaluator.evaluate(positionOffset, colors[position], colors[position+1]));
-
+                    btShare.setVisibility(View.INVISIBLE);
                     if(position == 0) {
                         textNum.setText("01");
-                        btShare.setVisibility(View.VISIBLE);
+                        //btShare.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.INVISIBLE);
                         meterTraveled.setVisibility(View.INVISIBLE);
                         message.setVisibility(View.INVISIBLE);
                     }
                     else if(position == 1) {
                         textNum.setText("02");
-                        btShare.setVisibility(View.VISIBLE);
+                        //btShare.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.VISIBLE);
                         meterTraveled.setVisibility(View.VISIBLE);
                         achieves = User.getInstance().getAchievements();
@@ -145,7 +145,7 @@ public class AchievementsActivity extends AppCompatActivity {
                     else if(position == 2){
                         textNum.setText("03");
                         if (achieves.get(1).active) {
-                            btShare.setVisibility(View.VISIBLE);
+                            //btShare.setVisibility(View.VISIBLE);
                             message.setVisibility(View.INVISIBLE);
                             progressBar.setVisibility(View.VISIBLE);
                             meterTraveled.setVisibility(View.VISIBLE);
@@ -158,7 +158,7 @@ public class AchievementsActivity extends AppCompatActivity {
 
                         }
                         else{
-                            btShare.setVisibility(View.INVISIBLE);
+                            //btShare.setVisibility(View.INVISIBLE);
                             progressBar.setVisibility(View.INVISIBLE);
                             meterTraveled.setVisibility(View.INVISIBLE);
                             message.setVisibility(View.VISIBLE);
@@ -167,7 +167,7 @@ public class AchievementsActivity extends AppCompatActivity {
                     else if(position == 3) {
                         textNum.setText("04");
                         if (achieves.get(2).active) {
-                            btShare.setVisibility(View.VISIBLE);
+                            //btShare.setVisibility(View.VISIBLE);
                             message.setVisibility(View.INVISIBLE);
                             progressBar.setVisibility(View.VISIBLE);
                             meterTraveled.setVisibility(View.VISIBLE);
@@ -180,7 +180,7 @@ public class AchievementsActivity extends AppCompatActivity {
 
                         }
                         else{
-                            btShare.setVisibility(View.INVISIBLE);
+                           // btShare.setVisibility(View.INVISIBLE);
                             progressBar.setVisibility(View.INVISIBLE);
                             meterTraveled.setVisibility(View.INVISIBLE);
                             message.setVisibility(View.VISIBLE);
@@ -192,7 +192,7 @@ public class AchievementsActivity extends AppCompatActivity {
                     viewPager.setBackgroundColor(colors[colors.length-1]);
                     textNum.setText("05"); //the last one
                     if (achieves.get(3).active) {
-                        btShare.setVisibility(View.VISIBLE);
+                        //btShare.setVisibility(View.VISIBLE);
                         message.setVisibility(View.INVISIBLE);
                         progressBar.setVisibility(View.VISIBLE);
                         meterTraveled.setVisibility(View.VISIBLE);
@@ -203,7 +203,7 @@ public class AchievementsActivity extends AppCompatActivity {
                         else meterTraveled.setText(""+ userDistance + "M");
                     }
                     else{
-                        btShare.setVisibility(View.INVISIBLE);
+                        //btShare.setVisibility(View.INVISIBLE);
                         progressBar.setVisibility(View.INVISIBLE);
                         meterTraveled.setVisibility(View.INVISIBLE);
                         message.setVisibility(View.VISIBLE);
