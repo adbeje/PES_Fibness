@@ -1,20 +1,28 @@
 package com.pes.fibness;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mapbox.api.geocoding.v5.GeocodingCriteria;
+import com.mapbox.api.geocoding.v5.MapboxGeocoding;
+import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.api.geocoding.v5.models.GeocodingResponse;
+import com.mapbox.core.exceptions.ServicesException;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -27,6 +35,13 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import timber.log.Timber;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
@@ -40,6 +55,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
     String date;
     String hour;
     Point place;
+    String site;
     Boolean comunity;
     Boolean participa = false;
     int pos;
@@ -130,7 +146,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
             @Override
             public void onClick(View v) {
                 if(participa){
-                    ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/event/" + id);
+                    ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/event/" + id + "/join/" + User.getInstance().getId());
                     connection.deleteParticipa();
                     User.getInstance().deleteParticipa();
                     join.setBackground(getResources().getDrawable(R.drawable.btn_bg_sel));
@@ -144,6 +160,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
                     join.setBackground(getResources().getDrawable(R.drawable.btn_bg));
                     join.setText("Leave");
                     participa = true;
+                    AddCalendarEvent();
                 }
             }
         });
@@ -158,6 +175,61 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
 
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+    }
+
+    private void reverseGeocode(final Point point) {
+        try {
+            MapboxGeocoding client = MapboxGeocoding.builder()
+                    .accessToken(getString(R.string.mapBox_ACCESS_TOKEN))
+                    .query(Point.fromLngLat(point.longitude(), point.latitude()))
+                    .geocodingTypes(GeocodingCriteria.TYPE_ADDRESS)
+                    .build();
+
+            client.enqueueCall(new Callback<GeocodingResponse>() {
+                @Override
+                public void onResponse(Call<GeocodingResponse> call, Response<GeocodingResponse> response) {
+                    if (response.body() != null) {
+                        List<CarmenFeature> results = response.body().features();
+                        if (results.size() > 0) {
+                            CarmenFeature feature = results.get(0);
+                            site =  feature.placeName();
+                            //Toast.makeText( getBaseContext(), site, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+                @Override
+                public void onFailure(Call<GeocodingResponse> call, Throwable throwable) {
+                    Timber.e("Geocoding Failure: %s", throwable.getMessage());
+                }
+            });
+        } catch (ServicesException servicesException) {
+            Timber.e("Error geocoding: %s", servicesException.toString());
+            servicesException.printStackTrace();
+        }
+    }
+
+    public void AddCalendarEvent() {
+        reverseGeocode(place);
+        @SuppressLint("HandlerLeak") Handler h = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                String[] hora = hour.split(":");
+                String[] fecha = date.split("/");
+
+                Calendar calendarEvent = Calendar.getInstance();
+                calendarEvent.set(Integer.parseInt(fecha[2]), Integer.parseInt(fecha[1])-1, Integer.parseInt(fecha[0]), Integer.parseInt(hora[0]), Integer.parseInt(hora[1]));
+                Intent i = new Intent(Intent.ACTION_EDIT);
+                i.setType("vnd.android.cursor.item/event");
+                i.putExtra("beginTime", calendarEvent.getTimeInMillis());
+                i.putExtra("allDay", false);
+                i.putExtra("title", title);
+                i.putExtra("description", desc);
+                i.putExtra("eventLocation", site);
+
+                startActivity(i);
+            }
+        };
+        h.sendEmptyMessageDelayed(0, 300);
     }
 
     private void addCameraPosition() {

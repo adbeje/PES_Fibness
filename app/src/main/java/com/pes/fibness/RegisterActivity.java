@@ -2,10 +2,13 @@ package com.pes.fibness;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -122,20 +125,24 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         //press register button: verification check
-        register.setOnClickListener(new View.OnClickListener() {
+    register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(userName.getText().toString().isEmpty())
                     Toast.makeText(getApplicationContext(), "User name can't be empty.", Toast.LENGTH_LONG).show();
                 else if (canRegister) {
-                    setSharedPreferences(userName.getText().toString(), password.getText().toString());
                     insertUser();
+                    @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                        @Override
+                        public void handleMessage(Message msg) {
+                            setSharedPreferences(userName.getText().toString(), password.getText().toString());
+                        }
+                    };
+                    h.sendEmptyMessageDelayed(0, 200);
                 }
                 else Toast.makeText(getApplicationContext(), "Error: Something went wrong. Registration Failed.", Toast.LENGTH_LONG).show();
             }
         });
-
-
     }
 
 
