@@ -412,10 +412,6 @@ public class ConnetionAPI {
         };
         enqueue();
 
-
-
-
-
     }
 
     private void getSpecificUserProfile(String s, final UsersInfo ui) {
@@ -867,7 +863,7 @@ public class ConnetionAPI {
                 public void onResponse(String response) {
 
                     System.out.println("post response: " + response);
-                    Toast.makeText(getApplicationContext(), "Your information has been modified", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Your information has been modified", Toast.LENGTH_SHORT).show();
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -911,6 +907,43 @@ public class ConnetionAPI {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, "Server Response error", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            //post data to server
+            @Override
+            public String getBodyContentType(){
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody(){
+                return data.getBytes(StandardCharsets.UTF_8);
+            }
+        };
+        enqueue();
+    }
+    // estadisticas
+    public void postUserStatistics(int userID, double distance){
+        final String data = "{"+
+                "\"idUser\": "  + userID + "," +
+                "\"dstRecorrida\": " + "\"" + distance + "\"" +
+                "}";
+
+        request = new StringRequest(Request.Method.POST, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    Toast.makeText(context, "Se ha guardado" + response, Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Response error", Toast.LENGTH_LONG).show();
             }
         }) {
             //post data to server

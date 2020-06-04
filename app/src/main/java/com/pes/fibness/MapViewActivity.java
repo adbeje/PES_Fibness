@@ -143,8 +143,10 @@ public class MapViewActivity extends AppCompatActivity implements OnMapReadyCall
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //currentRoute.distance().intValue()
-                        //Timber.e("message:" + currentRoute.distance().intValue());
+                        User u = User.getInstance();
+                        ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/statistic");
+                        c.postUserStatistics(u.getId(), currentRoute.distance().intValue());
+                        u.setTotalDst(u.getTotalDst()+currentRoute.distance().intValue());
                         boolean simulateRoute = true;
                         Point locationPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),locationComponent.getLastKnownLocation().getLatitude());
                         /*if (originPoint != locationPoint) {

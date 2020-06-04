@@ -25,11 +25,11 @@
         android:layout_height="46dp"
         android:inputType="number"
         android:textColor="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/guideline6"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline19"
-        app:layout_constraintTop_toTopOf="@+id/guideline10" />
+        app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
     <TextView
         android:id="@+id/txtRest_edit"
@@ -37,11 +37,11 @@
         android:layout_height="wrap_content"
         android:text="@string/Rest"
         android:textColor="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline18"
-        app:layout_constraintTop_toTopOf="@+id/guideline6" />
+        app:layout_constraintTop_toTopOf="@+id/guideline10" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline18"
@@ -115,11 +115,11 @@
         android:layout_height="43dp"
         android:inputType="number"
         android:textColor="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline19"
-        app:layout_constraintTop_toTopOf="@+id/guideline6" />
+        app:layout_constraintTop_toTopOf="@+id/guideline10" />
 
     <Button
         android:id="@+id/btn_done_edit"
@@ -166,11 +166,11 @@
         android:layout_height="wrap_content"
         android:text="@string/Repetitions"
         android:textColor="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/guideline6"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintEnd_toStartOf="@+id/guideline19"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline18"
-        app:layout_constraintTop_toTopOf="@+id/guideline10" />
+        app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
     <TextView
         android:id="@+id/textView2"
@@ -182,8 +182,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline28"
-        app:layout_constraintTop_toTopOf="@+id/guideline10"
-        app:layout_constraintVertical_bias="0.51" />
+        app:layout_constraintTop_toTopOf="@+id/guideline10" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline28"
