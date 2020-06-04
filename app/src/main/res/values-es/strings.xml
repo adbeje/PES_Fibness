@@ -185,5 +185,6 @@
     <string name="Leave">ABANDONAR</string>
     <string name="AddADate">Por favor, añade una fecha</string>
     <string name="AddAPlace">Por favor, añade un lugar</string>
+    <string name="Events">Eventos</string>
 
 </resources>
