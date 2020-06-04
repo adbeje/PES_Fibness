@@ -9,18 +9,16 @@
     <EditText
         android:id="@+id/num_Series"
         android:layout_width="80dp"
-        android:layout_height="46dp"
-        android:layout_marginBottom="1dp"
+        android:layout_height="43dp"
         android:layout_weight="2"
         android:hint="0"
         android:inputType="number"
         android:textColor="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/num_Rept"
+        app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline22"
-        app:layout_constraintTop_toTopOf="@+id/guideline3"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
     <EditText
         android:id="@+id/num_Rept"
@@ -30,12 +28,11 @@
         android:hint="0"
         android:inputType="number"
         android:textColor="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/guideline6"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline22"
-        app:layout_constraintTop_toTopOf="@+id/guideline5"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
     <TextView
         android:id="@+id/txtRest"
@@ -124,11 +121,11 @@
         android:hint="0"
         android:inputType="number"
         android:textColor="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline22"
-        app:layout_constraintTop_toBottomOf="@+id/num_Rept" />
+        app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
     <Button
         android:id="@+id/btn_done"

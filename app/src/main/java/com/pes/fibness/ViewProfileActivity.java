@@ -87,7 +87,7 @@ public class ViewProfileActivity extends AppCompatActivity {
 
         if((u.getBirthDate().equals("null")|| u.getBirthDate().equals("")))
             age.setText("");
-        else age.setText(", " + howManyYears(u.getBirthDate()));
+        else age.setText(howManyYears(u.getBirthDate()));
 
         if((u.getCountry().equals("null")|| u.getCountry().equals("")))
             country.setText("");
