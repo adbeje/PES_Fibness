@@ -76,10 +76,10 @@ public class ShowTrainingActivity extends AppCompatActivity implements ShowTrain
         ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/training/" + trainingModel.getId() + "/activities");
         c.getTrainingExercises("chivato");
 
-        /*
-        ConnetionAPI c2 = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/elementoLike");
-        c2.getElementLike(User.getInstance().getId(), trainingModel.getId());
-         */
+
+        ConnetionAPI c2 = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/likeelemento/" + trainingModel.getId()+ "/" + User.getInstance().getId());
+        c2.getElementLike();
+
 
         /*cargo comments*/
         ConnetionAPI c3 = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/comment/" + trainingModel.getId() + "/comments");
@@ -134,8 +134,7 @@ class ShowTrainingAdapter extends RecyclerView.Adapter<ShowTrainingAdapter.ShowT
         int comment = trainingModel.getnComment();
         holder.tvName.setText(name);
         holder.tvDesc.setText(description);
-        holder.tvNLike.setText("" + like);
-        holder.tvNComment.setText("" + comment);
+
 
     }
 
@@ -153,14 +152,12 @@ class ShowTrainingAdapter extends RecyclerView.Adapter<ShowTrainingAdapter.ShowT
     }
 
     public class ShowTrainingAdapterVh extends RecyclerView.ViewHolder {
-        TextView tvName, tvDesc, tvNLike, tvNComment;
+        TextView tvName, tvDesc;
 
         public ShowTrainingAdapterVh(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.name);
             tvDesc = itemView.findViewById(R.id.description);
-            tvNLike = itemView.findViewById(R.id.nlike);
-            tvNComment = itemView.findViewById(R.id.ncomment);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

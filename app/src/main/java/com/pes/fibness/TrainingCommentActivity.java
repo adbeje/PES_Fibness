@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -55,7 +56,7 @@ public class TrainingCommentActivity extends AppCompatActivity {
 
     private TrainingModel trainingModel;
     private int userId;
-    private Boolean liked = false; //User.get...getLikeElement()
+    private Boolean liked = User.getInstance().getElementLike();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,32 +129,50 @@ public class TrainingCommentActivity extends AppCompatActivity {
 
 
 
+        if(liked)
+            like.setColorFilter(getApplicationContext().getResources().getColor(R.color.red));
+        else
+            like.setColorFilter(getApplicationContext().getResources().getColor(R.color.c_icon_like));
 
 
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(liked){ //delete like
-                    ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/like/" + userId + "/" + trainingModel.getId() + "/element" );
+                    ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/like/" + User.getInstance().getId() + "/" + trainingModel.getId() + "/element" );
                     connetionAPI.deleteElementLike();
-                    int n = trainingModel.getnLikes();
-                    trainingModel.setnLikes(n-1);
-                    nlike.setText("" + trainingModel.getnLikes());
+                    int n = trainingModel.getnLikes() -1;
+                    trainingModel.setnLikes(n);
+                    nlike.setText("" + n);
                     like.setColorFilter(getApplicationContext().getResources().getColor(R.color.c_icon_like));
                     liked = false;
                 }
                 else { //post like
                     ConnetionAPI connetionAPI = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/like");
-                    connetionAPI.likeElement(userId, trainingModel.getId(), "element");
-                    int n = trainingModel.getnLikes();
-                    trainingModel.setnLikes(n+1);
-                    nlike.setText("" + trainingModel.getnLikes());
+                    connetionAPI.likeElement(User.getInstance().getId(), trainingModel.getId(), "element");
+                    int n = trainingModel.getnLikes() + 1;
+                    trainingModel.setnLikes(n);
+                    nlike.setText("" + n);
+
                     like.setColorFilter(getApplicationContext().getResources().getColor(R.color.red));
                     liked = true;
                 }
 
             }
         });
+
+        comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                msgText.requestFocus();
+                msgText.setFocusableInTouchMode(true);
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(msgText, InputMethodManager.SHOW_FORCED);
+
+            }
+        });
+
 
         send.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)

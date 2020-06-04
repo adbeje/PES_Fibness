@@ -39,7 +39,10 @@ public class User {
 
     private static ArrayList<TrainingExtra> trainingExtra = new ArrayList<>();
     private static ArrayList<ExerciseExtra> exerciseExtras = new ArrayList<>();
+    private Boolean elementLike;
     private static ArrayList<Comment> comments = new ArrayList<>();
+    private static ArrayList<Statistic> statistics = new ArrayList<>();
+
 
     /*we are applying singleton because we will have an instance for each aplication user*/
     private static User instance = null;
@@ -212,6 +215,11 @@ public class User {
     /*training comment*/
     public static ArrayList<Comment> getComments() { return comments; }
     public static void setComments(ArrayList<Comment> comments) { User.comments = comments; }
+
+    public Boolean getElementLike() { return  this.elementLike; }
+    public void setElementLike(Boolean elementLike) {
+        this.elementLike = elementLike;
+    }
 
     /** Exercises **/
     public ArrayList<Exercise> getExerciseList(){
@@ -437,6 +445,13 @@ public class User {
         alimentList.get(pos).id = newID;
     }
 
+
+    /*Statistic*/
+
+    public static ArrayList<Statistic> getStatistics() { return statistics; }
+    public static void setStatistics(ArrayList<Statistic> statistics) { User.statistics = statistics; }
+
+
 }
 
 
@@ -541,4 +556,9 @@ class UsersInfo{
     Boolean blocked;
     byte[] image;
 
+}
+
+class Statistic{
+    int day;
+    int dst;
 }

@@ -1909,17 +1909,19 @@ public class ConnetionAPI {
 
     }
 
-    public void getElementLike(Integer id, int id1) {
+    public void getElementLike() {
         System.out.println("Dentro de getElementLike");
 
         request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println("--------------Element-------------------");
+                System.out.println("--------------Element like-------------------");
                 System.out.println(response);
                 try {
-                    JSONArray comments = new JSONArray(response);
-
+                    JSONObject obj = new JSONObject(response);
+                    Boolean b = (Boolean) obj.get("like");
+                    User.getInstance().setElementLike(b);
+                    System.out.println("my result: " + User.getInstance().getElementLike());
 
 
                 } catch (JSONException e) {
@@ -2001,12 +2003,13 @@ public class ConnetionAPI {
             @Override
             public void onResponse(String response) {
                 System.out.println("Respuesta post comment: "+ response);
+                Toast.makeText(getApplicationContext(), "Import successful", Toast.LENGTH_LONG).show();
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "You have already imported", Toast.LENGTH_LONG).show();
             }
         }) {
             //post data to server
@@ -2045,6 +2048,48 @@ public class ConnetionAPI {
                     int d = (int) obj.get("dstrecorrida");
                     User.getInstance().setTotalDst(d);
                     //User.getInstance().setTotalDst(250);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+
+
+    }
+
+    public void getStatistics() {
+        System.out.println("Dentro de getStatistics");
+
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("--------------Distance-------------------");
+                System.out.println(response);
+                try {
+                    JSONArray statistic = new JSONArray(response);
+                    ArrayList<Statistic> statisticList = new ArrayList<>();
+                    for(int i = 0; i < statistic.length(); i++){
+                        JSONObject obj = statistic.getJSONObject(i);
+                        Statistic s = new Statistic();
+                        s.day = (Integer) obj.getInt("dia");
+                        s.dst = (Integer) obj.getInt("dstrecorrida");
+                        System.out.println("------------------------");
+                        System.out.println(obj.getInt("dia"));
+                        System.out.println(obj.getInt("dstrecorrida"));
+                        statisticList.add(s);
+
+                    }
+                    User.getInstance().setStatistics(statisticList);
 
 
                 } catch (JSONException e) {
