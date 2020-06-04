@@ -192,6 +192,7 @@ public class TrainingCommentActivity extends AppCompatActivity {
 
                     commentAdapter = new CommentAdapter(commentModelList);
                     recyclerview_comment.setAdapter(commentAdapter);
+                    finishActivity(1);
 
 
 
@@ -206,6 +207,11 @@ public class TrainingCommentActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishActivity(1);
+    }
 }
 
 
@@ -361,7 +367,6 @@ class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentAdapterV
     }
 
 
-
     public class CommentAdapterVh extends RecyclerView.ViewHolder {
 
         TextView prefix, username, comment, date;
@@ -377,8 +382,6 @@ class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentAdapterV
         }
 
     }
-
-
 
 
 }

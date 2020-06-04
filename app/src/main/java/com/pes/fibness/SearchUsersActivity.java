@@ -128,7 +128,7 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
                 startActivity(i);
             }
         };
-        h.sendEmptyMessageDelayed(0, 100);
+        h.sendEmptyMessageDelayed(0, 300);
 
     }
 

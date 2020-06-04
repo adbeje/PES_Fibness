@@ -71,6 +71,12 @@ public class ShowTrainingActivity extends AppCompatActivity implements ShowTrain
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     public void selectedTraining(final TrainingModel trainingModel) {
         /*tengo que obtener los ejercicios y comentarios de este training*/
         ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/training/" + trainingModel.getId() + "/activities");
@@ -95,7 +101,7 @@ public class ShowTrainingActivity extends AppCompatActivity implements ShowTrain
                 startActivity(i);
             }
         };
-        h.sendEmptyMessageDelayed(0, 150);
+        h.sendEmptyMessageDelayed(0, 300);
 
 
 
@@ -127,14 +133,12 @@ class ShowTrainingAdapter extends RecyclerView.Adapter<ShowTrainingAdapter.ShowT
 
     @Override
     public void onBindViewHolder(@NonNull ShowTrainingAdapter.ShowTrainingAdapterVh holder, int position) {
+
         TrainingModel trainingModel = trainingModelList.get(position);
         String name = trainingModel.getName();
         String description = trainingModel.getDesc();
-        int like = trainingModel.getnLikes();
-        int comment = trainingModel.getnComment();
         holder.tvName.setText(name);
         holder.tvDesc.setText(description);
-
 
     }
 

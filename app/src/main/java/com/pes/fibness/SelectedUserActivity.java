@@ -163,7 +163,7 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
                         startActivity(i);
                     }
                 };
-                h.sendEmptyMessageDelayed(0, 100);
+                h.sendEmptyMessageDelayed(0, 200);
 
 
 
@@ -336,20 +336,8 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
 
     @Override
     public void onBackPressed() {
-        Intent intent;
-        if(getIntent().getStringExtra("name").equals("SearchUserActivity")){
-            System.out.println("onBackPressed----1");
-            intent = new Intent(SelectedUserActivity.this, SearchUsersActivity.class);
-        }
-        else if(getIntent().getStringExtra("name").equals("FollowersActivity")) {
-            System.out.println("onBackPressed----2");
-            intent = new Intent(SelectedUserActivity.this, FollowersActivity.class);
-        }
-        else{
-            /*hay que cargar otravez*/
-            intent = new Intent(SelectedUserActivity.this, FollowingActivity.class);
-        }
-        startActivity(intent);
+        super.onBackPressed();
+        finish();
 
     }
 
