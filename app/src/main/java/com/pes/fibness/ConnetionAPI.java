@@ -2031,6 +2031,42 @@ public class ConnetionAPI {
     }
 
 
+    public void getTotalDst() {
+        System.out.println("Dentro de getTotalDst");
+
+        request = new StringRequest(Request.Method.GET, this.urlAPI, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("--------------Distance-------------------");
+                System.out.println(response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    System.out.println("result: " + obj.get("dstrecorrida"));
+                    int d = (int) obj.get("dstrecorrida");
+                    User.getInstance().setTotalDst(d);
+                    //User.getInstance().setTotalDst(250);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server response error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enqueue();
+
+
+    }
+
+
+
+
 
     //to go HomePage
     private void homeActivity() {

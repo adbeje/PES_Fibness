@@ -31,6 +31,7 @@ public class User {
     private static ArrayList<Ruta> rutasList = new ArrayList<>();
 
     private ArrayList<Achievement> achievements = new ArrayList<>(4);
+    private int totalDst;
     private ArrayList<UserShortInfo> shortUsersInfo = new ArrayList<>();
     private UsersInfo selectedUser = new UsersInfo();
     private ArrayList<Pair<Integer, String>> userFollowers = new ArrayList<>();
@@ -111,6 +112,9 @@ public class User {
     /** Achievements **/
     public ArrayList<Achievement> getAchievements() { return achievements; }
     public void setAchievements(ArrayList<Achievement> achievements) { this.achievements = achievements; }
+
+    public int getTotalDst() { return totalDst; }
+    public void setTotalDst(int totalDst) { this.totalDst = totalDst; }
 
     /** Serach Users **/
     public ArrayList<UserShortInfo> getShortUsersInfo() { return shortUsersInfo; }
@@ -477,10 +481,6 @@ class ExerciseExtra{
     int numSerie;
     int numRest;
     String desc;
-}
-
-class AuxVariable{
-
 }
 
 

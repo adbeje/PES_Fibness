@@ -81,8 +81,23 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(getActivity(), AchievementsActivity.class);
-                startActivity(i);
+                User u = User.getInstance();
+                ConnetionAPI connetionAPI = new ConnetionAPI(getContext(), "http://10.4.41.146:3001/user/"+ u.getId() + "/globaldst");
+                connetionAPI.getTotalDst();
+
+                @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                    @Override
+                    public void handleMessage(Message msg) {
+
+                        Intent i = new Intent(getActivity(), AchievementsActivity.class);
+                        startActivity(i);
+                    }
+                };
+                h.sendEmptyMessageDelayed(0, 100);
+
+
+
+
 
             }
         });
