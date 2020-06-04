@@ -10,6 +10,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -17,7 +20,11 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mapbox.api.geocoding.v5.GeocodingCriteria;
+import com.mapbox.api.geocoding.v5.MapboxGeocoding;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.api.geocoding.v5.models.GeocodingResponse;
+import com.mapbox.core.exceptions.ServicesException;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
@@ -37,6 +44,12 @@ import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import timber.log.Timber;
 
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
@@ -49,6 +62,7 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
     String date;
     String hora;
     Point place;
+    String site;
     int pos;
     int id;
 
@@ -137,6 +151,7 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
                         int position = User.getInstance().addEvent(e);
                         ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/event");
                         connection.createEvent(e, User.getInstance().getId(), position);
+                        addCalendarEvent();
                     } else {
                         e.id = id;
                         ConnetionAPI connection = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/event/" + id);
@@ -155,19 +170,19 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
     private boolean compruebaDatos() {
 
         if (textTitle.getText().toString().trim().length() == 0) {
-            textTitle.setError("Please, add a name");
+            textTitle.setError(getString(R.string.PleaseAddAName));
             return false;
         }
         else if(hora == null){
-            etHourPicker.setError("Please, select an hour");
+            etHourPicker.setError(getString(R.string.AddAnHour));
             return false;
         }
         else if(date == null){
-            etDatePicker.setError("Please, select a date");
+            etDatePicker.setError(getString(R.string.AddADate));
             return false;
         }
         else if(place == null){
-            Toast.makeText(this, "Please, select a place for the event", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.AddAPlace), Toast.LENGTH_LONG).show();
             return false;
         }
         title = textTitle.getText().toString();
@@ -344,6 +359,62 @@ public class CreateEventActivity extends AppCompatActivity implements OnMapReady
     protected void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
+    }
+
+
+    private void reverseGeocode(final Point point) {
+        try {
+            MapboxGeocoding client = MapboxGeocoding.builder()
+                    .accessToken(getString(R.string.mapBox_ACCESS_TOKEN))
+                    .query(Point.fromLngLat(point.longitude(), point.latitude()))
+                    .geocodingTypes(GeocodingCriteria.TYPE_ADDRESS)
+                    .build();
+
+            client.enqueueCall(new Callback<GeocodingResponse>() {
+                @Override
+                public void onResponse(Call<GeocodingResponse> call, Response<GeocodingResponse> response) {
+                    if (response.body() != null) {
+                        List<CarmenFeature> results = response.body().features();
+                        if (results.size() > 0) {
+                            CarmenFeature feature = results.get(0);
+                            site =  feature.placeName();
+                            //Toast.makeText( getBaseContext(), site, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+                @Override
+                public void onFailure(Call<GeocodingResponse> call, Throwable throwable) {
+                    Timber.e("Geocoding Failure: %s", throwable.getMessage());
+                }
+            });
+        } catch (ServicesException servicesException) {
+            Timber.e("Error geocoding: %s", servicesException.toString());
+            servicesException.printStackTrace();
+        }
+    }
+
+    public void addCalendarEvent() {
+        reverseGeocode(place);
+        @SuppressLint("HandlerLeak") Handler h = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                String[] horas = hora.split(":");
+                String[] fecha = date.split("/");
+
+                android.icu.util.Calendar calendarEvent = android.icu.util.Calendar.getInstance();
+                calendarEvent.set(Integer.parseInt(fecha[2]), Integer.parseInt(fecha[1])-1, Integer.parseInt(fecha[0]), Integer.parseInt(horas[0]), Integer.parseInt(horas[1]));
+                Intent i = new Intent(Intent.ACTION_EDIT);
+                i.setType("vnd.android.cursor.item/event");
+                i.putExtra("beginTime", calendarEvent.getTimeInMillis());
+                i.putExtra("allDay", false);
+                i.putExtra("title", title);
+                i.putExtra("description", desc);
+                i.putExtra("eventLocation", site);
+
+                startActivity(i);
+            }
+        };
+        h.sendEmptyMessageDelayed(0, 300);
     }
 
     private void getExtras() {

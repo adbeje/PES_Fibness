@@ -83,8 +83,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
 
         ((TextView) findViewById(R.id.titleEvent)).setText(title);
         ((TextView) findViewById(R.id.descEvent)).setText(desc);
-        ((TextView) findViewById(R.id.dateEvent)).setText(date);
-        ((TextView) findViewById(R.id.hourEvent)).setText(hour);
+        ((TextView) findViewById(R.id.dateEvent)).setText(date + "  " + hour);
         new Handler().postDelayed(new Runnable(){
             public void run(){
                 if(comunity){
@@ -97,11 +96,11 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
                     participa = User.getInstance().participa();
                     if(participa){
                         join.setBackground(getResources().getDrawable(R.drawable.btn_bg));
-                        join.setText("Leave");
+                        join.setText(R.string.Leave);
                     }
                     else{
                         join.setBackground(getResources().getDrawable(R.drawable.btn_bg_sel));
-                        join.setText("Join");
+                        join.setText(R.string.Join);
                     }
                 }
                 else{
@@ -150,7 +149,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
                     connection.deleteParticipa();
                     User.getInstance().deleteParticipa();
                     join.setBackground(getResources().getDrawable(R.drawable.btn_bg_sel));
-                    join.setText("Join");
+                    join.setText(R.string.Join);
                     participa = false;
                 }
                 else{
@@ -158,7 +157,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
                     connection.createParticipa(User.getInstance().getId());
                     User.getInstance().addParticipa();
                     join.setBackground(getResources().getDrawable(R.drawable.btn_bg));
-                    join.setText("Leave");
+                    join.setText(R.string.Leave);
                     participa = true;
                     AddCalendarEvent();
                 }

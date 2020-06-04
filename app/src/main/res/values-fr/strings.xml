@@ -180,5 +180,10 @@
     <string name="training">ENTRAÌNEMENT</string>
     <string name="diets">RÉGIMES</string>
     <string name="routes">ITINÉRAIRES</string>
+    <string name="Rutas">Itinéraires</string>
+    <string name="Join">JOINDRE</string>
+    <string name="Leave">LAISSER</string>
+    <string name="AddADate">Veuillez ajouter une date</string>
+    <string name="AddAPlace">Veuillez ajouter un endroit</string>
 
 </resources>

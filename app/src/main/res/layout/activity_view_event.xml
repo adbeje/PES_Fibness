@@ -43,14 +43,13 @@
         android:id="@+id/fb_participantes"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        app:fabCustomSize="60dp"
         android:backgroundTint="@color/seleccion"
         android:src="@drawable/perfil_icon"
         android:tint="@color/claro"
+        app:fabCustomSize="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/gl_r"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.38"
         app:maxImageSize="40dp" />
@@ -75,25 +74,6 @@
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/titleEvent"
         app:layout_constraintVertical_bias="0.16000003" />
-
-    <TextView
-        android:id="@+id/hourEvent"
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/edit_text_bg"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="@string/formato_hora"
-        android:padding="16dp"
-        android:textColor="@color/claro"
-        android:textColorHint="@color/claro"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/mapEvent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guideline_right"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/gl_l"
-        app:layout_constraintTop_toBottomOf="@+id/descEvent" />
 
     <TextView
         android:id="@+id/dateEvent"
@@ -133,14 +113,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="250dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_l"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="180dp" />
+        app:layout_constraintGuide_begin="256dp" />
 
 
     <Button
@@ -162,7 +135,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_bg_sel"
-        android:text="Join"
+        android:text="@string/Join"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

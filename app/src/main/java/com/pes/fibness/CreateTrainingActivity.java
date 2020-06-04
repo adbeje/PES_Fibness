@@ -191,19 +191,19 @@ public class CreateTrainingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean correct = true;
                 if (txtName.getText().toString().trim().length() == 0) {
-                    txtName.setError(getString((R.string.PleaseAddAName)));
+                    txtName.setError(getString(R.string.PleaseAddAName));
                     correct = false;
                 }
                 if (numRest.getText().toString().trim().length() == 0) {
-                    numRest.setError(getString((R.string.AddANumber)));
+                    numRest.setError(getString(R.string.AddANumber));
                     correct = false;
                 }
                 if (numRepet.getText().toString().trim().length() == 0) {
-                    numRepet.setError(getString((R.string.AddANumber)));
+                    numRepet.setError(getString(R.string.AddANumber));
                     correct = false;
                 }
                 if (numSeries.getText().toString().trim().length() == 0) {
-                    numSeries.setError(getString((R.string.AddANumber)));
+                    numSeries.setError(getString(R.string.AddANumber));
                     correct = false;
                 }
                 if (correct) {
