@@ -72,7 +72,7 @@ public class DietasFragment extends Fragment {
     private void showEditBox(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(R.layout.input_edit_diet);
-        builder.setTitle("Edit " + dietList.get(position));
+        builder.setTitle(getString(R.string.edit) + " " + dietList.get(position));
         final AlertDialog dialog = builder.create();
         dialog.show();
         final EditText editNameText = (EditText) dialog.findViewById(R.id.editTitleDietInput);
@@ -87,11 +87,11 @@ public class DietasFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (editNameText.getText().toString().trim().length() == 0) {
-                    editNameText.setError("Please, add a name");
+                    editNameText.setError(getString(R.string.PleaseAddAName));
                 }
                 else if (dietList.contains(editNameText.getText().toString()) &&
                         !dietList.get(position).equals(editNameText.getText().toString())){
-                    editNameText.setError("This name is already used");
+                    editNameText.setError(getString(R.string.NameAlreadyUsed));
                 }
                 else {
                     int idDiet = User.getInstance().getDietID(dietList.get(position));
@@ -132,11 +132,11 @@ public class DietasFragment extends Fragment {
     private void showInputBox() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(R.layout.input_new_diet);
-        builder.setTitle("Diet");
+        builder.setTitle(getString(R.string.Diet));
         final AlertDialog dialog = builder.create();
         dialog.show();
         TextView txt = (TextView) dialog.findViewById(R.id.TitleNewDiet);
-        txt.setText("Add a name");
+        txt.setText(getString(R.string.AddAName));
         final EditText editNameText = (EditText) dialog.findViewById(R.id.TitleDietInput);
         final EditText editDescText = (EditText) dialog.findViewById(R.id.DescNewDiet);
         Button bt = (Button) dialog.findViewById(R.id.btdoneDiet);
@@ -144,10 +144,10 @@ public class DietasFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (editNameText.getText().toString().trim().length() == 0) {
-                    editNameText.setError("Please, add a name");
+                    editNameText.setError(getString(R.string.PleaseAddAName));
                 }
                 else if (dietList.contains(editNameText.getText().toString())){
-                    editNameText.setError("This name is already used");
+                    editNameText.setError(getString(R.string.NameAlreadyUsed));
                 }
                 else {
                     String titleDiet = editNameText.getText().toString();

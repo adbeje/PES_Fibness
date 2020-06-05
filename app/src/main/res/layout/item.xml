@@ -30,7 +30,7 @@
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Title"
+                    android:text="@string/title"
                     android:textSize="16sp"
                     android:textColor="#262626"
                     android:layout_below="@id/image"
@@ -60,7 +60,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:textAlignment="center"
-                    android:text="The best views are achieved after a hard climb."
+                    android:text="@string/the_best_views_are_achieved_after_a_hard_climb"
                     android:drawablePadding="10dp"
                     android:ellipsize="end"
                     android:layout_centerHorizontal="true"/>

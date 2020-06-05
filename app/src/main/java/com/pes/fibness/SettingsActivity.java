@@ -2,6 +2,7 @@ package com.pes.fibness;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -55,8 +56,8 @@ public class SettingsActivity extends AppCompatActivity {
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
-                startActivity(intent);
+                onBackPressed();
+                finish();
 
             }
         });
@@ -66,8 +67,8 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveSettingsData();
-                Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
-                startActivity(intent);
+                onBackPressed();
+                finish();
             }
         });
 
@@ -93,8 +94,10 @@ public class SettingsActivity extends AppCompatActivity {
         logOut.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                setSharedPreferences();
+                Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -111,6 +114,17 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    private void setSharedPreferences(){
+
+        SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("userEmail", "");
+        editor.putString("userPassword", "");
+        editor.putString("userName", "");
+        editor.apply();
+
+    }
 
 
     /*send email to fibness*/
@@ -129,7 +143,7 @@ public class SettingsActivity extends AppCompatActivity {
     /*before We have to create a new string.xml*/
     private void showChangeLanguageDialog() {
         /*array of languages to display in alert dialog*/
-        final String[] listLanguages = {"English", "Spanish"};
+        final String[] listLanguages = {"English", "Spanish", "Catalan", "French"};
         AlertDialog.Builder message = new AlertDialog.Builder(this);
         message.setTitle("Choose Language");
         message.setSingleChoiceItems(listLanguages, -1, new DialogInterface.OnClickListener() {
@@ -143,6 +157,16 @@ public class SettingsActivity extends AppCompatActivity {
                 else if(i == 1){
                     System.out.println("opcion elegida: " + "spanish");
                     setLocale("es");
+                    recreate();
+                }
+                else if(i == 2){
+                    System.out.println("opcion elegida: " + "catalan");
+                    setLocale("cat");
+                    recreate();
+                }
+                else if(i == 3){
+                    System.out.println("opcion elegida: " + "french");
+                    setLocale("fr");
                     recreate();
                 }
                 /*dismiis alert dialog when language selected*/
@@ -225,14 +249,5 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
-        startActivity(intent);
-
-    }
-
-
 
 }

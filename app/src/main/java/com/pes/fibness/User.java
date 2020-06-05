@@ -2,11 +2,14 @@ package com.pes.fibness;
 
 
 import com.mapbox.geojson.Point;
-import java.util.Date;
-import android.util.Pair;
 
-import java.io.File;
+import android.util.Pair;
+import android.widget.Toast;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class User {
 
@@ -18,8 +21,7 @@ public class User {
     private byte[] image;
     private boolean[] settings = new boolean[5]; /*0 = Age, 1 = Distance, 2 = Invitation , 3 = Follower, 4 = Message*/
     private String recoveryCode;
-
-    private String[] dias = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"};
+    private ArrayList<Pair<String, String> > Chats = new ArrayList<Pair<String, String> >();
 
     /*User fitness*/
     private static ArrayList<Training> trainingList = new ArrayList<>();
@@ -30,11 +32,23 @@ public class User {
 
     private static ArrayList<Ruta> rutasList = new ArrayList<>();
 
+    private static ArrayList<Evento> comunityEvents = new ArrayList<>();
+    private static ArrayList<Evento> myEvents = new ArrayList<>();
+    private static ArrayList<UserShortInfo> participantsList = new ArrayList<>();
+
     private ArrayList<Achievement> achievements = new ArrayList<>(4);
+    private int totalDst;
     private ArrayList<UserShortInfo> shortUsersInfo = new ArrayList<>();
     private UsersInfo selectedUser = new UsersInfo();
     private ArrayList<Pair<Integer, String>> userFollowers = new ArrayList<>();
     private ArrayList<Pair<Integer, String>> userFollowing = new ArrayList<>();
+
+    private static ArrayList<TrainingExtra> trainingExtra = new ArrayList<>();
+    private static ArrayList<ExerciseExtra> exerciseExtras = new ArrayList<>();
+    private Boolean elementLike;
+    private static ArrayList<Comment> comments = new ArrayList<>();
+    private static ArrayList<Statistic> statistics = new ArrayList<>();
+
 
     /*we are applying singleton because we will have an instance for each aplication user*/
     private static User instance = null;
@@ -108,6 +122,9 @@ public class User {
     public ArrayList<Achievement> getAchievements() { return achievements; }
     public void setAchievements(ArrayList<Achievement> achievements) { this.achievements = achievements; }
 
+    public int getTotalDst() { return totalDst; }
+    public void setTotalDst(int totalDst) { this.totalDst = totalDst; }
+
     /** Serach Users **/
     public ArrayList<UserShortInfo> getShortUsersInfo() { return shortUsersInfo; }
     public void setShortUsersInfo(ArrayList<UserShortInfo> shortUsersInfo) { this.shortUsersInfo = shortUsersInfo; }
@@ -125,7 +142,6 @@ public class User {
     public void setUserFollowing(ArrayList<Pair<Integer, String>> userFollowing) { this.userFollowing = userFollowing; }
 
 
-    /***************************************************************************/
     /** Trainings **/
     public void setTrainingList(ArrayList<Training> t){
         trainingList = t;
@@ -197,6 +213,19 @@ public class User {
         return -1;
     }
 
+    /*training aux*/
+    public ArrayList<TrainingExtra> getTrainingExtra() { return trainingExtra; }
+    public void setTrainingExtra(ArrayList<TrainingExtra> trainingExtra) { this.trainingExtra = trainingExtra; }
+
+    /*training comment*/
+    public static ArrayList<Comment> getComments() { return comments; }
+    public static void setComments(ArrayList<Comment> comments) { User.comments = comments; }
+
+    public Boolean getElementLike() { return  this.elementLike; }
+    public void setElementLike(Boolean elementLike) {
+        this.elementLike = elementLike;
+    }
+
     /** Exercises **/
     public ArrayList<Exercise> getExerciseList(){
         return exerciseList;
@@ -223,6 +252,10 @@ public class User {
     public int getExerciseID(int position){ return exerciseList.get(position).id;  }
 
     public int getExerciseNamePos(int position){ return exerciseList.get(position).Pos;  }
+
+    public static ArrayList<ExerciseExtra> getExerciseExtras() { return exerciseExtras; }
+    public static void setExerciseExtras(ArrayList<ExerciseExtra> exerciseExtras) { User.exerciseExtras = exerciseExtras; }
+
 
     /** Diets **/
     public void setDietList(ArrayList<Diet> d){
@@ -293,15 +326,6 @@ public class User {
             }
         }
         return -1;
-    }
-
-    /**Dias**/
-    public ArrayList<String> getDias(){
-        ArrayList<String> ListaDias = new ArrayList<>();
-        for(int i = 0; i < dias.length; i++){
-            ListaDias.add(dias[i]);
-        }
-        return ListaDias;
     }
 
     /** Meals **/
@@ -417,6 +441,101 @@ public class User {
         alimentList.get(pos).id = newID;
     }
 
+
+    public void setComunityEvents(ArrayList<Evento> events){
+        comunityEvents = events;
+    }
+
+    public void setMyEvents(ArrayList<Evento> events){
+        myEvents = events;
+    }
+
+    public void setParticipantsList(ArrayList<UserShortInfo> participants){
+        participantsList = participants;
+    }
+
+    public ArrayList<Evento> getComunityEvents(){
+        return comunityEvents;
+    }
+
+    public ArrayList<Evento> getMyEvents(){
+        return myEvents;
+    }
+
+    public ArrayList<UserShortInfo> getParticipantsList(){
+        return participantsList;
+    }
+
+    public void deleteParticipa() {
+        for(int i = 0; i < participantsList.size(); ++i){
+            if(participantsList.get(i).id.equals(user_id)){
+                participantsList.remove(i);
+                break;
+            }
+        }
+    }
+
+    public void addParticipa() {
+        UserShortInfo u = new UserShortInfo();
+        u.blocked = false;
+        u.id = user_id;
+        u.username = name;
+        participantsList.add(u);
+    }
+
+    public Boolean participa() {
+        for(int i = 0; i < participantsList.size(); ++i){
+            if(participantsList.get(i).id.equals(user_id)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void deleteEvent(int pos) {
+        myEvents.remove(pos);
+    }
+
+    public int addEvent(Evento e) {
+        myEvents.add(e);
+        return myEvents.size() -1;
+    }
+
+    public void updateEvent(int pos, Evento e) {
+        myEvents.set(pos, e);
+    }
+
+    public void setEventID(int pos, int newID){
+        myEvents.get(pos).id = newID;
+    }
+    /**Chats**/
+    public ArrayList<String> getChatsName(){
+        if(Chats.size() < 1) iniChats();
+        ArrayList<String> ChatsName = new ArrayList<String>();
+        for(int i = 0; i < Chats.size(); i++){
+            ChatsName.add(Chats.get(i).first);
+        }
+        return ChatsName;
+    }
+
+    public String getChannelID(int position){
+        return Chats.get(position).second;
+    }
+
+    private void iniChats(){
+        Chats.add(new Pair("Trainings", "ecvi0PNesQSdBcBK"));
+        Chats.add(new Pair("Diets", "PRYFLbm0FZp1JB3i"));
+        Chats.add(new Pair("Routes", "rEejgq7VGoTc1bci"));
+        Chats.add(new Pair("Events", "bFeChQnd1FrN0ic5"));
+        Chats.add(new Pair("Others", "OhFX7jCm248D2Ddm"));
+    }
+
+    /*Statistic*/
+
+    public static ArrayList<Statistic> getStatistics() { return statistics; }
+    public static void setStatistics(ArrayList<Statistic> statistics) { User.statistics = statistics; }
+
+
 }
 
 
@@ -427,6 +546,23 @@ class Training{
     String desc;
 }
 
+class TrainingExtra{
+    int id;
+    String name;
+    String desc;
+    int nLikes;
+    int nComment;
+}
+
+class Comment{
+    int id_comment;
+    int id_user;
+    String user_name;
+    String date;
+    String text;
+}
+
+
 class Exercise{
     int id;
     String TitleEx;
@@ -436,6 +572,17 @@ class Exercise{
     int  Pos;
     String Desc;
 }
+
+class ExerciseExtra{
+    int id;
+    String title;
+    int numRep;
+    int numSerie;
+    int numRest;
+    String desc;
+}
+
+
 
 class Diet{
     int id;
@@ -462,6 +609,15 @@ class Ruta{
     Integer distance;
     Point origen;
     Point destino;
+}
+
+class Evento{
+    int id;
+    String name;
+    String desc;
+    String date;
+    String hour;
+    Point place;
 }
 
 class Achievement{
@@ -491,5 +647,11 @@ class UsersInfo{
     Boolean sMessage;
     Boolean follow;
     Boolean blocked;
+    byte[] image;
 
+}
+
+class Statistic{
+    int day;
+    int dst;
 }

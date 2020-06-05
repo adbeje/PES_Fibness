@@ -1,5 +1,6 @@
 package com.pes.fibness;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -23,10 +24,9 @@ public class ChooseDayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day_diet);
         getExtras();
+        //getResources().getStringArray(R.array.testArray);
 
-
-        listaDias = User.getInstance().getDias();
-
+        listaDias = getArrayListDays();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarDay);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(titleDiet);
@@ -37,16 +37,26 @@ public class ChooseDayActivity extends AppCompatActivity {
         refreshList();
 
         diasList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @SuppressLint("ResourceType")
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String dia = getDia(position);
                 int idDiet = User.getInstance().getDietID(titleDiet);
                 ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/diet/" + idDiet + "/" +
                         dia);
-                c.getDietMeal(titleDiet, dia);
+                c.getDietMeal(titleDiet, listaDias.get(position), dia);
             }
         } );
 
+    }
+
+    private ArrayList<String> getArrayListDays(){
+        String days[] = getResources().getStringArray(R.array.days);
+        ArrayList<String> ListaDias = new ArrayList<>();
+        for(int i = 0; i < days.length; i++){
+            ListaDias.add(days[i]);
+        }
+        return ListaDias;
     }
 
     private void refreshList() {
@@ -86,4 +96,9 @@ public class ChooseDayActivity extends AppCompatActivity {
         titleDiet = extras.getString("title");
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

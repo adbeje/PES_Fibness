@@ -38,11 +38,15 @@
     <!--colores entrenamientos, dietas y barra inferior-->
     <color name="oscuro">#15202B</color>
     <color name="claro">#D8E9F0</color>
+    <color name="blanco">#FFFFFF</color>
     <color name="seleccion">#1DA1F2</color>
     <color name="seleccion_oscuro">#3A96BA</color>
     <color name="alternativo">#43626E</color>
     <color name="deseleccion">#1affffff </color>
     <color name="deseleccion_alt">#66ffffff</color>
+
+    <color name="red">#FFF44336</color>
+    <color name="c_icon_like">#145795</color>
 
     <!-- colors for achievement page-->
     <color name="color1">#424549</color>

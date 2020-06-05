@@ -19,38 +19,43 @@
         android:id="@+id/titleRutaInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
+        android:hint="@string/Name"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputboxTitleRuta"/>
+        app:layout_constraintTop_toBottomOf="@+id/inputboxTitleRuta"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btdone"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginBottom="4dp"
         android:layout_weight="1"
         android:background="@drawable/btn_black"
-        android:text="DONE"
+        android:text="@string/done"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.916"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.85" />
 
     <EditText
         android:id="@+id/descRutaInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Description"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
+        android:hint="@string/Description"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleRutaInput"/>
+        app:layout_constraintTop_toBottomOf="@+id/titleRutaInput"
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"

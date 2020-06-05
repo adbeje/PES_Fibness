@@ -15,15 +15,20 @@ import android.graphics.ColorSpace;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;
@@ -32,7 +37,7 @@ import java.time.format.DateTimeFormatter;
 
 public class SelectedUserActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
-    private ImageView backImgButton, blockImgButton;
+    private ImageView backImgButton, blockImgButton, ivUser;
     private TextView nFollowers, nFollowing, username,coma, age, country, description;
     private FloatingActionButton follow;
     private UserModel userModel;
@@ -40,6 +45,8 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
     private Boolean ImFolloing = ui.follow; /* ui.follow necesito por si el usuario en la misma pagina quiere seguir y dejar de seguir*/
     private int n = ui.nFollower;
     private Boolean bkUser= ui.blocked;
+
+    private Button btn_training, btn_diets, btn_routes;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -50,6 +57,7 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
 
         backImgButton = findViewById(R.id.backImgButton);
         blockImgButton = findViewById(R.id.blockImgButton);
+        ivUser = findViewById(R.id.iv_user);
         nFollowers = findViewById(R.id.nFollowers);
         nFollowing = findViewById(R.id.nFollowing);
         username = findViewById(R.id.username);
@@ -59,37 +67,12 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
         description = findViewById(R.id.description);
         follow = findViewById(R.id.follow);
 
-        if(ImFolloing){
-            follow.setBackgroundTintList(ColorStateList.valueOf(-2818048)); //-2818048 = red color
-        }
-        else{
-            System.out.println("NADA");;
-            follow.setBackgroundTintList(ColorStateList.valueOf(-16021062)); //-16021062 = @color/c_icon_bkg_unsel
-        }
+        btn_training = findViewById(R.id.btn_training);
+        btn_diets = findViewById(R.id.btn_diets);
+        btn_routes = findViewById(R.id.btn_routes);
 
-        /*falta cargar imagen*/
-        if(ui.nFollower < 0)
-            nFollowers.setText("0");
-        else nFollowers.setText(""+ ui.nFollower);
-        if(ui.nFollowing < 0)
-            nFollowing.setText("0");
-        else nFollowing.setText(""+ui.nFollowing);
-        username.setText(ui.username);
-        if(ui.birthDate.equals("null"))
-            coma.setText("");
-        else {
-            if(ui.sAge)
-                age.setText(howManyYears(ui.birthDate));
-            else coma.setText("");
-        }
-        String[] planets = getResources().getStringArray(R.array.countries);
-        if(ui.country.equals("null"))
-            country.setText("");
-        else country.setText(planets[Integer.parseInt(ui.country)]);
-        if(ui.description.equals("null"))
-            description.setText("");
-        else description.setText(ui.description);
 
+        showUserInfo();
 
 
         Intent intent = getIntent();
@@ -160,6 +143,84 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
 
             }
         });
+
+
+
+        btn_training.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /**cargo entrenamientos*/
+                ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/user/" + userModel.getId() + "/trainings");
+                c.getUserTrainings();
+
+                @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                    @Override
+                    public void handleMessage(Message msg) {
+                        Intent i = new Intent().setClass(SelectedUserActivity.this, ShowTrainingActivity.class).putExtra("data", userModel);
+                        i.putExtra("name", "SelectedUserActivity");
+                        startActivity(i);
+                    }
+                };
+                h.sendEmptyMessageDelayed(0, 200);
+
+
+
+            }
+        });
+
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void showUserInfo() {
+
+        if(ImFolloing){
+            follow.setBackgroundTintList(ColorStateList.valueOf(-2818048)); //-2818048 = red color
+        }
+        else{
+            System.out.println("NADA");;
+            follow.setBackgroundTintList(ColorStateList.valueOf(-16021062)); //-16021062 = @color/c_icon_bkg_unsel
+        }
+
+
+        if(ui.nFollower < 0)
+            nFollowers.setText("0");
+        else nFollowers.setText(""+ ui.nFollower);
+        if(ui.nFollowing < 0)
+            nFollowing.setText("0");
+        else nFollowing.setText(""+ui.nFollowing);
+        /*image*/
+        boolean validImage = false;
+        byte[] userImage = null;
+        if (ui.image != null) {
+            validImage = true;
+            userImage = ui.image;
+        }
+        if (validImage) {
+            Glide.with(SelectedUserActivity.this)
+                    .load(userImage)
+                    .centerCrop()
+                    .circleCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(ivUser);
+        }
+
+        username.setText(ui.username);
+        if(ui.birthDate.equals("null"))
+            coma.setText("");
+        else {
+            if(ui.sAge)
+                age.setText(howManyYears(ui.birthDate));
+            else coma.setText("");
+        }
+        String[] planets = getResources().getStringArray(R.array.countries);
+        if(ui.country.equals("null"))
+            country.setText("");
+        else country.setText(planets[Integer.parseInt(ui.country)]);
+        if(ui.description.equals("null"))
+            description.setText("");
+        else description.setText(ui.description);
+
 
     }
 
@@ -273,20 +334,8 @@ public class SelectedUserActivity extends AppCompatActivity implements PopupMenu
 
     @Override
     public void onBackPressed() {
-        Intent intent;
-        if(getIntent().getStringExtra("name").equals("SearchUserActivity")){
-            System.out.println("onBackPressed----1");
-            intent = new Intent(SelectedUserActivity.this, SearchUsersActivity.class);
-        }
-        else if(getIntent().getStringExtra("name").equals("FollowersActivity")) {
-            System.out.println("onBackPressed----2");
-            intent = new Intent(SelectedUserActivity.this, FollowersActivity.class);
-        }
-        else{
-            /*hay que cargar otravez*/
-            intent = new Intent(SelectedUserActivity.this, FollowingActivity.class);
-        }
-        startActivity(intent);
+        super.onBackPressed();
+        finish();
 
     }
 

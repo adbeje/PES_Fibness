@@ -128,7 +128,7 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
                 startActivity(i);
             }
         };
-        h.sendEmptyMessageDelayed(0, 100);
+        h.sendEmptyMessageDelayed(0, 300);
 
     }
 
@@ -164,13 +164,5 @@ public class SearchUsersActivity extends AppCompatActivity implements UsersAdapt
             return  true;
 
         return super.onOptionsItemSelected(item);
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(SearchUsersActivity.this, HomeActivity.class);
-        startActivity(intent);
-
     }
 }

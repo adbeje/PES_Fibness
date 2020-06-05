@@ -68,8 +68,21 @@ public class ProfileFragment extends Fragment {
         imgViewProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), ViewProfileActivity.class);
-                startActivity(i);
+
+                User u = User.getInstance();
+                ConnetionAPI connetionAPI = new ConnetionAPI(getContext(), "http://10.4.41.146:3001/user/"+ u.getId() + "/statistics");
+                connetionAPI.getStatistics();
+
+                @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                    @Override
+                    public void handleMessage(Message msg) {
+
+                        Intent i = new Intent(getActivity(), ViewProfileActivity.class);
+                        startActivity(i);
+                    }
+                };
+                h.sendEmptyMessageDelayed(0, 100);
+
 
             }
         });
@@ -81,12 +94,34 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(getActivity(), AchievementsActivity.class);
-                startActivity(i);
+                User u = User.getInstance();
+                ConnetionAPI connetionAPI = new ConnetionAPI(getContext(), "http://10.4.41.146:3001/user/"+ u.getId() + "/globaldst");
+                connetionAPI.getTotalDst();
+
+                @SuppressLint("HandlerLeak") Handler h = new Handler(){
+                    @Override
+                    public void handleMessage(Message msg) {
+
+                        Intent i = new Intent(getActivity(), AchievementsActivity.class);
+                        startActivity(i);
+                    }
+                };
+                h.sendEmptyMessageDelayed(0, 100);
+
+
+
+
 
             }
         });
 
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent chatList = new Intent(getActivity(), ChooseChatActivity.class);
+                startActivity(chatList);
+            }
+        });
 
         /*load user info (id,username)*/
         users.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +149,18 @@ public class ProfileFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        showUserInfo();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ivUser.setImageBitmap(null); ivUser.destroyDrawingCache();
+    }
+
     private void showUserInfo() {
         boolean validImage = false;
         byte[] userImage = null;
@@ -127,7 +174,7 @@ public class ProfileFragment extends Fragment {
                     .load(userImage)
                     .centerCrop()
                     .circleCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .skipMemoryCache(true)
                     .into(ivUser);
         }
     }

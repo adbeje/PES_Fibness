@@ -21,6 +21,11 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
@@ -53,8 +58,9 @@ dependencies {
     /*data visualization char --> mpandroidchart*/
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 
-    /*for cercle/round imageview*/
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    /*for the chat*/
+    implementation 'com.scaledrone:scaledrone-java:0.6.0'
 
     /* for taking profile pics */
     implementation 'com.github.jkwiecien:EasyImage:2.1.1'
@@ -65,15 +71,18 @@ dependencies {
     implementation 'com.android.support:cardview-v7:28.0.0'
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.getbase:floatingactionbutton:1.10.1'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.1.0'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation:0.42.6'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.42.6'
     implementation ('com.mapbox.mapboxsdk:mapbox-android-directions:1.0.0@aar'){ transitive=true }
     implementation 'com.github.mastrgamr:mapbox-android-utils:v0.3'
-    //noinspection AnnotationProcessorOnCompilePath
-    implementation 'com.jakewharton:butterknife:10.2.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
+
+    /* for events */
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-places-v9:0.12.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.7.1'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-building:0.1.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-places:0.2.1'
+
 
 }

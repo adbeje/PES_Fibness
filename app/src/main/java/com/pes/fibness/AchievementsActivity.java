@@ -44,7 +44,7 @@ public class AchievementsActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
     private ArrayList<Achievement> achieves = User.getInstance().getAchievements();
-    private int userDistance = 1;
+    private int userDistance = User.getInstance().getTotalDst();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +70,8 @@ public class AchievementsActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AchievementsActivity.this, HomeActivity.class);
-                startActivity(intent);
+                onBackPressed();
+                finish();
 
             }
         });
@@ -114,17 +114,17 @@ public class AchievementsActivity extends AppCompatActivity {
                 System.out.println("slide number: " + position);
                 if(position < (adapterViewPager.getCount()-1) && position < (colors.length -1)){
                     viewPager.setBackgroundColor((Integer) argbEvaluator.evaluate(positionOffset, colors[position], colors[position+1]));
-
+                    btShare.setVisibility(View.INVISIBLE);
                     if(position == 0) {
                         textNum.setText("01");
-                        btShare.setVisibility(View.VISIBLE);
+                        //btShare.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.INVISIBLE);
                         meterTraveled.setVisibility(View.INVISIBLE);
                         message.setVisibility(View.INVISIBLE);
                     }
                     else if(position == 1) {
                         textNum.setText("02");
-                        btShare.setVisibility(View.VISIBLE);
+                        //btShare.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.VISIBLE);
                         meterTraveled.setVisibility(View.VISIBLE);
                         achieves = User.getInstance().getAchievements();
@@ -135,20 +135,30 @@ public class AchievementsActivity extends AppCompatActivity {
                         System.out.println("acheive distances: " + achieves.get(0).distance);
                         */
                         progressBar.setProgress((userDistance*100)/433);
-                        meterTraveled.setText(""+ achieves.get(0).distance + "M");
+                        if(userDistance >= 433){
+                            achieves.get(1).active = true;
+                            meterTraveled.setText(""+ "433M");
+                        }
+                        else meterTraveled.setText(""+ userDistance + "M");
 
                     }
                     else if(position == 2){
                         textNum.setText("03");
                         if (achieves.get(1).active) {
-                            btShare.setVisibility(View.VISIBLE);
+                            //btShare.setVisibility(View.VISIBLE);
+                            message.setVisibility(View.INVISIBLE);
                             progressBar.setVisibility(View.VISIBLE);
                             meterTraveled.setVisibility(View.VISIBLE);
-                            progressBar.setProgress((userDistance*100)/2307);
-                            meterTraveled.setText(""+ achieves.get(1).distance + "M");
+                            progressBar.setProgress(((userDistance-433)*100)/(2307-433)); //progressbar va de 0-100
+                            if(userDistance >= 2307){
+                                achieves.get(2).active = true;
+                                meterTraveled.setText(""+ "2307M");
+                            }
+                            else meterTraveled.setText(""+ userDistance + "M");
+
                         }
                         else{
-                            btShare.setVisibility(View.INVISIBLE);
+                            //btShare.setVisibility(View.INVISIBLE);
                             progressBar.setVisibility(View.INVISIBLE);
                             meterTraveled.setVisibility(View.INVISIBLE);
                             message.setVisibility(View.VISIBLE);
@@ -157,14 +167,20 @@ public class AchievementsActivity extends AppCompatActivity {
                     else if(position == 3) {
                         textNum.setText("04");
                         if (achieves.get(2).active) {
-                            btShare.setVisibility(View.VISIBLE);
+                            //btShare.setVisibility(View.VISIBLE);
+                            message.setVisibility(View.INVISIBLE);
                             progressBar.setVisibility(View.VISIBLE);
                             meterTraveled.setVisibility(View.VISIBLE);
-                            progressBar.setProgress((userDistance*100)/2918);
-                            meterTraveled.setText(""+ achieves.get(2).distance + "M");
+                            progressBar.setProgress(((userDistance-2307)*100)/(2918-2307));
+                            if(userDistance >= 2918){
+                                achieves.get(3).active = true;
+                                meterTraveled.setText(""+ "2918M");
+                            }
+                            else meterTraveled.setText(""+ userDistance + "M");
+
                         }
                         else{
-                            btShare.setVisibility(View.INVISIBLE);
+                           // btShare.setVisibility(View.INVISIBLE);
                             progressBar.setVisibility(View.INVISIBLE);
                             meterTraveled.setVisibility(View.INVISIBLE);
                             message.setVisibility(View.VISIBLE);
@@ -176,14 +192,18 @@ public class AchievementsActivity extends AppCompatActivity {
                     viewPager.setBackgroundColor(colors[colors.length-1]);
                     textNum.setText("05"); //the last one
                     if (achieves.get(3).active) {
-                        btShare.setVisibility(View.VISIBLE);
+                        //btShare.setVisibility(View.VISIBLE);
+                        message.setVisibility(View.INVISIBLE);
                         progressBar.setVisibility(View.VISIBLE);
                         meterTraveled.setVisibility(View.VISIBLE);
-                        progressBar.setProgress((userDistance*100)/3359);
-                        meterTraveled.setText(""+ achieves.get(3).distance + "M");
+                        progressBar.setProgress(((userDistance-2918)*100)/(3359-2918));
+                        if(userDistance >= 3359){
+                            meterTraveled.setText(""+ "3359M");
+                        }
+                        else meterTraveled.setText(""+ userDistance + "M");
                     }
                     else{
-                        btShare.setVisibility(View.INVISIBLE);
+                        //btShare.setVisibility(View.INVISIBLE);
                         progressBar.setVisibility(View.INVISIBLE);
                         meterTraveled.setVisibility(View.INVISIBLE);
                         message.setVisibility(View.VISIBLE);

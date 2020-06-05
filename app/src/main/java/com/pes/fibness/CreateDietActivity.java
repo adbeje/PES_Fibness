@@ -12,7 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.Nullable;
@@ -71,7 +73,7 @@ public class CreateDietActivity extends AppCompatActivity {
     private void showEditExBox(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(CreateDietActivity.this);
         builder.setView(R.layout.input_edit_food);
-        builder.setTitle("Food");
+        builder.setTitle(getString(R.string.Food));
         final AlertDialog dialog = builder.create();
         dialog.show();
         final EditText txtName = (EditText) dialog.findViewById(R.id.EditNameAliment);
@@ -85,11 +87,11 @@ public class CreateDietActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean correct = true;
                 if (txtName.getText().toString().trim().length() == 0) {
-                    txtName.setError("Please, add a name");
+                    txtName.setError(getString(R.string.PleaseAddAName));
                     correct = false;
                 }
                 if (numCalories.getText().toString().trim().length() == 0) {
-                    numCalories.setError("Please, add a number");
+                    numCalories.setError(getString(R.string.AddANumber));
                     correct = false;
                 }
                 if (correct) {
@@ -132,7 +134,7 @@ public class CreateDietActivity extends AppCompatActivity {
     private void showNewFood() {
         AlertDialog.Builder builder = new AlertDialog.Builder(CreateDietActivity.this);
         builder.setView(R.layout.input_new_food);
-        builder.setTitle("Food");
+        builder.setTitle(getString(R.string.Food));
         final AlertDialog dialog = builder.create();
         dialog.show();
         final EditText txtName = (EditText) dialog.findViewById(R.id.NewNameAliment);
@@ -143,11 +145,11 @@ public class CreateDietActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean correct = true;
                 if (txtName.getText().toString().trim().length() == 0) {
-                    txtName.setError("Please, add a name");
+                    txtName.setError(getString(R.string.PleaseAddAName));
                     correct = false;
                 }
                 if (numCalories.getText().toString().trim().length() == 0) {
-                    numCalories.setError("Please, add a number");
+                    numCalories.setError(getString(R.string.AddANumber));
                     correct = false;
                 }
                 if (correct) {
@@ -179,6 +181,11 @@ public class CreateDietActivity extends AppCompatActivity {
         meal = extras.getString("comida");
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
 
 class Food_Adap extends BaseAdapter {

@@ -106,8 +106,8 @@ public class FollowersActivity extends AppCompatActivity implements UsersAdapter
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(FollowersActivity.this, SearchUsersActivity.class);
-        startActivity(intent);
+        super.onBackPressed();
+        finish();
 
     }
 

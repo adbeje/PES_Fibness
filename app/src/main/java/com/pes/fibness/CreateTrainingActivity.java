@@ -53,7 +53,6 @@ public class CreateTrainingActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                System.out.println("Entra");
                 showChooseOption();
                 isNew = false;
                 refreshList();
@@ -98,7 +97,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
     private void showEditExBox(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(CreateTrainingActivity.this);
         builder.setView(R.layout.input_edit_exercise);
-        builder.setTitle("Exercise");
+        builder.setTitle(getString(R.string.Exercise));
         final AlertDialog dialog = builder.create();
         dialog.show();
         final Spinner txtNameS = (Spinner) dialog.findViewById(R.id.ExerciseTitle_edit);
@@ -117,19 +116,19 @@ public class CreateTrainingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean correct = true;
                 String txtName = (String) txtNameS.getSelectedItem();
-                if (txtName.equals("Select exercise")) {
+                if (txtName.equals(getString(R.string.SelectExercise))) {
                     correct = false;
                 }
                 if (numRest.getText().toString().trim().length() == 0) {
-                    numRest.setError("Please, add a number");
+                    numRest.setError(getString(R.string.AddANumber));
                     correct = false;
                 }
                 if (numRepet.getText().toString().trim().length() == 0) {
-                    numRepet.setError("Please, add a number");
+                    numRepet.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (numSeries.getText().toString().trim().length() == 0) {
-                    numSeries.setError("Please, add a number");
+                    numSeries.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (correct) {
@@ -138,7 +137,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
                     t2.NumSerie = numSeries.getText().toString();
                     t2.NumRest = numRest.getText().toString();
                     t2.NumRepet = numRepet.getText().toString();
-                    t2.Pos = User.getInstance().getExerciseNamePos(position);
+                    t2.Pos = txtNameS.getSelectedItemPosition();
                     int idExercise = User.getInstance().getExerciseID(position);
                     t2.id = idExercise;
 
@@ -172,7 +171,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
     private void showEditExBoxPers(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(CreateTrainingActivity.this);
         builder.setView(R.layout.input_edit_exercise_pers);
-        builder.setTitle("Exercise");
+        builder.setTitle(getString(R.string.Exercise));
         final AlertDialog dialog = builder.create();
         dialog.show();
         final EditText txtName = (EditText) dialog.findViewById(R.id.ExerciseTitle_edit);
@@ -192,19 +191,19 @@ public class CreateTrainingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean correct = true;
                 if (txtName.getText().toString().trim().length() == 0) {
-                    txtName.setError("Please, add a name");
+                    txtName.setError(getString(R.string.PleaseAddAName));
                     correct = false;
                 }
                 if (numRest.getText().toString().trim().length() == 0) {
-                    numRest.setError("Please, add a number");
+                    numRest.setError(getString(R.string.AddANumber));
                     correct = false;
                 }
                 if (numRepet.getText().toString().trim().length() == 0) {
-                    numRepet.setError("Please, add a number");
+                    numRepet.setError(getString(R.string.AddANumber));
                     correct = false;
                 }
                 if (numSeries.getText().toString().trim().length() == 0) {
-                    numSeries.setError("Please, add a number");
+                    numSeries.setError(getString(R.string.AddANumber));
                     correct = false;
                 }
                 if (correct) {
@@ -233,7 +232,6 @@ public class CreateTrainingActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 int idExercise = User.getInstance().getExerciseID(position);
-                System.out.println("IDDDD " + idExercise);
                 ConnetionAPI c = new ConnetionAPI(getApplicationContext(), "http://10.4.41.146:3001/exercise/" + idExercise );
                 c.deleteTrainingExercises();
 
@@ -253,7 +251,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
     private void showNewExercisePers() {
         AlertDialog.Builder builder = new AlertDialog.Builder(CreateTrainingActivity.this);
         builder.setView(R.layout.input_new_exercise_pers);
-        builder.setTitle("Exercise");
+        builder.setTitle(getString(R.string.Exercise));
         final AlertDialog dialog = builder.create();
         dialog.show();
         final EditText txtName = (EditText) dialog.findViewById(R.id.ExerciseTitle);
@@ -267,19 +265,19 @@ public class CreateTrainingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean correct = true;
                 if (txtName.getText().toString().trim().length() == 0) {
-                    txtName.setError("Please, add a name");
+                    txtName.setError(getString((R.string.PleaseAddAName)));
                     correct = false;
                 }
                 if (numRepet.getText().toString().trim().length() == 0) {
-                    numRepet.setError("Please, add a number");
+                    numRepet.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (numRest.getText().toString().trim().length() == 0) {
-                    numRest.setError("Please, add a number");
+                    numRest.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (numSeries.getText().toString().trim().length() == 0) {
-                    numSeries.setError("Please, add a number");
+                    numSeries.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (correct) {
@@ -310,7 +308,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
     private void showNewExercise() {
         AlertDialog.Builder builder = new AlertDialog.Builder(CreateTrainingActivity.this);
         builder.setView(R.layout.input_new_exercise);
-        builder.setTitle("Exercise");
+        builder.setTitle(getString(R.string.Exercise));
         final AlertDialog dialog = builder.create();
         dialog.show();
         final Spinner txtNameS = (Spinner) dialog.findViewById(R.id.ExerciseTitle);
@@ -323,19 +321,19 @@ public class CreateTrainingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean correct = true;
                 String txtName = (String) txtNameS.getSelectedItem();
-                if (txtName.equals("Select exercise")) {
+                if (txtName.equals(getString(R.string.SelectExercise))) {
                     correct = false;
                 }
                 if (numRepet.getText().toString().trim().length() == 0) {
-                    numRepet.setError("Please, add a number");
+                    numRepet.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (numRest.getText().toString().trim().length() == 0) {
-                    numRest.setError("Please, add a number");
+                    numRest.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (numSeries.getText().toString().trim().length() == 0) {
-                    numSeries.setError("Please, add a number");
+                    numSeries.setError(getString((R.string.AddANumber)));
                     correct = false;
                 }
                 if (correct) {
@@ -368,6 +366,11 @@ public class CreateTrainingActivity extends AppCompatActivity {
         titleTraining = extras.getString("title");
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
 
 
@@ -412,57 +415,58 @@ class Exercise_Adap extends BaseAdapter {
             ImageView image = (ImageView) vista.findViewById(R.id.photo_ex);
             TextView Desc = (TextView) vista.findViewById(R.id.txtDesc);
             titulo.setText(dades.get(position).TitleEx);
-            int id = getImageID (dades.get(position).TitleEx);
+            int id = getImageID (position);
             if(id != -1) image.setImageResource(id);
             else{
                 image.setImageResource(R.drawable.logoazulflojo);
                 Desc.setText(dades.get(position).Desc);
             }
-            series.setText("SERIES: " + dades.get(position).NumSerie);
-            rest.setText("REST: " + dades.get(position).NumRest + "s");
-            repet.setText("REPETITIONS: " + dades.get(position).NumRepet);
+            series.setText(dades.get(position).NumSerie);
+            rest.setText(dades.get(position).NumRest + " s");
+            repet.setText(dades.get(position).NumRepet);
         }
 
         return vista;
     }
 
-    private int getImageID(String name){
+    private int getImageID(int position){
         int id = -1;
-        switch (name){
-            case "Squat":
+        int pos = User.getInstance().getExerciseNamePos(position);
+        switch (pos){
+            case 1:
                 id = R.drawable.squat;
                 break;
-            case "Hollow Hold":
+            case 2:
                 id = R.drawable.hollow_hold;
                 break;
-            case "Lunges":
+            case 3:
                 id = R.drawable.lunges;
                 break;
-            case "Back Extensión Hold":
+            case 4:
                 id = R.drawable.back_extension_hold;
                 break;
-            case "Plank":
+            case 5:
                 id = R.drawable.plank;
                 break;
-            case "Sit ups":
+            case 6:
                 id = R.drawable.sit_ups;
                 break;
-            case "Jumping Jacks":
+            case 7:
                 id = R.drawable.jumping_jacks;
                 break;
-            case "Push Up":
+            case 8:
                 id = R.drawable.push_up;
                 break;
-            case "Dips":
+            case 9:
                 id = R.drawable.dips;
                 break;
-            case "Burpees":
+            case 10:
                 id = R.drawable.burpees;
                 break;
-            case "Leg Raises":
+            case 11:
                 id = R.drawable.ab_infer;
                 break;
-            case "Bicycle Crunches":
+            case 12:
                 id = R.drawable.bicycle_crunches;
                 break;
         }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">fibness</string>
     <string name="action_settings">Ajustes</string>
 
     <string name="first_fragment_label">Primer Fragmento</string>
@@ -35,7 +34,7 @@
     <string name="guardar">guardar</string>
     <string name="descripcion_user">Descripción</string>
     <string name="fecha_nacimiento">Selecciona fecha de nacimiento</string>
-    <string name="gender">Genero</string>
+    <string name="gender">Gènero</string>
     <string name="back_button">Botón de retroceso</string>
 
     <!-- Strings used para obtener hora / fecha -->
@@ -51,6 +50,10 @@
     <string name="newPassword">Nueva Contraseña</string>
     <string name="reset">Restablecer</string>
     <string name="aboutMe">Sobre mí</string>
+    <string name="ranking">Clasificación:</string>
+    <string name="training">ENTRENAMIENTOS</string>
+    <string name="diets">DIETAS</string>
+    <string name="routes">RUTAS</string>
     <string name="weeklyProgress">Progreso semanal</string>
     <string name="viewProfile">Ver perfil</string>
     <string name="achievements">Logros</string>
@@ -112,5 +115,76 @@
     <string name="Name">Nombre</string>
 
     <string name="Calories">Calorias</string>
+    <string name="directions_activity_toast_message">La distancia es:</string>
+    <string name="name_of_the_event">Nombre del evento</string>
+    <string name="short_description_of_the_event">Pequeña descripción del evento</string>
+    <string name="add_a_food">Añadir alimento</string>
+    <string name="save">guardar</string>
+    <string name="origin_point">origen</string>
+    <string name="destination_point">destino</string>
+    <string name="back_arrow">flecha_atras</string>
+    <string name="edit_profile">Editar perfil</string>
+    <string name="coma">,</string>
+    <string name="user_country">País del usuario</string>
+    <string name="delete">Eliminar</string>
+    <string name="start_navigation">Iniciar navegación</string>
+    <string name="edit">Editar</string>
+    <string name="two_points">:</string>
+    <string name="title">Titulo</string>
+    <string name="the_best_views_are_achieved_after_a_hard_climb">Las mejores vistas se logran después de una dura subida.</string>
+
+    <string name="WriteAMessage">Escribe un mensaje</string>
+    <string name="Previously">Previamente</string>
+
+    <string name="AddAName">Añade un nombre</string>
+    <string name="Diet">Dieta</string>
+
+    <string name="PleaseAddAName">Por favor, añade un nombre</string>
+    <string name="NameAlreadyUsed">Este nombre ya se ha utilizado</string>
+    <string name="Meal">Comida</string>
+    <string name="AddAnHour">Por favor, añade una hora</string>
+    <string name="AddAValidHour">Por favor, añade una hora válida</string>
+    <string name="PleaseAddMinutes">Por favor, añade minutos</string>
+    <string name="AddValidMinutes">Por favor, añade minutos válidos</string>
+    <string name="AddANumber">Por favor, añade un número</string>
+    <string name="Food">Alimento</string>
+    <string name="Exercise">Ejercicio</string>
+    <string name="Training">Entrenamiento</string>
+    <string name="SelectExercise">Selecciona ejercico</string>
+
+    <!-- Array Ejercicios -->
+    <string-array name="exercises">
+        <item>Selecciona ejercico</item>
+        <item>Sentadillas</item>
+        <item>Hollow Hold</item>
+        <item>Lunges</item>
+        <item>Back Extension Hold</item>
+        <item>Plancha</item>
+        <item>Abdominales</item>
+        <item>Saltos de tijera</item>
+        <item>Flexiones</item>
+        <item>Dips</item>
+        <item>Soldadito</item>
+        <item>Abdominales inferiores</item>
+    </string-array>
+
+    <!-- Array dias -->
+    <string-array name="days">
+        <item>Lunes</item>
+        <item>Martes</item>
+        <item>Miercoles</item>
+        <item>Jueves</item>
+        <item>Viernes</item>
+        <item>Sábado</item>
+        <item>Domingo</item>
+    </string-array>
+    <string name="imp">IMPORTAR</string>
+    <string name="msgComment">Deja un mensaje</string>
+    <string name="Rutas">Rutas</string>
+    <string name="Join">ÚNETE</string>
+    <string name="Leave">ABANDONAR</string>
+    <string name="AddADate">Por favor, añade una fecha</string>
+    <string name="AddAPlace">Por favor, añade un lugar</string>
+    <string name="Events">Eventos</string>
 
 </resources>

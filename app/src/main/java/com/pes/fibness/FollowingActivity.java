@@ -70,6 +70,15 @@ public class FollowingActivity extends AppCompatActivity implements FollowingAda
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        names = User.getInstance().getUserFollowing();
+        followingAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(followingAdapter);
+
+    }
+
 
     @Override
     public void selectedUser(final UserModel userModel) {
@@ -113,10 +122,12 @@ public class FollowingActivity extends AppCompatActivity implements FollowingAda
         return true;
     }
 
+
+
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(FollowingActivity.this, SearchUsersActivity.class);
-        startActivity(intent);
+        super.onBackPressed();
+        finish();
     }
 
 }

@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">fibness</string>
+    <string name="app_name" translatable="false">fibness</string>
     <string name="action_settings">Settings</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -50,6 +51,10 @@
     <string name="newPassword">New Password</string>
     <string name="reset">Reset</string>
     <string name="aboutMe">About me</string>
+    <string name="ranking">Ranking:</string>
+    <string name="training">TRAINING</string>
+    <string name="diets">DIETS</string>
+    <string name="routes">ROUTES</string>
     <string name="weeklyProgress">Weekly progress</string>
     <string name="viewProfile">View Profile</string>
     <string name="achievements">Achievements</string>
@@ -92,7 +97,7 @@
     <string name="bkMsg">Are you sure you want to block this user? The user will not be able to see your profile or send you messages</string>
     <string name="unlockMsg">Are you sure you want to unlock this user? The user will be able to see your profile and send you messages</string>
     <string name="bkAccounts">Blocked Accounts</string>
-    <string name="directions_activity_toast_message" tools:ignore="MissingTranslation">La distancia de la ruta es:</string>
+    <string name="directions_activity_toast_message" tools:ignore="MissingTranslation">The distance is:</string>
 
     <string name="Rest">REST: </string>
     <string name="Series">SERIES: </string>
@@ -112,5 +117,74 @@
     <string name="Name">Name</string>
 
     <string name="Calories">Calories</string>
+    <string name="name_of_the_event">Name of the event</string>
+    <string name="short_description_of_the_event">Short description of the event</string>
+    <string name="add_a_food">Add a Food</string>
+    <string name="save">Save</string>
+    <string name="origin_point">origin</string>
+    <string name="destination_point">destination</string>
+    <string name="back_arrow">back arrow</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="coma">,</string>
+    <string name="user_country">User country</string>
+    <string name="delete">Delete</string>
+    <string name="start_navigation">Start navigation</string>
+    <string name="edit">Edit</string>
+    <string name="two_points">:</string>
+    <string name="title">Title</string>
+    <string name="the_best_views_are_achieved_after_a_hard_climb">The best views are achieved after a hard climb.</string>
+    <string name="imp">IMPORT</string>
+    <string name="msgComment">Leave a message</string>
+
+    <string name="WriteAMessage">Write a message</string>
+    <string name="Previously">Previously</string>
+
+    <string name="AddAName">Add a name</string>
+    <string name="Diet">Diet</string>
+    <string name="PleaseAddAName">Please, add a name</string>
+    <string name="NameAlreadyUsed">This name is already used</string>
+    <string name="Meal">Meal</string>
+    <string name="AddAnHour">Please, add an Hour</string>
+    <string name="AddAValidHour">Please, add a valid Hour</string>
+    <string name="PleaseAddMinutes">Please, add Minutes</string>
+    <string name="AddValidMinutes">Please, add valid Minutes</string>
+    <string name="AddANumber">Please, add a number</string>
+    <string name="Food">Food</string>
+    <string name="Exercise">Exercise</string>
+    <string name="Training">Training</string>
+    <string name="SelectExercise">Select exercise</string>
+
+    <!-- Array Ejercicios -->
+    <string-array name="exercises">
+        <item>Select exercise</item>
+        <item>Squat</item>
+        <item>Hollow Hold</item>
+        <item>Lunges</item>
+        <item>Back Extension Hold</item>
+        <item>Plank</item>
+        <item>Sit ups</item>
+        <item>Jumping Jacks</item>
+        <item>Push Up</item>
+        <item>Dips</item>
+        <item>Burpees</item>
+        <item>Leg Raises</item>
+    </string-array>
+
+    <!-- Array dias -->
+    <string-array name="days">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+    <string name="Rutas">Routes</string>
+    <string name="Join">JOIN</string>
+    <string name="Leave">LEAVE</string>
+    <string name="AddADate">Please, add a date</string>
+    <string name="AddAPlace">Please, add a place</string>
+    <string name="Events">Events</string>
 
 </resources>
